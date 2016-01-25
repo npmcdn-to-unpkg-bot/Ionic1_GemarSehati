@@ -1,0 +1,16 @@
+
+<ion-view view-title="Photo" >
+    <ion-content ng-controller="PhotoCtrl" ng-init="loadImages()" class="content-padding background">
+	    <div class="row" ng-repeat="image in images" ng-if="$index % 2 === 0">
+	        <div class="col col-50" ng-if="$index < images.length">
+	            <img ng-src="{{images[$index].src}}" width="100%" />
+	        </div>
+	        <div class="col col-50" ng-if="$index + 1 < images.length">
+	            <img ng-src="{{images[$index + 1].src}}" width="100%" />
+	        </div>
+	    </div>
+		<div class="footer-style non-bar-footer">
+  			<div class="title">2016. gemarsehati.com</div>
+		</div>
+    </ion-content>
+</ion-view>

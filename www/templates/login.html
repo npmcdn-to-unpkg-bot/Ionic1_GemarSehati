@@ -1,25 +1,42 @@
-<ion-modal-view>
-  <ion-header-bar>
-    <h1 class="title">Login</h1>
-    <div class="buttons">
-      <button class="button button-clear" ng-click="closeLogin()">Close</button>
+
+<ion-view view-title="Login" cache-view="false">
+    <ion-content scroll="false" class="content-padding background">
+    <div class="login-title center">
+    	<h3>Welcome to</h3>
+        <h1>GEMARSEHATI</h1>
+        <div class="line-seperator"></div>
+        <h5>Indonesian Drinking Healthy Water Campaign</h5>
     </div>
-  </ion-header-bar>
-  <ion-content>
-    <form ng-submit="doLogin()">
-      <div class="list">
-        <label class="item item-input">
-          <span class="input-label">Username</span>
-          <input type="text" ng-model="loginData.username">
-        </label>
-        <label class="item item-input">
-          <span class="input-label">Password</span>
-          <input type="password" ng-model="loginData.password">
-        </label>
-        <label class="item">
-          <button class="button button-block button-positive" type="submit">Log in</button>
-        </label>
-      </div>
-    </form>
-  </ion-content>
-</ion-modal-view>
+        
+		<div class="list login-content">
+		  <label class="item item-input item-floating-label login-form">
+		    <span class="input-label input-label-login ">email</span>
+		    <input type="text" placeholder="email" class="input-login">
+		  </label>
+		  <label class="item item-input item-floating-label login-form">
+		    <span class="input-label input-label-login ">password</span>
+		    <input type="text" placeholder="password" class="input-login">
+		  </label>
+		</div>
+		<div class="row">
+			<a href="#/app/home" class="button button-outline button-login">
+			  	Sign In
+			</a>
+		</div>
+		<div class="row no-padding">
+			<div class="col col-50 left">
+				<a href="#" class="login-link">
+					<i class="icon flaticon-vintage27 "></i> Forgot Password?
+				</a>
+			</div>
+			<div class="col col-50 right">
+				<a href="#/register" class="login-link">
+					<i class="icon flaticon-user77 "></i> Register
+				</a>
+			</div>
+		</div>
+		<div class="bar bar-footer footer-style">
+  			<div class="title">2016. gemarsehati.com</div>
+		</div>
+    </ion-content>
+</ion-view>

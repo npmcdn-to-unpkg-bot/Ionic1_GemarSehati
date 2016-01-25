@@ -13,7 +13,7 @@ angular.module('starter.controllers', [])
   $scope.loginData = {};
 
   // Create the login modal that we will use later
-  $ionicModal.fromTemplateUrl('templates/login.html', {
+  $ionicModal.fromTemplateUrl('templates/login-modal.html', {
     scope: $scope
   }).then(function(modal) {
     $scope.modal = modal;
@@ -50,6 +50,15 @@ angular.module('starter.controllers', [])
     { title: 'Rap', id: 5 },
     { title: 'Cowbell', id: 6 }
   ];
+})
+
+.controller('PhotoCtrl', function($scope){
+  $scope.images = [];
+  $scope.loadImages = function(){
+    for(var i = 0; i<10;i++){
+      $scope.images.push({id:i, src:"http://placehold.it/50x50"});
+    }
+  }
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {

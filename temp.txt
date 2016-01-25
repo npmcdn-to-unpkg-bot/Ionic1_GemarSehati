@@ -1,0 +1,228 @@
+login html
+
+<ion-view view-title="Login" cache-view="false">
+    <ion-content scroll="false" class="content-padding background">
+    <div class="login-title center">
+    	<h3>Welcome to</h3>
+        <h1>GEMARSEHATI</h1>
+        <div class="line-seperator"></div>
+        <h5>Indonesian Drinking Healthy Water Campaign</h5>
+    </div>
+        
+		<div class="list login-content">
+		  <label class="item item-input item-floating-label login-form">
+		    <span class="input-label input-label-login ">email</span>
+		    <input type="text" placeholder="email" class="input-login">
+		  </label>
+		  <label class="item item-input item-floating-label login-form">
+		    <span class="input-label input-label-login ">password</span>
+		    <input type="text" placeholder="password" class="input-login">
+		  </label>
+		</div>
+		<div class="row">
+			<a href="#/app/home" class="button button-outline button-login">
+			  	Sign In
+			</a>
+		</div>
+		<div class="row no-padding">
+			<div class="col col-50 left">
+				<a href="#" class="login-link">
+					<i class="icon flaticon-vintage27 "></i> Forgot Password?
+				</a>
+			</div>
+			<div class="col col-50 right">
+				<a href="#" class="login-link">
+					<i class="icon flaticon-user77 "></i> Register
+				</a>
+			</div>
+		</div>
+		<div class="bar bar-footer footer-style">
+  			<div class="title">2016. gemarsehati.com</div>
+		</div>
+    </ion-content>
+</ion-view>
+
+
+ionic.app.css
+/*custom*/
+.bar-header{
+  border-bottom: 0;
+}
+.header-item, .white{
+  color: white;
+}
+.bar .bar-footer .footer-style{
+  color: #fafafa;
+  background: transparent;
+}
+.bar .bar-footer .footer-style .title{
+  font-size: 14px;
+  margin-bottom: 0;
+  font-family: "Roboto-Regular";
+}
+.bar.bar-footer.footer-style .title:before{
+  content:"\00a9";
+}
+.blue{
+  background: #28166f;
+}
+.background{
+  background: url('../img/background.png');
+}
+.right{
+  right: 0;
+  text-align: right;
+}
+.left{
+  left: 0;
+  text-align: left;
+}
+.center{
+  text-align: center;
+}
+.italic{
+  font-style: italic;
+}
+.content-padding{
+  padding: 30px;
+}
+.no-padding{
+  padding: 0;
+}
+.line-seperator{
+  height:1px;
+  background:#fafafa;
+  border-bottom:1px solid #fafafa;
+}
+input::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #fafafa;
+}
+input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #fafafa;
+   opacity:  1;
+}
+input::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #fafafa;
+   opacity:  1;
+}
+input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:    #fafafa;
+}
+input:placeholder-shown { /* Standard (https://drafts.csswg.org/selectors-4/#placeholder) */
+  color:    #fafafa;
+}
+/*login*/
+.login-title h3, .login-title h1, .login-title h5 {
+  text-align: center;
+  color: #fafafa;
+  margin: 0;
+}
+.login-title h3{
+  font-family: "Roboto-LightItalic";
+  color: #fafafa;
+}
+.login-title h1{
+  font-family: "Roboto-Bold";
+}
+.login-title h5{
+  font-family: "Roboto-LightItalic";
+  margin-top: 5px;
+}
+.login-content{
+  margin-top: 30px;
+}
+.login-form{
+  border-width: 0;
+  border-bottom-width: 1px;
+  padding: 6px 0px 5px;
+  color: #fafafa;
+}
+.input-label-login {
+  display: table;
+  width: 100%;
+  max-width: 100%;
+  padding: 7px 10px 7px 0px;
+  color: #fafafa;
+  font-size: 16px; 
+  text-align: center;
+  font-family: "Roboto-LightItalic";
+}
+.item-input input.input-login{
+  text-align: center;
+  padding-right: 0;
+  color: #fafafa;
+  font-size: 16px;
+  font-family: "Roboto-LightItalic";
+}
+.row a.button-login{
+  min-width: 150px;
+  margin: 20px auto 10px;
+  border-color: #fafafa;
+  color: #fafafa;
+  margin-bottom: 30px;
+}
+.login-link{
+  text-decoration: none;
+  font-size: 14px;
+  color: #fafafa;
+  font-family: "Roboto-Regular";
+}
+
+/* side menu */
+.side-menu{
+  background: #f2f1f7;
+}
+.side-menu-content{
+  z-index: 100;
+}
+.side-menu{
+  background-color: #f2f1f7; 
+}
+.menu-list, .menu-list .item-content{
+  background-color: #f2f1f7;  
+  color: #28166f;
+  padding-top: 6px;
+  padding-bottom: 6px;
+
+}
+.menu-list{
+  border: 0.01px thick #28166f;
+}
+.last-menu-list{
+  padding-bottom:25px; 
+}
+.menu-list .item-content .badge{
+  top:6px;
+  font-size: 12px;
+}
+.menu-img{
+  height: 125px;  
+}
+.circle-photo img{
+  border-radius: 50%;
+  border: 4px solid #28166f;
+  /*box-shadow: 0 0 0 3px  #fff;*/
+  float: left;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+.box{
+  float: left;
+  margin-left: 120px;
+  margin-top: 10px;
+}
+.menu-img h2 +.menu-img h3{
+  float: left;
+}
+.menu-img h2, .menu-img h3{
+  color: #28166f;
+}
+.menu-img h2{
+  margin-top: 25px;
+  margin-left: 0px;
+}
+.menu-bottom{
+  padding-top: 25px;
+  border-top: solid 1px #28166f;
+  border-bottom: 0;
+}

@@ -32,6 +32,110 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     controller: 'AppCtrl'
   })
 
+
+  .state('login', {
+    url: '/login',
+    templateUrl: 'templates/login.html'
+  })
+
+  .state('register', {
+    url: '/register',
+    templateUrl: 'templates/register.html'
+  })
+
+
+
+  .state('app.home', {
+    url: "/home",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/home.html"
+      }
+    }
+  })
+
+  .state('app.event', {
+      url: '/event',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/event.html'
+        }
+      }
+    })
+
+  .state('app.about', {
+    url: "/about",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/about.html"
+      }
+    }
+  })
+
+  .state('app.socialmedia', {
+    url: "/socialmedia",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/socialmedia.html"
+      }
+    }
+  })
+
+    
+
+    .state('app.video', {
+      url: '/video',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/video.html'
+        }
+      }
+    })
+
+.state('app.photo', {
+      url: '/photo',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/photo.html',
+          controller: 'PhotoCtrl'
+        }
+      }
+    })
+.state('app.articles', {
+      url: '/articles',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/articles.html'
+        }
+      }
+    })
+.state('app.article', {
+      url: '/article',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/article.html'
+        }
+      }
+    })
+
+.state('app.testimoni', {
+      url: '/testimoni',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/testimoni.html'
+        }
+      }
+    })
+
+    .state('app.contactus', {
+      url: '/contactus',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/contactus.html'
+        }
+      }
+    })
+
   .state('app.search', {
     url: '/search',
     views: {
@@ -69,5 +173,5 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     }
   });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/playlists');
+  $urlRouterProvider.otherwise('login');
 });

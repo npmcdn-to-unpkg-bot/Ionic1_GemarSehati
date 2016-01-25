@@ -1,4 +1,12 @@
 {
   "name": "GemarSehati",
-  "app_id": "0b54bf40"
+  "app_id": "0b54bf40",
+  "gulpStartupTasks": [
+    "sass",
+    "watch"
+  ],
+  "watchPatterns": [
+    "www/**/*",
+    "!www/lib/**/*"
+  ]
 }

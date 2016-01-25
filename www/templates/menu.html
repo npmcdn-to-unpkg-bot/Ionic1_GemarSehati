@@ -1,6 +1,6 @@
 <ion-side-menus enable-menu-with-back-views="false">
-  <ion-side-menu-content>
-    <ion-nav-bar class="bar-stable">
+  <ion-side-menu-content drag-content="false">
+    <ion-nav-bar class="blue">
       <ion-nav-back-button>
       </ion-nav-back-button>
 
@@ -8,27 +8,67 @@
         <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
         </button>
       </ion-nav-buttons>
+      <ion-nav-buttons side="right">
+
+        <a data-tap-disabled="true" class=" button button-icon icon white" ng-click="openFilters(hasFilters);" ng-class="{'ion-search':!hasFilters,'ion-close-circled':hasFilters}"></a>
+    </ion-nav-buttons>
     </ion-nav-bar>
     <ion-nav-view name="menuContent"></ion-nav-view>
   </ion-side-menu-content>
 
-  <ion-side-menu side="left">
-    <ion-header-bar class="bar-stable">
-      <h1 class="title">Left</h1>
-    </ion-header-bar>
-    <ion-content>
-      <ion-list>
-        <ion-item menu-close ng-click="login()">
-          Login
+  <ion-side-menu side="left" class="side-menu" >
+    <!-- <ion-header-bar class="bar-stable">
+      <h1 class="title">Starter</h1>
+    </ion-header-bar> -->
+    <ion-content class="side-menu-content" scroll="true">
+      <ion-list>      
+        <ion-item nav-clear menu-close class="no-padding menu-img menu-list item item-thumbnail-left circle-photo">
+            <img ng-src="{{odpcount.foto}}" alt="">
+            <div class="box">
+              <h2>Welcome</h2>
+              <h3>{{odpcount.user}}</h3>          
+            </div>
+        </ion-item>  
+        <ion-item nav-clear menu-close href="#/app/home" class=" menu-list">
+          Home
         </ion-item>
-        <ion-item menu-close href="#/app/search">
-          Search
+
+        <ion-item nav-clear menu-close href="#/app/about " class=" menu-list">
+          About
         </ion-item>
-        <ion-item menu-close href="#/app/browse">
-          Browse
+
+        <ion-item nav-clear menu-close href="#/app/technology" class=" menu-list">
+          Technology
         </ion-item>
-        <ion-item menu-close href="#/app/playlists">
-          Playlists
+
+        <ion-item nav-clear menu-close href="#/app/video" class=" menu-list">
+          Video
+        </ion-item>
+
+        <ion-item nav-clear menu-close href="#/app/photo" class=" menu-list">
+          Photo
+        </ion-item>
+
+        <ion-item nav-clear menu-close href="#/app/articles" class=" menu-list">
+          Articles
+        </ion-item>
+
+        <ion-item nav-clear menu-close href="#/app/testimoni" class=" menu-list">
+          Testimoni
+        </ion-item>
+
+        <ion-item nav-clear menu-close href="#/app/findmitra" class=" menu-list">
+          Find Mitra
+        </ion-item>
+
+        <ion-item nav-clear menu-close href="#/app/contactus" class=" menu-list last-menu-list">
+          Contact Us
+        </ion-item>
+        
+        <ion-item nav-clear menu-close href="#/login"  class="item-icon-right menu-list menu-bottom">
+        <!-- <ion-item nav-clear menu-close href="/login" ng-click="logout()" class="item-icon-right menu-list menu-bottom"> -->
+        <i class="icon flaticon-vintage27"></i>
+          Logout
         </ion-item>
       </ion-list>
     </ion-content>
