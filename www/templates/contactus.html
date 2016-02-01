@@ -10,26 +10,26 @@
 		<div class="list login-content">
 		  <label class="item item-input item-floating-label login-form">
 		    <span class="input-label input-label-login ">email</span>
-		    <input type="text" placeholder="email" class="input-login">
+		    <input type="text" placeholder="email" class="input-login" ng-model='data.email'>
 		  </label>
 		  <div class="form-row">
 		  	<label class="item item-input item-floating-label login-form">
 		    	<span class="input-label input-label-login ">name</span>
-		    	<input type="text" placeholder="name" class="input-login">
+		    	<input type="text" placeholder="name" class="input-login" ng-model='data.nama'>
 		  	</label>
         	<label class="item item-input item-floating-label login-form">
 		    	<span class="input-label input-label-login ">no.Hp (optional)</span>
-		    	<input type="text" placeholder="no.Hp (optional)" class="input-login">
+		    	<input type="text" placeholder="no.Hp (optional)" class="input-login" ng-model='data.nohp'>
 		  	</label>	
 		  </div>
 		
 		<label class="item item-input item-floating-label login-form">
 		    <span class="input-label input-label-login ">message</span>
-		    <input type="text" placeholder="message" class="input-login">
+		    <input type="text" placeholder="message" class="input-login" ng-model='data.message'>
 		  </label>
 		</div>
 		<div class="row">
-			<a href="#/app/home" class="button button-outline button-login">
+			<a href="#/app/home" class="button button-outline button-login" ng-click="SendContact(data)">
 			  	Submit
 			</a>
 		</div>

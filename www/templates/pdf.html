@@ -1,0 +1,27 @@
+
+<ion-view view-title="PDF Files" align-title="center" class="blue">
+    <ion-content class="content-padding background">
+    	<ion-list>
+    		<ion-item class="item-content item-text-wrap"ng-repeat='pdf in pdfs'>
+    			<div class="row pdf-download">
+				    <div class="col col-33 pdf-icon">
+				    	<img ng-src="img/pdf-icon.png">
+				    </div>
+			    	<div class="col col-67">
+			    		<div class="pdf-judul">{{pdf.nama_pdf}}</div>
+			    		<div class="pdf-info">{{pdf.info_pdf}}</div>
+			    		<div class="row download">
+			    			<img class="download-icon" ng-src="img/download-icon.png">
+			    			<a class="non-decor download-text pdf-link" href="{{pdf.link_pdf}}">download</a>
+			    		</div>
+			    	</div>
+			    </div>
+			    <div class="line-seperator"></div>
+    		</ion-item>
+    	</ion-list>
+	    
+		<div class="footer-style non-bar-footer">
+  			<div class="title">2016. gemarsehati.com</div>
+		</div>
+    </ion-content>
+</ion-view>

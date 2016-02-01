@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers'])
+angular.module('starter', ['ionic','ionic.service.core','ngCordova', 'ionic.service.core','ionic.service.push','starter.controllers','flexcalendar' , 'pascalprecht.translate'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -22,6 +22,21 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   });
 })
 
+.config(function($ionicConfigProvider,$ionicAppProvider){
+  $ionicConfigProvider.navBar.alignTitle('center');
+  $ionicAppProvider.identify({
+    app_id:'0b54bf40',
+    api_key:'5fbb872afcd7c687bd5a0ec004492b9adde4c7ac56270c62',
+    dev_push:true
+  });
+})
+
+.filter('trustAsResourceUrl', ['$sce', function($sce) {
+return function(val) {
+    return $sce.trustAsResourceUrl(val);
+};
+}])
+
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
@@ -36,6 +51,15 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   .state('login', {
     url: '/login',
     templateUrl: 'templates/login.html'
+  })
+
+  .state('app.login', {
+    url: "/login",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/login.html"
+      }
+    }
   })
 
   .state('register', {
@@ -58,7 +82,8 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       url: '/event',
       views: {
         'menuContent': {
-          templateUrl: 'templates/event.html'
+          templateUrl: 'templates/event.html',
+          controller: 'EventCtrl'
         }
       }
     })
@@ -67,7 +92,8 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     url: "/about",
     views: {
       'menuContent': {
-        templateUrl: "templates/about.html"
+        templateUrl: "templates/about.html",
+        controller: 'PDFCtrl'
       }
     }
   })
@@ -87,7 +113,8 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       url: '/video',
       views: {
         'menuContent': {
-          templateUrl: 'templates/video.html'
+          templateUrl: 'templates/video.html',
+          controller: 'VideoCtrl'
         }
       }
     })
@@ -101,19 +128,31 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         }
       }
     })
+
+.state('app.pdf', {
+    url: "/pdf",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/pdf.html",
+        controller: 'PDFCtrl'
+      }
+    }
+  })
 .state('app.articles', {
       url: '/articles',
       views: {
         'menuContent': {
-          templateUrl: 'templates/articles.html'
+          templateUrl: 'templates/articles.html',
+          controller: 'ArticlesCtrl'
         }
       }
     })
 .state('app.article', {
-      url: '/article',
+      url: '/articles/:aId',
       views: {
         'menuContent': {
-          templateUrl: 'templates/article.html'
+          templateUrl: 'templates/article.html',
+          controller: 'ArticlesCtrl'
         }
       }
     })
@@ -122,7 +161,18 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       url: '/testimoni',
       views: {
         'menuContent': {
-          templateUrl: 'templates/testimoni.html'
+          templateUrl: 'templates/testimoni.html',
+          controller : 'TestimoniCtrl'
+        }
+      }
+    })
+
+.state('app.mitrafinder', {
+      url: '/mitrafinder',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/mitrafinder.html',
+          controller : 'MitraFinderCtrl'
         }
       }
     })
@@ -131,7 +181,18 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       url: '/contactus',
       views: {
         'menuContent': {
-          templateUrl: 'templates/contactus.html'
+          templateUrl: 'templates/contactus.html',
+          controller: 'ContactCtrl'
+        }
+      }
+    })
+
+    .state('app.push', {
+      url: '/push',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/push.html',
+          controller: 'PushCtrl'
         }
       }
     })
@@ -173,5 +234,5 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     }
   });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('login');
+  $urlRouterProvider.otherwise('/app/push');
 });

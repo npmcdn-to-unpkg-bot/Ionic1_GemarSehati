@@ -1,34 +1,16 @@
 
 <ion-view view-title="Testimoni" align-title="center" class="blue">
     <ion-content class="content-padding background testimoni">
-	    <div class="testimoni">
+	    <div class="testimoni  list-content" ng-repeat="testimoni in testimonis">
 	    	<div class="row flaticon-comment33 testimoni-header">
-		    	Nama User | Surabaya
+		    	{{testimoni.nama_user}} | {{testimoni.lokasi}}
 		    </div>
 		    <div class="row testimoni-content">
-		    	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-		    	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-		    	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-		    	consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-		    	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-		    	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		    	{{testimoni.content}}
 		    </div>
+		    <div class="line-seperator testimoni-seperator"></div>
 	    </div>
-		<div class="line-seperator testimoni-seperator"></div>
-	    <div class="testimoni">
-	    	<div class="row flaticon-comment33 testimoni-header">
-		    	Nama User | Surabaya
-		    </div>
-		    <div class="row testimoni-content">
-		    	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-		    	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-		    	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-		    	consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-		    	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-		    	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-		    </div>
-	    </div>
-		<div class="line-seperator testimoni-seperator"></div>
+		
 		<div class="footer-style non-bar-footer">
   			<div class="title">2016. gemarsehati.com</div>
 		</div>

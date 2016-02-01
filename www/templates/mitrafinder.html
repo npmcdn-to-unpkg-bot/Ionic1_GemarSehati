@@ -1,0 +1,43 @@
+
+<ion-view view-title="Mitra Page" align-title="center" class="blue">
+    <ion-content class=" background">
+    	<div id="map" data-tap-disabled="true"></div>
+        <div class="content-padding">
+        	<div ng-repeat="mitra in mitras" class="item-mitra">
+	            <div class="row">
+	              	<div class="col col-20 mitra-foto">
+	                	<img image-lazy-src="{{ mitra.foto }}" image-lazy-loader="android" align="middle" class="" >
+	              	</div>
+	              	<div class="col col-80">
+	                	<div class="mitra-nama">{{mitra.nama}}</div>
+	                	<div class="mitra-url">{{mitra.url}}</div>
+	              	</div>
+	            </div>
+	        	<div class="line-seperator"></div>
+	        	<div class="row mitra-contact">
+	          		<div class="col col-20">
+	          			<div class="mitra-icon flaticon-mobile29"></div>
+	          		</div>
+	          		<div class="col col-80">
+	          			<div class="mitra-hp">{{mitra.nohp}}</div>
+	          			<div class="mitra-hp">{{mitra.notelp}}</div>
+	          		</div>
+	          	</div>
+	          	<div class="row mitra-contact">
+	          		<div class="col col-20">
+	          			<div class="mitra-icon flaticon-map25"></div>
+	          		</div>
+	          		<div class="col col-60">
+	          			<div class="mitra-alamat">{{mitra.alamat}}</div>
+	          		</div>
+	          	</div>
+	          	
+	        </div>
+	        <div class=" footer-style non-bar-footer">
+	            	<div class="title">2016. gemarsehati.com</div>
+	        	</div>
+        </div>
+
+    
+    </ion-content>
+</ion-view>

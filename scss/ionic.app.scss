@@ -25,3 +25,13 @@ $color-main:                      #28166f !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+var icon;
+
+if (ionic.Platform.isIOS()) {
+  icon = 'ion-ios-arrow-back';
+} else if (ionic.Platform.isAndroid()) {
+  icon = 'ion-android-arrow-back';
+} else {
+  icon = 'ion-android-arrow-back';
+}
+

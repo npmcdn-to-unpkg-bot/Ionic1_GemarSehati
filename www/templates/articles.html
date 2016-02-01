@@ -1,48 +1,21 @@
 
 <ion-view view-title="Articles" align-title="center" class="blue">
     <ion-content class="content-padding background">
-	    <a href="#/app/article"class="row articles-link">
-		    <div class="col col-33 pdf-icon">
-		    	<img src="http://placehold.it/50x50">
-		    </div>
-	    	<div class="col col-67">
-	    		<div class=" articles-judul">Enagic Indonesia Order Process on 13th Jan 2016</div>
-	    		<div class="articles-desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-	    		tempor incididunt ut labore et dolore magna aliqua. </div>
+    	<div ng-repeat="article in articles">
+    		<a href="#/app/articles/{{article.id}}"class="row articles-link list-content" >
+			    <div class="col col-33 pdf-icon">
+			    	<img image-lazy-src="{{ article.foto }}" image-lazy-loader="android" >
+			    </div>
+		    	<div class="col col-67">
+		    		<div class=" articles-judul">{{article.judul}} </br> on {{article.tanggal}}</div>
+		    		<div class="articles-desc">{{article.content | limitTo : 150}}</div>
+		    	</div>
+	    	</a>
+	    	<div class="row articles-line ">
+	    	<div class="articles-icon flaticon-font2"></div>
 	    	</div>
-	    </a>
-	    <div class="row articles-line">
-	    	<div class="flaticon-font2 articles-icon"></div>
-	    </div>
-
-	    <a href="#/app/article"class="row articles-link">
-		    <div class="col col-33 pdf-icon">
-		    	<img src="http://placehold.it/50x50">
-		    </div>
-	    	<div class="col col-67">
-	    		<div class=" articles-judul">Enagic Indonesia Order Process on 13th Jan 2016</div>
-	    		<div class="articles-desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-	    		tempor incididunt ut labore et dolore magna aliqua. </div>
-	    	</div>
-	    </a>
-	    <div class="row articles-line">
-	    	<div class="flaticon-font2 articles-icon"></div>
-	    </div>
-
-	    <a href="#/app/article"class="row articles-link">
-		    <div class="col col-33 pdf-icon">
-		    	<img src="http://placehold.it/50x50">
-		    </div>
-	    	<div class="col col-67">
-	    		<div class=" articles-judul">Enagic Indonesia Order Process on 13th Jan 2016</div>
-	    		<div class="articles-desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-	    		tempor incididunt ut labore et dolore magna aliqua. </div>
-	    	</div>
-	    </a>
-	    <div class="row articles-line">
-	    	<div class="flaticon-font2 articles-icon"></div>
-	    </div>
-
+	    
+    	</div>
 	    
 		<div class=" footer-style non-bar-footer">
   			<div class="title">2016. gemarsehati.com</div>
