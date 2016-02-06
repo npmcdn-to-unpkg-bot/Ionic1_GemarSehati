@@ -1,32 +1,29 @@
 
-<ion-view view-title="Event" align-title="center" class="blue">
+<ion-view view-title="Event" align-title="center" class="blue" ng-init="latestEvent()">
     <ion-content class="background">
     <div class="row content-left-right">
         <div class="col col-50">
-            <a href="#" class="button button-outline button-login">
+            <a class="button button-outline button-login" ng-click="latestEvent()">
                 Latest
             </a>
         </div>
         <div class="col col-50">
-            <a href="#" class="button button-outline button-login">
+            <a  class="button button-outline button-login" ng-click="showArchived()">
                 Archive
             </a>
         </div>
     </div>
     <div class="padding-left-right">
-	    <div class="wrapp">
-	      <flex-calendar options="options" events="events"></flex-calendar>
-	    </div>
-		<!-- <div ng-repeat='event in events'>
-			    	<div class="row event-judul">{{event.judul}} {{event.tanggal}}</div>
-		    <div class="row event-desc">{{event.deskripsi}}</div>
-		    <div class="row articles-line event-line">
-		    	<div class="flaticon-calendar52 event-icon"></div>
-		    </div>
-		</div> -->
-	    
-
-	    
+	    <!-- <div class="wrapp">
+          <flex-calendar options="options" events="events"></flex-calendar>
+        </div> -->
+		<div ng-repeat='event in events'>
+                    <div class="row event-judul">{{event.judul}} {{event.tanggal}}</div>
+            <div class="row event-desc">{{event.deskripsi}}</div>
+            <div class="row articles-line event-line">
+                <div class="flaticon-calendar52 event-icon"></div>
+            </div>
+        </div>
 		<div class=" footer-style non-bar-footer">
   			<div class="title">2016. gemarsehati.com</div>
 		</div>

@@ -1,0 +1,21 @@
+<ion-view view-title="Register" cache-view="false">
+    <ion-content has-header="true">
+
+        <div class="row">
+            <div class="col col-100 text-center">
+                <div class="text-center">
+                    <button class="button icon ion-filing" ng-click="openFileDialog()">openFileDialog</button>
+                </div>   
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-100 text-center">
+                <div class="text-center">
+                  <div id="filename">{{ fileName }}</div>
+                </div>   
+            </div>
+        </div>                
+      <input type="file" id="file"/>
+        
+    </ion-content>
+</ion-view>

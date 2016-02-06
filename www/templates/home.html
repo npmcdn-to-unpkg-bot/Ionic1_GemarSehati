@@ -1,8 +1,10 @@
 
 <ion-view view-title="Home" cache-view="false" align-title="center" class="blue">
 
-    <ion-content scroll="false" class=" background">
+    <ion-content  class=" background" >
+    <ion-refresher on-refresh="doRefresh()"></ion-refresher>
     <div class="content-padding">
+		
     	<div class="row">
     		<img ng-src="img/logo.png" id="logo">
     	</div>
@@ -24,8 +26,10 @@
 	    		<img ng-src="img/event.png">
 	    	</a>
 	    </div>	
-	    
-			
+	<div class="row" ng-controller="LoginCtrl">
+				<a class="button button-outline button-login" ng-click="loadData()">Load</a>
+			</div>
+			<!-- <button  ng-click="reloadPage();">Reset</button> -->
 		<div class="bar bar-footer footer-style">
   			<div class="title">2016. gemarsehati.com</div>
 		</div>

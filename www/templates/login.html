@@ -7,30 +7,32 @@
 			<div class="line-seperator"></div>
 			<h5>Indonesian Drinking Healthy Water Campaign</h5>
 		</div>
-
-		<div class="list login-content">
-			<label class="item item-input item-floating-label login-form">
-				<span class="input-label input-label-login ">email</span>
-				<input type="text" placeholder="email" class="input-login">
-			</label>
-			<label class="item item-input item-floating-label login-form">
-				<span class="input-label input-label-login ">password</span>
-				<input type="text" placeholder="password" class="input-login">
-			</label>
-		</div>
-		<div class="row">
-			<a href="#/app/home" class="button button-outline button-login">
-				Sign In
-			</a>
-		</div>
+		<form ng-submit="Login(loginData)">
+			<div class="list login-content">
+				<label class="item item-input item-floating-label login-form">
+					<span class="input-label input-label-login ">email</span>
+					<input type="text" placeholder="email" class="input-login" ng-model="loginData.email">
+				</label>
+				<label class="item item-input item-floating-label login-form">
+					<span class="input-label input-label-login ">password</span>
+					<input type="text" placeholder="password" class="input-login" ng-model="loginData.password">
+				</label>
+			</div>
+			<div class="row">
+				<button class="button button-outiline button-login " type="submit">Sign in</button>
+			</div>
+			<!-- <div class="row">
+				<a class="button button-outline button-login" ng-click="loadData()">Load</a>
+			</div> -->
+		</form>
 		<div class="row no-padding">
 			<div class="col col-50 left">
-				<a href="#" class="login-link">
+				<a href="#/app/forgot" class="login-link">
 					<i class="icon flaticon-vintage27 "></i> Forgot Password?
 				</a>
 			</div>
 			<div class="col col-50 right">
-				<a href="#/register" class="login-link">
+				<a href="#/app/register" class="login-link">
 					<i class="icon flaticon-user77 "></i> Register
 				</a>
 			</div>

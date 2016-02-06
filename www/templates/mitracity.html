@@ -1,0 +1,21 @@
+
+<ion-view view-title="Mitra City" align-title="center" class="blue">
+    <ion-content class="content-padding background testimoni">
+      <div ng-repeat="city in cities">
+        
+     
+      <a href="#/app/mitracity/{{city.id}}" class="testimoni  list-content" >
+        <div class="row flaticon-comment33 testimoni-header">
+          {{city.id}}
+        </div>
+        <div class="row testimoni-content">
+          {{city.name}}
+        </div>
+        <div class="line-seperator testimoni-seperator"></div>
+      </div>
+     </a>
+    <div class="footer-style non-bar-footer">
+        <div class="title">2016. gemarsehati.com</div>
+    </div>
+    </ion-content>
+</ion-view>

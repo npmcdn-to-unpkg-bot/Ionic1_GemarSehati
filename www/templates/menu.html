@@ -10,7 +10,9 @@
       </ion-nav-buttons>
       <ion-nav-buttons side="right">
 
-        <a data-tap-disabled="true" class=" button button-icon icon white" ng-click="openFilters(hasFilters);" ng-class="{'ion-search':!hasFilters,'ion-close-circled':hasFilters}"></a>
+        <a data-tap-disabled="true" class=" button button-icon icon white" 
+        ng-click="MitraCityButton()"
+        ng-class="{'ion-search':!hasFilters,'ion-close-circled':hasFilters}"></a>
     </ion-nav-buttons>
     </ion-nav-bar>
     <ion-nav-view name="menuContent"></ion-nav-view>
@@ -20,13 +22,15 @@
     <!-- <ion-header-bar class="bar-stable">
       <h1 class="title">Starter</h1>
     </ion-header-bar> -->
-    <ion-content class="side-menu-content" scroll="true">
+    <ion-content class="side-menu-content" scroll="true" >
       <ion-list>      
-        <ion-item nav-clear menu-close class="no-padding menu-img menu-list item item-thumbnail-left circle-photo">
-            <img ng-src="{{odpcount.foto}}" alt="">
+        <ion-item nav-clear menu-close class="no-padding menu-img menu-list item-menu item-thumbnail-left circle-photo">
+            <img ng-if="logout"ng-src="{{loginData.photo}}" alt="">
+            <img ng-if="!logout"ng-src="img/ava.jpg" alt="">
             <div class="box">
               <h2>Welcome</h2>
-              <h3>user</h3>          
+              <h3 ng-if="logout">{{loginData.name}}</h3>          
+              <h3 ng-if="!logout">Non User</h3>
             </div>
         </ion-item>  
         <ion-item nav-clear menu-close href="#/app/home" class=" menu-list">
@@ -38,7 +42,7 @@
         </ion-item>
 
         <ion-item nav-clear menu-close href="#/app/technology" class=" menu-list">
-          Technology
+          Product Enagic
         </ion-item>
 
         <ion-item nav-clear menu-close href="#/app/video" class=" menu-list">
@@ -65,19 +69,26 @@
           Find Mitra
         </ion-item>
 
+        <ion-item nav-clear menu-close href="#/app/socialmedia" class=" menu-list">
+          Social Media
+        </ion-item>
+
         <ion-item nav-clear menu-close href="#/app/contactus" class=" menu-list last-menu-list">
           Contact Us
         </ion-item>
 
-        <ion-item nav-clear menu-close href="#/app/push" class=" menu-list last-menu-list">
+        <!-- <ion-item nav-clear menu-close href="#/app/push" class=" menu-list last-menu-list">
           Push
+        </ion-item> -->
+        <ion-item nav-clear menu-close ng-if="logout" ng-click="Logout()" ng-controller="LoginCtrl" class="item-icon-right menu-list menu-bottom">
+          <i class="icon flaticon-vintage27"></i>Logout
         </ion-item>
+
+         <ion-item nav-clear menu-close ng-if="!logout" href="#/app/login" class="item-icon-right menu-list menu-bottom">
+          <i class="icon flaticon-vintage27"></i>
+            Login
+        </ion-item> 
         
-        <ion-item nav-clear menu-close href="#/app/login"  class="item-icon-right menu-list menu-bottom">
-        <!-- <ion-item nav-clear menu-close href="/login" ng-click="logout()" class="item-icon-right menu-list menu-bottom"> -->
-        <i class="icon flaticon-vintage27"></i>
-          Logout
-        </ion-item>
       </ion-list>
     </ion-content>
   </ion-side-menu>

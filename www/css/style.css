@@ -208,6 +208,13 @@ input[type="text"]:placeholder-shown { /* Standard (https://drafts.csswg.org/sel
 	color: #fafafa;
 	margin-bottom: 30px;
 }
+.row button.button-login {
+    min-width: 150px;
+    margin: 20px auto 30px;
+    border-color: #FAFAFA;
+    color: #FAFAFA;
+    background: transparent;
+}
 .login-link{
 	text-decoration: none;
 	font-size: 14px;
@@ -220,6 +227,10 @@ input[type="text"]:placeholder-shown { /* Standard (https://drafts.csswg.org/sel
 
 
 /* side menu */
+
+.item.item-menu{
+	background: transparent;
+}
 .side-menu{
 	background: #f2f1f7;
 }
@@ -629,3 +640,27 @@ select.dropdown{
 
 /*=====  End of Event Style  ======*/
 
+/*======================================
+=            Register Style            =
+======================================*/
+
+.item-select select.dropdown{
+	width: 100%;
+	background: transparent;
+	color: #fafafa;
+	max-width: 100%;
+	padding: 0 16px;
+	font-family: 'Roboto-LightItalic';
+	font-size: 16px;
+}
+
+.form-content{
+	margin-top: 0px;
+}
+
+.form-note{
+	color: #fafafa;
+	margin-top: 30px;
+}
+
+/*=====  End of Register Style  ======*/

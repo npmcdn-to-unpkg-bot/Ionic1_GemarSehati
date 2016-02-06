@@ -4,7 +4,7 @@
 
     <div class="list list-content">
     	<a ng-repeat="photo in photos" href="#">
-    		<img image-lazy-src="{{ photo.link }}" image-lazy-loader="android" width="100%" ng-click="showImages($index)">
+    		<img href="{{photo.link}}" image-lazy-src="{{ photo.link }}" image-lazy-loader="android" width="100%" ng-click="showImages($index)">
     	</a>
     </div>
     <!-- <ion-content ng-controller="PhotoCtrl" ng-init="loadImages()" class="content-padding background"> -->

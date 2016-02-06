@@ -1,43 +1,90 @@
 <ion-view view-title="Register" cache-view="false">
     <ion-content class="content-padding background">
-    <div class="login-title center">
+    <div class="login-title center login-content">
     	<h3>Welcome to</h3>
         <h1>GEMARSEHATI</h1>
         <div class="line-seperator"></div>
         <h5>Indonesian Drinking Healthy Water Campaign</h5>
     </div>
-		<div class="list login-content">
-		  <label class="item item-input item-floating-label login-form">
-		    <span class="input-label input-label-login ">email</span>
-		    <input type="text" placeholder="email" class="input-login">
-		  </label>
+    	<h5 class="form-note">Form yang terdapat tanda (*), harus diisi</h5>
+		<div class="list form-content">
 		  	<label class="item item-input item-floating-label login-form">
-		    	<span class="input-label input-label-login ">Full Name</span>
-		    	<input type="text" placeholder="Full Name" class="input-login">
+		    	<span class="input-label input-label-login ">Nama Lengkap*</span>
+		    	<input type="text" placeholder="Nama Lengkap*" class="input-login" ng-model='data.fullname'>
+		  	</label>
+		  	<label class="item item-input item-floating-label login-form">
+		    	<span class="input-label input-label-login ">Panggilan*</span>
+		    	<input type="text" placeholder="Panggilan*" class="input-login" ng-model='data.nickname'>
+		  	</label>
+		  	<label class="item item-input item-select">
+			    <div class="input-label">
+			        Jenis Kelamin*
+			    </div>
+			    <select  ng-init="selectedGender=genders[0]" ng-model="data.selectedGender"  ng-options="g as g.name for g in genders" class="dropdown">
+			    </select>
+			</label>
+		  	<label class="item item-input item-floating-label login-form">
+			    <span class="input-label input-label-login ">Email*</span>
+			    <input type="text" placeholder="Email*" class="input-login" ng-model='data.email'>
+		  	</label>
+		  	<label class="item item-input item-floating-label login-form">
+			    <span class="input-label input-label-login ">Password*</span>
+			    <input type="password" placeholder="Password*" class="input-login" ng-model='data.password'>
 		  	</label>
         	<label class="item item-input item-floating-label login-form">
 		    	<span class="input-label input-label-login ">Address</span>
-		    	<input type="text" placeholder="Address" class="input-login">
+		    	<input type="text" placeholder="Address" class="input-login" ng-model='data.address'>
 		  	</label>	
-			  <label class="item item-input item-select">
+		  	<label class="item item-input item-floating-label login-form">
+		    	<span class="input-label input-label-login ">No Telpon</span>
+		    	<input type="text" placeholder="No Phone" class="input-login" ng-model='data.nophone'>
+		  	</label>	
+		  	<label class="item item-input item-floating-label login-form">
+		    	<span class="input-label input-label-login ">No HP*</span>
+		    	<input type="text" placeholder="No HP*" class="input-login" ng-model='data.nohp'>
+		  	</label>	
+		  	<label class="item item-input item-floating-label login-form">
+		    	<span class="input-label input-label-login ">Postal Code</span>
+		    	<input type="text" placeholder="Postal Code" class="input-login" ng-model='data.postal'>
+		  	</label>
+			<label class="item item-input item-select">
 			    <div class="input-label">
-			        &nbsp;
+			        Kota*
 			    </div>
-			    <select class="dropdown">
-			        <option selected>City</option>
-			        <option >Surabaya</option>
-			        <option>Sidoarjo</option>
+			    <select  ng-init="selectedCity=cities[0]" ng-model="data.selectedCity"  ng-options="c as c.name for c in cities" class="dropdown">
 			    </select>
 			</label>
-		  <label class="item item-input item-floating-label login-form">
-		   	 <span class="input-label input-label-login ">No. HP</span>
-		   	 <input type="text" placeholder="No. HP" class="input-login">
-		  </label>
+			<label class="item item-input item-floating-label login-form">
+		    	<span class="input-label input-label-login ">Latitude</span>
+		    	<input type="text" placeholder="Latitude" class="input-login" ng-model='data.lat'>
+		  	</label>
+		  	<label class="item item-input item-floating-label login-form">
+		    	<span class="input-label input-label-login ">Longitude</span>
+		    	<input type="text" placeholder="Longitude" class="input-login" ng-model='data.log'>
+		  	</label>
+		  	<label class="item item-input item-floating-label login-form">
+		    	<span class="input-label input-label-login ">Facebook</span>
+		    	<input type="text" placeholder="Facebook" class="input-login" ng-model='data.fb'>
+		  	</label>
+		  	<label class="item item-input item-floating-label login-form">
+		    	<span class="input-label input-label-login ">Twitter</span>
+		    	<input type="text" placeholder="Twitter" class="input-login" ng-model='data.twitter'>
+		  	</label>
+		  	<label class="item item-input item-floating-label login-form">
+		    	<span class="input-label input-label-login ">Foto*</span>
+		    	<input type="file" placeholder="Foto*" class="input-login" fileread='data.foto'>
+		    	<!-- <input type="file" name="file" onchange="angular.element(this).scope().uploadFile(this.files)"/> -->
+		  	</label>
+
+		  	<label class="item item-input item-floating-label login-form">
+		    	<span class="input-label input-label-login ">Pin BB</span>
+		    	<input type="text" placeholder="Pin BB" class="input-login" ng-model='data.pinbb'>
+		  	</label>
 		</div>
 		<div class="row">
-			<a href="#/app/home" class="button button-outline button-login">
+			<div class="button button-outline button-login" ng-click="SendRegister(data, selectedGender)">
 			  	Submit
-			</a>
+			</div>
 		</div>
 		<div class="footer-style non-bar-footer">
   			<div class="title">2016. gemarsehati.com</div>

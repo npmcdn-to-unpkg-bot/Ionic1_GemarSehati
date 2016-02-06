@@ -1,24 +1,23 @@
-<ion-view view-title="Social Media" cache-view="false" align-title="center" class="blue">
-    <ion-content scroll="false" class="content-padding background">
-    	<div class="row">
-			<a class="col col-33 col-offset-33 social-icon" href="#" 
-			onclick="window.open('https://www.facebook.com/gemarsehati', '_system', 'location=yes'); return false;">
-				<img ng-src="img/fb.png">
-			</a>
+
+<ion-view view-title="About Us" align-title="center" class="blue">
+    <ion-content class="content-padding background">
+    	<div ng-repeat="about in aboutus">
+    		<a href="#/app/about/{{about.id}}"class="row articles-link list-content" >
+			    <div class="col col-33 pdf-icon">
+			    	<img image-lazy-src="{{ about.foto }}" image-lazy-loader="android" >
+			    </div>
+		    	<div class="col col-67">
+		    		<div class=" articles-judul">{{about.judul}} </br> on {{about.date}}</div>
+		    		<div class="articles-desc">{{about.content | limitTo : 150}}</div>
+		    	</div>
+	    	</a>
+	    	<div class="row articles-line ">
+	    	<div class="articles-icon flaticon-font2"></div>
+	    	</div>
+	    
     	</div>
-		<div class="row">
-			<a class="col col-33 col-offset-33 social-icon" href="#" 
-			onclick="window.open('https://www.twitter.com', '_system', 'location=yes'); return false;">
-				<img ng-src="img/twitter.png">
-			</a>
-    	</div>
-    	<div class="row">
-			<a class="col col-33 col-offset-33 social-icon" href="#" 
-			onclick="window.open('http://www.youtube.com/', '_system', 'location=yes'); return false;">
-				<img ng-src="img/youtube.png">
-			</a>
-    	</div>
-		<div class="bar bar-footer footer-style">
+	    
+		<div class=" footer-style non-bar-footer">
   			<div class="title">2016. gemarsehati.com</div>
 		</div>
     </ion-content>
