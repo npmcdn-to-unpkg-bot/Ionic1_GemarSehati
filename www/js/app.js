@@ -21,7 +21,7 @@ angular.module(
     $ionicLoading.show({
       template: 'Loading'
     })
-    $state.go('app.home', {}, {reload: true});
+    //$state.go('app.home', {}, {reload: true});
     if($localstorage.get('username')){
       username=$localstorage.get('username');
     }
@@ -30,11 +30,12 @@ angular.module(
     //alert("selamat datang "+username);
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
-    if (window.cordova && window.cordova.plugins.Keyboard) {
+    
+    /*if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
 
-    }
+    }*/
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
@@ -297,7 +298,7 @@ return function(val) {
       views: {
         'menuContent': {
           templateUrl: 'templates/profil.html',
-          controller: 'ProfilCtrl'
+          controller:'ProfilCtrl'
         }
       }
     })
@@ -339,5 +340,5 @@ return function(val) {
     }
   });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/profil');
+  $urlRouterProvider.otherwise('/app/home');
 });

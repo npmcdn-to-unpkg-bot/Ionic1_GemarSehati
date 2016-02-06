@@ -2,31 +2,61 @@
 <ion-view view-title="My Profil" align-title="center" class="blue">
     <ion-content class=" background">
       <section class = "home-container" > 
-        <div class = "row  no-padding article-img centerImage">
-          <img image-lazy-src="img/ava.png">
+        <div class = "row  no-padding ">
+        	<div class="profil-img">
+        	<img ng-if="isLogin"ng-src="{{loginData.photo}}" alt="">
+            <img ng-if="!isLogin"ng-src="img/ava.jpg" alt="">	
+        	</div>
         </div>
-        <div class="content-padding">
-          <div class="article-header">
-            <div class="row">
-              <div class="col col-10">
-                <div class="flaticon-font2"></div>
-              </div>
-              <div class="col col-90">
-                <div class=" article-judul">
-                  {{article.judul}} on {{article.tanggal}}
-                </div>
-                <div class="article-posted">
-                  posted by: {{article.user}}
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div class=" footer-style non-bar-footer">
-            <div class="title">2016. gemarsehati.com</div>
+        <div class="row">
+        	<div class="profil-header">
+        		<div class="profil-name">{{profil.nama}}</div>
+        		<div class="profil-id">ID Enagic : {{profil.enagic_id}}</div>
+        		<div class="profil-url">{{profil.url}}</div>
+        	</div>
         </div>
+        <div class="padding-left-right italic-white">	
+        	<div class="line-seperator"></div>
+        	<div class="row ">
+	          	<div class="col col-25">
+	          		<div class="profil-icon flaticon-map25"></div>
+	          	</div>
+	          	<div class="col col-75">
+	          		<div class="mitra-hp">{{profil.alamat}}</div>
+	          	</div>
+	        </div>
+	        <div class="line-seperator"></div>
+	        <div class="row ">
+	          	<div class="col col-25">
+	          		<div class="profil-icon flaticon-mobile29"></div>
+	          	</div>
+	          	<div class="col col-75">
+	          		<div class="mitra-hp">{{profil.nohp}}</div>
+	          	</div>
+	        </div>
+	        <div class="line-seperator"></div>
+	        <div class="row ">
+	          	<div class="col col-25">
+	          		<div class="profil-icon flaticon-user77"></div>
+	          	</div>
+	          	<div class="col col-75">
+	          		<div class="mitra-hp">{{profil.email}}</div>
+	          	</div>
+	        </div>
+	        <div class="line-seperator"></div>
+	        <div class="row ">
+	          	<div class="col col-25">
+	          		<div class="profil-icon flaticon-facebook26"></div>
+	          	</div>
+	          	<div class="col col-75">
+	          		<div class="mitra-hp">{{profil.fb}}</div>
+	          	</div>
+	        </div>
+	        <div class="line-seperator"></div>
         </div>
-
+		<div class=" footer-style non-bar-footer">
+          	<div class="title">2016. gemarsehati.com</div>
+        </div>
       </section>
     
     </ion-content>

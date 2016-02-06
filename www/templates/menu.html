@@ -29,7 +29,7 @@
             <img ng-if="!logout"ng-src="img/ava.jpg" alt="">
             <div class="box">
               <h2>Welcome</h2>
-              <h3 ng-if="logout">{{loginData.name}}</h3>          
+              <a class="menu-username"href="#/app/profil" ng-if="logout">{{loginData.name}}</a>          
               <h3 ng-if="!logout">Non User</h3>
             </div>
         </ion-item>  

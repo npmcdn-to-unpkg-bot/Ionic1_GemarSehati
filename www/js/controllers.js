@@ -568,7 +568,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
           //MovetoHome();
           //$scope.modal.show();
           //window.location.reload(true);
-          $state.go('app.home', {}, {reload: true});  
+          $state.go('app.profil', {}, {reload: true});  
         }
       })
       .error(function(data) {
@@ -585,13 +585,14 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   }
 
   $scope.Logout = function() {
+    $state.go('app.home', {}, {reload: true});
      window.localStorage.removeItem("id");
      window.localStorage.removeItem("username");
      window.localStorage.removeItem("photo");
     
     alert("Anda berhasil Logout");
     window.location.reload();
-    $state.go('app.home', {}, {reload: true});
+    
   };
 
   /*$scope.isLoggedIn = function() {
@@ -613,7 +614,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     })
     .success(function(data){ 
       //alert(data.id + data.nama + data.foto);
-      alert("set data user");
+      //alert("set data user");
       $localstorage.set("id",data.id);
       $localstorage.set('username',data.nama);
       //alert("in SetDataUser " + data.nama);
@@ -621,7 +622,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
       $localstorage.set('cek','true');
       //alert($localstorage.get('cek'));
       window.location.reload();
-      $state.go('app.home', {}, {reload: true});
+      $state.go('app.profil', {}, {reload: true});
     })
     //alert($rootScope.nama);
     return ;
@@ -672,6 +673,10 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
 })
 
 .controller('HomeCtrl', function($localstorage,$ionicHistory,$scope, $stateParams,$ionicLoading,$localstorage,$state,$window,$reload,$timeout) {
+  $timeout(function() {
+     $ionicLoading.hide();
+  }, 3000);
+  
   //$state.go($state.current, {}, {reload: true});
   //for(i=0;i<1;i++) $window.location.reload(true);
   
@@ -684,19 +689,17 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
 
   if($localstorage.get('username')){
     username=$localstorage.get('username');
+    $scope.isLogin = true;
   }
-  else username = "non user";
+  else {
+    username = "non user";
+    $scope.isLogin=false;
+  }
   
   //alert("selamat datang "+username);
   $scope.doRefresh = function(){
     window.location.reload();
   };
-  /*if($localstorage.get('username')) {
-    alert("selamat datang "+$localstorage.get('username'));
-    //window.location.reload();
-    //alert("anda login");
-    //$reload.refresh();
-  }*/
 
   //else alert("anda belum login");
   /*window.onload = function () {
@@ -704,7 +707,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
         window.location.reload();
     }
 }*/
-  $ionicLoading.hide();
+  
   //if(localstorage.get('username')!==undefined) window.location.reload();
 
   $scope.reloadPage = function(){window.location.reload();}
@@ -1397,11 +1400,33 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     });
   })
 
-.controller('ProfilCtrl',function($ionicLoading){
+.controller('ProfilCtrl',function($ionicLoading,$http,$state,$localstorage,$scope){
   $ionicLoading.show({
     template: 'Loading'
   })
-  $ionicLoading.hide();
+
+  var id=$localstorage.get('id');
+  if(id){
+    $scope.isLogin = true;
+  }
+  else {
+    $scope.isLogin = false;
+    $state.go('app.home', {}, {reload: true});
+  }
+  $http({
+        method: 'GET',
+        url: 'http://gemarsehati.com/enagic/api/getmitraid/'+id,
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      })
+      .success(function(data){  
+        $ionicLoading.hide();
+        $scope.profil=data;
+      })
+      .error(function(data) {
+        $ionicLoading.hide()
+        alert("Cek koneksi internet anda");
+        
+      });
 })
 
 

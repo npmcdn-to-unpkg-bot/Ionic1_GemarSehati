@@ -45,6 +45,12 @@ a.non-decor{
 	text-decoration: none;
 }
 
+.italic-white{
+	font-family: 'Roboto-LightItalic';
+	color: white;
+	font-size: 14px;
+}
+
 /*=====  End of General Style  ======*/
 
 
@@ -272,9 +278,13 @@ input[type="text"]:placeholder-shown { /* Standard (https://drafts.csswg.org/sel
 .box{
 	float: left;
 	width: 100%;
-	height: 80px;
-	line-height: 80px;
-	margin-top: 30px;
+	height: 40px;
+	line-height: 40px;
+	margin-top: 25px;
+}
+.box a{
+	text-decoration: none;
+	color: #28166f;
 }
 .box h2{
 	margin: auto;
@@ -664,3 +674,36 @@ select.dropdown{
 }
 
 /*=====  End of Register Style  ======*/
+
+/*====================================
+=            Profil Style            =
+====================================*/
+
+.row .profil-img{
+	margin: 0 auto;
+}
+.row .profil-img img{
+	margin: 20px 0;
+	border-radius: 50%;
+	width: 128px;
+	height: 128px;
+}
+.profil-header{
+	color: white;
+	margin: auto;
+	text-align: center;
+}
+.profil-name, .profil-id{
+	font-family: 'Roboto-Regular';
+	font-size: 16px;
+}
+.profil-url{
+	font-family: 'Roboto-LightItalic';
+	font-family: 14px;
+}
+
+.profil-icon{
+	padding-left: 40px;
+	height: 100%;
+}
+/*=====  End of Profil Style  ======*/
