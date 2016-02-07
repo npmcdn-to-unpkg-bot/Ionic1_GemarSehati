@@ -697,9 +697,9 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   }
   
   //alert("selamat datang "+username);
-  $scope.doRefresh = function(){
+  /*$scope.doRefresh = function(){
     window.location.reload();
-  };
+  };*/
 
   //else alert("anda belum login");
   /*window.onload = function () {
@@ -710,7 +710,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   
   //if(localstorage.get('username')!==undefined) window.location.reload();
 
-  $scope.reloadPage = function(){window.location.reload();}
+  /*$scope.reloadPage = function(){window.location.reload();}*/
   /*$scope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams){ 
   });
   $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
@@ -1424,10 +1424,24 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
       })
       .error(function(data) {
         $ionicLoading.hide()
-        alert("Cek koneksi internet anda");
+        //alert("Cek koneksi internet anda");
         
       });
 })
 
+.controller('ProductCtrl', function($scope, $http, $stateParams, $state,$ionicLoading){
+  $ionicLoading.show({
+    template: 'Loading'
+  })
+  $http({
+      method: 'get', 
+      url: 'http://www.gemarsehati.com/enagic/api/getleveluk'
+    })
+    .success(function(data){
+      $ionicLoading.hide();
+      $scope.products = data;
+      $scope.whichproduct = $state.params.aId;
+    });
+  })
 
 ;

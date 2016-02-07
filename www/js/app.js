@@ -303,6 +303,27 @@ return function(val) {
       }
     })
 
+
+    .state('app.products', {
+      url: '/product',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/product.html',
+          controller:'ProductCtrl'
+        }
+      }
+    })
+
+    .state('app.product', {
+      url: '/product/:aId',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/detailproduct.html',
+          controller:'ProductCtrl'
+        }
+      }
+    })
+
   .state('app.search', {
     url: '/search',
     views: {
