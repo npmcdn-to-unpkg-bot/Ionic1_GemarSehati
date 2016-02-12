@@ -50,6 +50,9 @@ a.non-decor{
 	color: white;
 	font-size: 14px;
 }
+.no-margin{
+	margin: 0;
+}
 
 /*=====  End of General Style  ======*/
 
@@ -305,7 +308,12 @@ input[type="text"]:placeholder-shown { /* Standard (https://drafts.csswg.org/sel
 	border-top: solid 1px #28166f;
 	border-bottom: 0;
 }
-
+.item.no-border{
+	border:0;
+}
+.item.no-margin{
+	margin: 0;
+}
 /*home*/
 #logo{
 	margin: 0 auto 10px;
@@ -433,17 +441,29 @@ select.dropdown{
 .dropdown option:hover{
 	background: #fff;
 }
-
+.contact-text{
+	text-align: center;
+	margin: 40% auto;
+}
+.contact-image img{
+	max-height: 100%;
+	max-width: 100%;
+}
 /*testimoni*/
 .testimoni{
 	left: -25px;
 }
-.testimoni-header, .testimoni-content{
+.testimoni-header, .testimoni-content, .testimoni-date{
 	color: #fafafa;
 	text-align: left;
 }
 .testimoni-header{
 	font-family: "Roboto-Regular";
+}
+.testimoni-date{
+	margin-left: 29.56667px;
+	font-family: "Roboto-LightItalic";
+	margin-bottom: 15px;
 }
 .testimoni-content{
 	font-family: "Roboto-LightItalic";
@@ -612,13 +632,15 @@ select.dropdown{
 .scroll{height:100%}
 #map{width:100%;height:55%}
 
-.mitra-nama{
+.mitra-nama, .mitra-hp, .mitra-alamat{
 	font-family: "Roboto-Regular";
-	color: white;
+	font-size: 12px;
+	/* color: white; */
 }
 .mitra-url, .mitra-contact{
 	font-family: "Roboto-LightItalic";
-	color: white;
+	font-size: 12px;
+	/* color: white; */
 }
 .mitra-icon{
 	padding-left: 20px;
@@ -626,7 +648,7 @@ select.dropdown{
 }
 .mitra-foto img{
 	width: 100%;
-	height: 100%;
+	max-height: 100%;
 }
 .item-mitra{
 	margin: 10px 0;
@@ -707,3 +729,51 @@ select.dropdown{
 	height: 100%;
 }
 /*=====  End of Profil Style  ======*/
+
+/*====================================
+=            Credit Style            =
+====================================*/
+
+.row.credit-logo img{
+	max-height: 180px;
+	margin: 20px auto;
+}
+.credit-content{
+	margin: 10px auto 10px;
+}
+.credit-footer{
+	margin-top: 10px;
+}
+/*=====  End of Credit Style  ======*/
+
+/*========================================
+=            Right Menu Style            =
+========================================*/
+
+.popover.right-menu{
+	height: 115px;
+}
+
+/*=====  End of Right Menu Style  ======*/
+
+/*=======================================
+=            Accordion Style            =
+=======================================*/
+
+.list .item.item-accordion {
+  line-height: 38px;
+  padding-top: 0;
+  padding-bottom: 0;
+  transition: 0.09s all linear;
+}
+.list .item.item-accordion.ng-hide {
+  line-height: 0px;
+}
+.list .item.item-accordion.ng-hide-add,
+.list .item.item-accordion.ng-hide-remove {
+  display: block !important;
+}
+.item.item-accordion{
+	padding:0;
+}
+/*=====  End of Accordion Style  ======*/

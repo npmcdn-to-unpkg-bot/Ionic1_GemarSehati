@@ -9,10 +9,10 @@
         </button>
       </ion-nav-buttons>
       <ion-nav-buttons side="right">
-
-        <a data-tap-disabled="true" class=" button button-icon icon white" 
+      <button class="button button-icon button-clear flaticon-cog2 white" ng-click="popover.show($event)"></button>
+        <!-- <a data-tap-disabled="true" class=" button button-icon icon white" 
         ng-click="MitraCityButton()"
-        ng-class="{'ion-search':!hasFilters,'ion-close-circled':hasFilters}"></a>
+        ng-class="{'ion-search':!hasFilters,'ion-close-circled':hasFilters}"></a> -->
     </ion-nav-buttons>
     </ion-nav-bar>
     <ion-nav-view name="menuContent"></ion-nav-view>
@@ -53,9 +53,9 @@
           Photo
         </ion-item>
 
-        <ion-item nav-clear menu-close href="#/app/pdf" class=" menu-list">
+        <!-- <ion-item nav-clear menu-close href="#/app/pdf" class=" menu-list">
           PDF
-        </ion-item>
+        </ion-item> -->
 
         <ion-item nav-clear menu-close href="#/app/articles" class=" menu-list">
           Articles
@@ -69,9 +69,9 @@
           Find Mitra
         </ion-item>
 
-        <ion-item nav-clear menu-close href="#/app/socialmedia" class=" menu-list">
+        <!-- <ion-item nav-clear menu-close href="#/app/socialmedia" class=" menu-list">
           Social Media
-        </ion-item>
+        </ion-item> -->
 
         <ion-item nav-clear menu-close href="#/app/contactus" class=" menu-list last-menu-list">
           Contact Us
@@ -80,14 +80,19 @@
         <!-- <ion-item nav-clear menu-close href="#/app/push" class=" menu-list last-menu-list">
           Push
         </ion-item> -->
-        <ion-item nav-clear menu-close ng-if="logout" ng-click="Logout()" ng-controller="LoginCtrl" class="item-icon-right menu-list menu-bottom">
+        <ion-item nav-clear menu-close ng-if="logout" ng-click="Logout()" ng-controller="LoginCtrl" class="item-icon-right menu-list menu-bottom no-margin">
           <i class="icon flaticon-vintage27"></i>Logout
+        </ion-item>
+        <ion-item nav-clear menu-close ng-if="logout" href="#/app/profil" ng-controller="ProfilCtrl" class="item-icon-right menu-list no-border">
+          <i class="icon flaticon-user77"></i>My Profile
         </ion-item>
 
          <ion-item nav-clear menu-close ng-if="!logout" href="#/app/login" class="item-icon-right menu-list menu-bottom">
           <i class="icon flaticon-vintage27"></i>
             Login
         </ion-item> 
+
+        
         
       </ion-list>
     </ion-content>

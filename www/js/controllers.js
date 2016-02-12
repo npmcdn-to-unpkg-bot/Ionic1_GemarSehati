@@ -144,7 +144,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   return {
     getMarkers: function(){
 
-      return $http.get("http://www.gemarsehati.com/enagic/api/getmitra").then(function(response){
+      //return $http.get("http://www.gemarsehati.com/enagic/api/getmitra").then(function(response){
+      return $http.get("http://www.gemarsehati.com/api/getmitra").then(function(response){
           markers = response;
           return markers;
       });
@@ -160,14 +161,16 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   return {
     getEvents: function(){
 
-      return $http.get("http://www.gemarsehati.com/enagic/api/getevent").then(function(response){
+      //return $http.get("http://www.gemarsehati.com/enagic/api/getevent").then(function(response){
+      return $http.get("http://www.gemarsehati.com/api/getevent").then(function(response){
           events = response;
           //console.log(events.data[0].date);
           return events.data;
       });
     },
     getDateEvents: function(id){
-      return $http.get("http://www.gemarsehati.com/enagic/api/getevent").then(function(response){
+      //return $http.get("http://www.gemarsehati.com/enagic/api/getevent").then(function(response){
+      return $http.get("http://www.gemarsehati.com/api/getevent").then(function(response){
           events = response;
           result = events.data[id].date;
           return result;
@@ -190,7 +193,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     temp = $cordovaGeolocation.getCurrentPosition(options).then(function(position){
       
       var currentLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-
+      //alert("current posisi pas initmap : "+currentLatLng);
       setCurrentCoordinate(currentLatLng);
 
       var mapOptions = {
@@ -205,7 +208,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
       temp = google.maps.event.addListenerOnce(map, 'idle', function(){
 
         //Load the markers
-        loadMarkers();
+        //console.log("fungsi initmap");
+        //console.log(loadMarkers());
         loadCurrentPosMarkers(currentLatLng);
       });
 
@@ -221,7 +225,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
 
   function loadCurrentPosMarkers(){
     currentLatLng = getCurrentCoordinate();
-    var image = '/img/marker_now.png';
+    var image = 'img/marker_now.png';
         var marker = new google.maps.Marker({
             map: map,
             animation: google.maps.Animation.DROP,
@@ -235,6 +239,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   function loadMarkers(){
 
     currentLatLng = getCurrentCoordinate();
+    //alert("current pos pas load marker : "+currentLatLng);
     //console.log(temp);
 
       //Get all of the markers from our Markers factory
@@ -248,12 +253,14 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
         var closestMarker = -1;
         var closestDistance = Number.MAX_VALUE;
         var iki={};
-        var image = '/img/marker.png';
+        var image = 'img/marker.png';
         var count=0;
         for (var i = 0; i < lengthMarkers; i++) {
           var marker = markers.data;
           var dataMarker = markers.data;
 
+
+          //alert(marker[0].koordinat);
           //variable for coordinate
           var koordinatFix = marker[i].koordinat.split(",");
           var koordinatLat = koordinatFix[0];
@@ -261,9 +268,14 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
 
           //set coordinate to markerPos
           var markerPos = new google.maps.LatLng(koordinatLat, koordinatLng);
+          //alert("marker pos "+i+" : "+markerPos);
+          //var currentPos = new google.maps.LatLng(currentLatLn)
 
           //find nearest distance
-          var distance = google.maps.geometry.spherical.computeDistanceBetween(currentLatLng,markerPos);
+          //alert("posisi saiki "+i+" : "+currentLatLng +" dan "+markerPos);
+          if(currentLatLng!= undefined){
+            var distance = google.maps.geometry.spherical.computeDistanceBetween(currentLatLng,markerPos);
+          }
           //find nearest marker
           /*if(distance < closestDistance){
             closestMarker=i;
@@ -278,6 +290,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
           // Add the all marker to the map
           // 
           if(distance<=20000){
+            //alert("dist " + distance);
             //console.log(dataMarker[i]);
             var marker = new google.maps.Marker({
                 map: map,
@@ -365,6 +378,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   return {
     init: function(){
       initMap();
+      console.log(loadMarkers());
     },
     getDetailMitra: function(){
       temp = loadMarkers();
@@ -374,7 +388,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     },
     getMitra: function(){
       temp = getDataNearestMitra();
-      //console.log(temp);
+      console.log(temp);
       return temp;
     }
   }
@@ -414,7 +428,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     }]
   )
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout,$localstorage,$state) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout,$localstorage,$state,$ionicPopover) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -422,7 +436,13 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   // listen for the $ionicView.enter event:
   //$scope.$on('$ionicView.enter', function(e) {
   //});
-  //
+  
+  $ionicPopover.fromTemplateUrl('templates/popover.html', {
+    scope: $scope,
+  }).then(function(popover) {
+    $scope.popover = popover;
+  });
+  
   $scope.MitraCityButton = function(){
     $state.go('app.mitracity', {}, {reload: true});
   }
@@ -538,6 +558,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   
 
   $scope.Login = function(data) {
+    alert(data.email + " " + data.password);
     $ionicLoading.show({
       template: 'Loading'
     })
@@ -550,12 +571,13 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     var password = data.password;
       $http({
         method: 'POST',
-        url: 'http://gemarsehati.com/enagic/api/login',
+        url: 'http://gemarsehati.com/api/login',
         data: {'email': email, 'password': password},
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         timeout: 10000
       })
       .success(function(data){  
+        alert("login success");
         //console.log(data);
         //alert("oi " + data.data);
         $ionicLoading.hide()
@@ -606,7 +628,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   };*/
 
   function SetDataUser(id){
-    var url = 'http://gemarsehati.com/enagic/api/getmitraid/'+id;
+    var url = 'http://gemarsehati.com/api/getmitraid/'+id;
     $http({
       method: 'get',
       url: url,
@@ -647,10 +669,12 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   }
 
   if($localstorage.get('username')){
-    var url = 'http://www.gemarsehati.com/enagic/api/getpdfuser';
+    //var url = 'http://www.gemarsehati.com/enagic/api/getpdfuser';
+    var url = 'http://www.gemarsehati.com/api/getpdfuser';
   }
     else{
-      var url = 'http://www.gemarsehati.com/enagic/api/getpdfumum';
+      //var url = 'http://www.gemarsehati.com/enagic/api/getpdfumum';
+      var url = 'http://www.gemarsehati.com/api/getpdfumum';
     }
   /*if($scope.logout){
     var url = 'http://www.gemarsehati.com/enagic/api/getpdfuser';
@@ -729,7 +753,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   })
   $http({
       method: 'get', 
-      url: 'http://www.gemarsehati.com/enagic/api/getphoto',
+      //url: 'http://www.gemarsehati.com/enagic/api/getphoto',
+      url: 'http://www.gemarsehati.com/api/getphoto',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded'}
     })
     .success(function(data){
@@ -776,7 +801,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   }
     $http({
       method: 'get', 
-      url: 'http://www.gemarsehati.com/enagic/api/getvideo', 
+      //url: 'http://www.gemarsehati.com/enagic/api/getvideo', 
+      url: 'http://www.gemarsehati.com/api/getvideo', 
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
     .success(function(data){
@@ -791,7 +817,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
       $scope.doRefresh = function(){
         $http({
           method: 'get', 
-          url: 'http://www.gemarsehati.com/enagic/api/getvideo'
+          //url: 'http://www.gemarsehati.com/enagic/api/getvideo'
+          url: 'http://www.gemarsehati.com/api/getvideo'
         })
         .success(function(data){
           $scope.videos=data;
@@ -825,7 +852,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   //get gender
   $http({
     method: 'get',
-    url: 'http://www.gemarsehati.com/enagic/api/getgender'
+    //url: 'http://www.gemarsehati.com/enagic/api/getgender'
+    url: 'http://www.gemarsehati.com/api/getgender'
   })
   .success(function(data){
     $scope.genders = data;
@@ -835,7 +863,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   //getcity
   $http({
     method: 'get',
-    url: 'http://www.gemarsehati.com/enagic/api/getcity'
+    //url: 'http://www.gemarsehati.com/enagic/api/getcity'
+    url: 'http://www.gemarsehati.com/api/getcity'
   })
   .success(function(data){
     $scope.cities = data;
@@ -895,7 +924,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
       alert(data.foto);
       $http({
         method: 'POST',
-        url: 'http://gemarsehati.com/enagic/api/register',
+        //url: 'http://gemarsehati.com/enagic/api/register',
+        url: 'http://gemarsehati.com/api/register',
         data: {
           'name': data.fullname, 
           'panggilan': data.nickname,
@@ -939,7 +969,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
 .controller('CityCtrl', function($http, $scope,$state) {
   $http({
     method: 'get',
-    url: 'http://www.gemarsehati.com/enagic/api/getcity'
+    //url: 'http://www.gemarsehati.com/enagic/api/getcity'
+    url: 'http://www.gemarsehati.com/api/getcity'
   })
   .success(function(data){
     $scope.cities = data;
@@ -950,7 +981,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
 .controller('GenderCtrl', function($http, $scope) {
   $http({
     method: 'get',
-    url: 'http://www.gemarsehati.com/enagic/api/getgender'
+    //url: 'http://www.gemarsehati.com/enagic/api/getgender'
+    url: 'http://www.gemarsehati.com/api/getgender'
   })
   .success(function(data){
     $scope.genders = data;
@@ -962,28 +994,43 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
 })
 
 
-.controller('TestimoniCtrl', function($http,$scope, $stateParams,$ionicLoading) {
+.controller('TestimoniCtrl', function($http,$scope, $stateParams,$ionicLoading,$state) {
   $ionicLoading.show({
     template: 'Loading'
   })
-  $http({
+
+  $scope.bisnisTestimoni = function() {
+    $ionicLoading.show({
+      template: 'Loading'
+    })
+    $http({
       method: 'get', 
-      url: 'http://www.gemarsehati.com/enagic/api/gettestimoni', 
+      //url: 'http://www.gemarsehati.com/enagic/api/gettestimonibisnis', 
+      url: 'http://www.gemarsehati.com/api/gettestimonibisnis', 
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
     .success(function(data){
-      $scope.testimonis = data;
       $ionicLoading.hide();
-      $scope.doRefresh = function(){
-        $http({
-          method: 'get', 
-          url: 'http://www.gemarsehati.com/enagic/api/gettestimoni'
-        })
-        .success(function(data){
-          $scope.testimonis=data;}
-        );
-      }
-  });
+      $scope.testimonis = data;
+      $scope.whichtestimoni = $state.params.aId;
+    });
+  }
+  $scope.kesehatanTestimoni = function() {
+    $ionicLoading.show({
+      template: 'Loading'
+    })
+    $http({
+      method: 'get', 
+      //url: 'http://www.gemarsehati.com/enagic/api/gettestimonikesehatan', 
+      url: 'http://www.gemarsehati.com/api/gettestimonikesehatan', 
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){
+      $ionicLoading.hide();
+      $scope.testimonis = data;
+      $scope.whichtestimoni = $state.params.aId;
+    });
+  }
 })
 
 .controller('ArticlesCtrl', function($http,$scope, $stateParams,$state,$ionicLoading) {
@@ -992,7 +1039,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   })
   $http({
       method: 'get', 
-      url: 'http://www.gemarsehati.com/enagic/api/getarticles', 
+      //url: 'http://www.gemarsehati.com/enagic/api/getarticles', 
+      url: 'http://www.gemarsehati.com/api/getarticles', 
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
     .success(function(data){
@@ -1003,7 +1051,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
       $scope.doRefresh = function(){
         $http({
           method: 'get', 
-          url: 'http://www.gemarsehati.com/enagic/api/getarticles'
+          //url: 'http://www.gemarsehati.com/enagic/api/getarticles'
+          url: 'http://www.gemarsehati.com/api/getarticles'
         })
         .success(function(data){
           $scope.articles=data;}
@@ -1018,23 +1067,14 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   })
   $http({
       method: 'get', 
-      url: 'http://www.gemarsehati.com/enagic/api/gettechnology', 
+      //url: 'http://www.gemarsehati.com/enagic/api/gettechnology', 
+      url: 'http://www.gemarsehati.com/api/gettechnology', 
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
     .success(function(data){
       $scope.technologies = data;
       $scope.whichtechnology = $state.params.aId;
       $ionicLoading.hide();
-
-      $scope.doRefresh = function(){
-        $http({
-          method: 'get', 
-          url: 'http://www.gemarsehati.com/enagic/api/gettechnology'
-        })
-        .success(function(data){
-          $scope.technologies=data;}
-        );
-      }
   });
 })
 
@@ -1052,7 +1092,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     $scope.archivedEvents=[];
     $http({
       method: 'get', 
-      url: 'http://www.gemarsehati.com/enagic/api/getevent', 
+      //url: 'http://www.gemarsehati.com/enagic/api/getevent', 
+      url: 'http://www.gemarsehati.com/api/getevent', 
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
     .success(function(data){
@@ -1091,7 +1132,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     $scope.latestEvents=[];
     $http({
       method: 'get', 
-      url: 'http://www.gemarsehati.com/enagic/api/getevent', 
+      //url: 'http://www.gemarsehati.com/enagic/api/getevent', 
+      url: 'http://www.gemarsehati.com/api/getevent',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
     .success(function(data){
@@ -1189,24 +1231,51 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
 .controller('MitraFinderCtrl', function($scope, $state, $cordovaGeolocation, GoogleMaps,$ionicLoading ) {
   GoogleMaps.init();
     temp=GoogleMaps.getDetailMitra();
+    console.log(temp);
     temp.then(function(data){
       $scope.mitras = data;
       //console.log(data.nama);
     })
+    /*$scope.groups = [];
+      for (var i=0; i<10; i++) {
+        $scope.groups[i] = {
+          name: i,
+          items: []
+        };
+        for (var j=0; j<3; j++) {
+          $scope.groups[i].items.push(i + '-' + j);
+        }
+      }
+      
+      
+       * if given group is the selected group, deselect it
+       * else, select the given group
+    */ 
+      $scope.toggleGroup = function(group) {
+        if ($scope.isGroupShown(group)) {
+          $scope.shownGroup = null;
+        } else {
+          $scope.shownGroup = group;
+        }
+      };
+      $scope.isGroupShown = function(group) {
+        return $scope.shownGroup === group;
+      };
   })
 
 
 .controller('ContactCtrl', function($scope, $stateParams, $http, $state,$ionicLoading) {
-  $ionicLoading.show({
+  /*$ionicLoading.show({
     template: 'Loading'
-  })
+  })*/
   $ionicLoading.hide();
   $scope.SendContact = function(data) {
 
     //alert(data.nama + data.email + data.nohp + data.title + data.message);
       $http({
         method: 'POST',
-        url: 'http://gemarsehati.com/enagic/api/contactus',
+        //url: 'http://gemarsehati.com/enagic/api/contactus',
+        url: 'http://gemarsehati.com/api/contactus',
         data: {
           'name': data.nama,
           'email': data.email, 
@@ -1237,7 +1306,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     
       $http({
         method: 'POST',
-        url: 'http://gemarsehati.com/enagic/api/resetpass',
+        //url: 'http://gemarsehati.com/enagic/api/resetpass',
+        url: 'http://gemarsehati.com/api/resetpass',
         data: {'email': data.email},
         headers: {  'Content-Type': 'application/x-www-form-urlencoded' }
       })
@@ -1360,7 +1430,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   })
   $http({
       method: 'get', 
-      url: 'http://www.gemarsehati.com/enagic/api/aboutus'
+      //url: 'http://www.gemarsehati.com/enagic/api/aboutus'
+      url: 'http://www.gemarsehati.com/api/aboutus'
     })
     .success(function(data){
       $ionicLoading.hide();
@@ -1382,7 +1453,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   })
   $http({
       method: 'get', 
-      url: 'http://www.gemarsehati.com/enagic/api/getcity'
+      //url: 'http://www.gemarsehati.com/enagic/api/getcity'
+      url: 'http://www.gemarsehati.com/api/getcity'
     })
     .success(function(data){
       $ionicLoading.hide();
@@ -1391,7 +1463,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
       $id=$state.params.aId;
       $http({
       method: 'get', 
-      url: 'http://www.gemarsehati.com/enagic/api/getcity/'+$id
+      //url: 'http://www.gemarsehati.com/enagic/api/getcity/'+$id
+      url: 'http://www.gemarsehati.com/api/getcity/'+$id
     })
       .success(function(data){
         $scope.city=data;
@@ -1415,7 +1488,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   }
   $http({
         method: 'GET',
-        url: 'http://gemarsehati.com/enagic/api/getmitraid/'+id,
+        //url: 'http://gemarsehati.com/enagic/api/getmitraid/'+id,
+        url: 'http://gemarsehati.com/api/getmitraid/'+id,
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       })
       .success(function(data){  
@@ -1435,7 +1509,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   })
   $http({
       method: 'get', 
-      url: 'http://www.gemarsehati.com/enagic/api/getleveluk'
+      //url: 'http://www.gemarsehati.com/enagic/api/getleveluk'
+      url: 'http://www.gemarsehati.com/api/getleveluk'
     })
     .success(function(data){
       $ionicLoading.hide();

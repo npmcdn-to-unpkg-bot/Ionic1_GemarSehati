@@ -1,16 +1,30 @@
 
-<ion-view view-title="Testimoni" align-title="center" class="blue">
-    <ion-content class="content-padding background testimoni">
+<ion-view view-title="Testimoni" align-title="center" class="blue" ng-init="bisnisTestimoni()">
+    <ion-content class=" background testimoni">
+    <div class="row content-left-right">
+        <div class="col col-50">
+            <a class="button button-outline button-login" ng-click="bisnisTestimoni()">
+                Bisnis
+            </a>
+        </div>
+        <div class="col col-50">
+            <a  class="button button-outline button-login" ng-click="kesehatanTestimoni()">
+                Kesehatan
+            </a>
+        </div>
+    </div>
+    <div class="padding-left-right">
 	    <div class="testimoni  list-content" ng-repeat="testimoni in testimonis">
 	    	<div class="row flaticon-comment33 testimoni-header">
-		    	{{testimoni.nama_user}} | {{testimoni.lokasi}}
+		    	{{testimoni.user}} | {{testimoni.lokasi}}
 		    </div>
+            <div class="row testimoni-date italic-white">On {{testimoni.date}}</div>
 		    <div class="row testimoni-content">
 		    	{{testimoni.content}}
 		    </div>
 		    <div class="line-seperator testimoni-seperator"></div>
 	    </div>
-		
+	</div>	
 		<div class="footer-style non-bar-footer">
   			<div class="title">2016. gemarsehati.com</div>
 		</div>

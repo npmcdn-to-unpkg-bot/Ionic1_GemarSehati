@@ -3,8 +3,48 @@
     <ion-content class=" background">
     	<div id="map" data-tap-disabled="true"></div>
         <div class="content-padding">
+
+			<!-- <ion-list>
+					        <div ng-repeat="group in groups">
+					          <ion-item class="item-stable"
+					                    ng-click="toggleGroup(group)"
+					                    ng-class="{active: isGroupShown(group)}">
+					              <i class="icon" ng-class="isGroupShown(group) ? 'ion-minus' : 'ion-plus'"></i>
+					            &nbsp;
+					            Group {{group.name}}
+					          </ion-item>
+					          <ion-item class="item-accordion"
+					                    ng-repeat="item in group.items"
+					                    ng-show="isGroupShown(group)">
+					            {{item}}
+					          </ion-item>
+					        </div>
+				      	</ion-list> -->
+
         	<div ng-repeat="mitra in mitras" class="item-mitra">
-	            <div class="row">
+        		<ion-item class="item-stable"
+					ng-click="toggleGroup(mitra)"
+					ng-class="{active: isGroupShown(mitra)}">
+					<i class="icon" ng-class="isGroupShown(mitra) ? 'ion-minus' : 'ion-plus'"></i>
+					&nbsp;
+					{{mitra.nama}}
+				</ion-item>
+				<ion-item class="item-accordion item-text-wrap"
+					ng-show="isGroupShown(mitra)">
+					<div class="row">
+		              	<div class="col col-20 mitra-foto">
+		                	<img image-lazy-src="{{ mitra.foto }}" image-lazy-loader="android" align="middle" class="" >
+		              	</div>
+		              	<div class="col col-80">
+		                	<div class="mitra-url">Url : {{mitra.url}}</div>
+		                	<div class="mitra-hp">No Hp : {{mitra.nohp}}</div>
+	            	        <div class="mitra-hp">No Telp : {{mitra.notelp}}</div>
+							<div class="mitra-alamat">Alamat : {{mitra.alamat}}</div>
+		              	</div>
+		            </div>
+				</ion-item>
+
+	            <!-- <div class="row">
 	              	<div class="col col-20 mitra-foto">
 	                	<img image-lazy-src="{{ mitra.foto }}" image-lazy-loader="android" align="middle" class="" >
 	              	</div>
@@ -13,24 +53,24 @@
 	                	<div class="mitra-url">{{mitra.url}}</div>
 	              	</div>
 	            </div>
-	        	<div class="line-seperator"></div>
-	        	<div class="row mitra-contact">
-	          		<div class="col col-20">
-	          			<div class="mitra-icon flaticon-mobile29"></div>
-	          		</div>
-	          		<div class="col col-80">
-	          			<div class="mitra-hp">{{mitra.nohp}}</div>
-	          			<div class="mitra-hp">{{mitra.notelp}}</div>
-	          		</div>
-	          	</div>
-	          	<div class="row mitra-contact">
-	          		<div class="col col-20">
-	          			<div class="mitra-icon flaticon-map25"></div>
-	          		</div>
-	          		<div class="col col-60">
-	          			<div class="mitra-alamat">{{mitra.alamat}}</div>
-	          		</div>
-	          	</div>
+	            	        	<div class="line-seperator"></div>
+	            	        	<div class="row mitra-contact">
+	            	          		<div class="col col-20">
+	            	          			<div class="mitra-icon flaticon-mobile29"></div>
+	            	          		</div>
+	            	          		<div class="col col-80">
+	            	          			<div class="mitra-hp">{{mitra.nohp}}</div>
+	            	          			<div class="mitra-hp">{{mitra.notelp}}</div>
+	            	          		</div>
+	            	          	</div>
+	            	          	<div class="row mitra-contact">
+	            	          		<div class="col col-20">
+	            	          			<div class="mitra-icon flaticon-map25"></div>
+	            	          		</div>
+	            	          		<div class="col col-60">
+	            	          			<div class="mitra-alamat">{{mitra.alamat}}</div>
+	            	          		</div>
+	            	          	</div> -->
 	        </div>
 	        <div class=" footer-style non-bar-footer">
 	            	<div class="title">2016. gemarsehati.com</div>

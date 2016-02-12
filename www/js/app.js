@@ -14,13 +14,13 @@ angular.module(
   'starter.controllers',
   'flexcalendar', 
   'pascalprecht.translate',
-  'ionicLazyLoad'])
+  'ionicLazyLoad']) 
 
 .run(function($ionicPlatform, $ionicLoading, $state,$localstorage) {
   $ionicPlatform.ready(function() {
-    $ionicLoading.show({
+    /*$ionicLoading.show({
       template: 'Loading'
-    })
+    })*/
     //$state.go('app.home', {}, {reload: true});
     if($localstorage.get('username')){
       username=$localstorage.get('username');
@@ -223,15 +223,7 @@ return function(val) {
         }
       }
     })
-.state('app.testimoni', {
-      url: '/testimoni',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/testimoni.html',
-          controller : 'TestimoniCtrl'
-        }
-      }
-    })
+
 
 .state('app.mitrafinder', {
       url: '/mitrafinder',
@@ -320,6 +312,35 @@ return function(val) {
         'menuContent': {
           templateUrl: 'templates/detailproduct.html',
           controller:'ProductCtrl'
+        }
+      }
+    })
+
+    .state('app.testimoni', {
+      url: '/testimoni',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/testimoni.html',
+          controller : 'TestimoniCtrl'
+        }
+      }
+    })
+
+    .state('app.detailtestimoni', {
+      url: '/testimoni/:aId',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/detailtestimoni.html',
+          controller : 'TestimoniCtrl'
+        }
+      }
+    })
+
+    .state('app.credit', {
+      url: '/credit',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/credit.html'
         }
       }
     })
