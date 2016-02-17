@@ -129,6 +129,9 @@ ion-header-bar, ion-header-bar.blue{
 .italic{
 	font-style: italic;
 }
+.padding-top{
+	padding-top: 30px;
+}
 .content-padding{
 	padding: 30px;
 }
@@ -622,7 +625,10 @@ select.dropdown{
     background-repeat: no-repeat;
     background-position: center, center;
 }
-
+.gallery {
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
 /*=====  End of Photo Style  ======*/
 
 /*==================================
@@ -630,7 +636,7 @@ select.dropdown{
 ==================================*/
 
 .scroll{height:100%}
-#map{width:100%;height:55%}
+#map{width:100%;height:100%}
 
 .mitra-nama, .mitra-hp, .mitra-alamat{
 	font-family: "Roboto-Regular";
@@ -777,3 +783,8 @@ select.dropdown{
 	padding:0;
 }
 /*=====  End of Accordion Style  ======*/
+
+.gm-style-iw {
+    max-height: 700px !important;
+    width: 400px !important;
+}

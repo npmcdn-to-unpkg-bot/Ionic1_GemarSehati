@@ -1,7 +1,6 @@
 
 <ion-view view-title="PDF Files" align-title="center" class="blue">
     <ion-content class="content-padding background">
-    <ion-refresher on-refresh="doRefresh()"></ion-refresher>
     	<ion-list>
     		<ion-item class="item-content item-text-wrap"ng-repeat='pdf in pdfs'>
     			<div class="row pdf-download">
@@ -13,16 +12,16 @@
 			    		<div class="pdf-info">{{pdf.info_pdf}}</div>
 			    		<div class="row download">
 			    			<img class="download-icon" ng-src="img/download-icon.png">
-			    			<a class="non-decor download-text pdf-link" ng-href="{{pdf.link_pdf}}">download</a>
+			    			<a class="non-decor download-text pdf-link" ng-click="download($index)">download</a>
+			    			<!-- <button class="button button-full button-positive" ng-click="download($index)">bismillah</button> -->
 			    		</div>
 			    	</div>
 			    </div>
 			    <div class="line-seperator"></div>
     		</ion-item>
     	</ion-list>
-	    
 		<div class="footer-style non-bar-footer">
-  			<div class="title">2016. gemarsehati.com</div>
+  			<div class="title">{{footerText}}</div>
 		</div>
     </ion-content>
 </ion-view>

@@ -1,12 +1,54 @@
 
 <ion-view view-title="Photo" >
-    <ion-content ng-controller="PhotoCtrl" class="content-padding background" lazy-scroll>
+    <ion-content ng-controller="PhotoCtrl" class="content-padding background padding-top" lazy-scroll>
 
-    <div class="list list-content">
-    	<a ng-repeat="photo in photos" href="#">
+    <!-- <div class="list list-content">
+    	<a ng-repeat="photo in photos" href="#" class="col col-50">
     		<img href="{{photo.link}}" image-lazy-src="{{ photo.link }}" image-lazy-loader="android" width="100%" ng-click="showImages($index)">
     	</a>
-    </div>
+    </div> -->
+
+    	<!-- <div ng-repeat="photo in photos"  >
+    		<div ng-if="$index%2==0" class="row">
+    			<div class="col">
+    		    		<img href="{{photo[$index].link}}" image-lazy-src="{{ photo[$index].link}}" image-lazy-loader="android" width="50%" ng-click="showImages($index)">
+    		    		<img href="{{photo[$index+1].link}}" image-lazy-src="{{ photo[$index+1].link}}" image-lazy-loader="android" width="50%" ng-click="showImages($index+1)">
+    		    		</div>
+    		    	</div>
+    	</div> -->
+		<div ng-repeat="photo in photos" ng-switch on="$index % 2" class="row">
+    		<div class="col col-50"  ng-switch-when="0">
+				<img href="{{photos[$index].link}}" image-lazy-src="{{ photos[$index].link}}" image-lazy-loader="android" width="100%" ng-click="showImages($index)">
+			</div>
+			<span ng-show="photos[$index+1]">
+		    	<div class="col " ng-switch-when="0">
+					<img href="{{photos[$index+1].link}}" image-lazy-src="{{ photos[$index+1].link}}" image-lazy-loader="android" width="100%" ng-click="showImages($index+1)">
+				</div>
+			</span>
+    	</div>
+
+		<!-- <div ng-controller="MyCtrl">
+			<table>
+				<tr ng-repeat="item in items" ng-switch on="$index % 2">
+					<td ng-switch-when="0">
+						{{items[$index].id}} {{items[$index].name}}
+					</td>
+			        <span ng-show="items[$index+1]">
+			            <td ng-switch-when="0">
+			                {{items[$index+1].id}} {{items[$index+1].name}}
+			            </td>
+			        </span>  
+				</tr>
+			</table>
+		</div> -->
+
+    <!-- <div class="list list-content">
+    	<div  class="row" ng-repeat="row in photos | inSlicesOf:2"> 
+    	        <div class="col col-50 photo-item " ng-repeat="photo in row">
+    			<img href="{{photo.link}}" image-lazy-src="{{ photo.link }}" image-lazy-loader="android" width="50%" ng-click="showImages($index)">
+    		</div>
+    	</div>
+    </div> -->
     <!-- <ion-content ng-controller="PhotoCtrl" ng-init="loadImages()" class="content-padding background"> -->
 	    <!-- <div class="row" ng-repeat="image in images" ng-if="$index % 2 === 0">
 	        <div class="col col-50" ng-if="$index < images.length">
@@ -23,13 +65,13 @@
 		    </div>
 		</div> -->
 		<!-- <div id="masonry">
-			<div  class="row" ng-repeat="row in photos | inSlicesOf:2"> 
-	          <div class="col col-50 photo-item " ng-repeat="photo in row">
-	            <img ng-src="{{photo.link}} " class="photo-img" width="100%" height="100%">
-	            <hr/>
-	          </div>
-	        </div>
-		</div> -->
+		 	<div  class="row" ng-repeat="row in photos | inSlicesOf:2"> 
+		 	          <div class="col col-50 photo-item " ng-repeat="photo in row">
+		 	            <img ng-src="{{photo.link}} " class="photo-img" width="100%" height="100%">
+		 	            <hr/>
+		 	          </div>
+		 	        </div>
+		 </div> --> 
 		
 		<!-- <div id="masonry">
 			<div  ng-repeat="photo in photos "> 
@@ -53,7 +95,7 @@
 
 
 		<div class="footer-style non-bar-footer">
-  			<div class="title">2016. gemarsehati.com</div>
+  			<div class="title">{{footerText}}</div>
 		</div>
     </ion-content>
 </ion-view>

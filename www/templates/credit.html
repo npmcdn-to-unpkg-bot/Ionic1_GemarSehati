@@ -1,20 +1,22 @@
 
 <ion-view view-title="Gemarsehati" cache-view="false" align-title="center" class="blue">
 	<ion-content  class=" background" >
-    	<div class="content-padding">
-	    	<div class="row credit-logo">
-	    		<img ng-src="img/credit-logo.png">
-	    	</div>
-		    <div class="credit-content italic-white center">
-		    	Komunitas anak bangsa yang peduli akan kesehatan masyarakat Indonesia dengan melakukan edukasi, berbagai pengalaman serta kampanye mendorong setiap anak bangsa untuk berprilkau hidup sehat dengan minum air yang sehat dan alami.
-		    </div>
-    		<div class="line-seperator"></div>
-		    <div class="credit-footer flaticon-map25 italic-white">
-		    	Jl. Medokan Asri Barat I Blok P2 - Surabaya 60295
-		    </div>		
+    	<div class="content-padding" >
+	    	<div ng-repeat="credit in credits">
+		    	<div class="row credit-logo">
+		    		<img image-lazy-src="{{credit.logo}}" image-lazy-loader="android">
+		    	</div>
+			    <div class="credit-content italic-white center">
+			    	{{credit.about}}
+			    </div>
+	    		<div class="line-seperator"></div>
+			    <div class="credit-footer flaticon-map25 italic-white">
+			    	{{credit.address}}
+			    </div>		
+			</div>
 		</div>
 			<div class="bar bar-footer footer-style">
-	  			<div class="title">2016. gemarsehati.com</div>
+	  			<div class="title">{{footerText}}</div>
 			</div>
     </ion-content>
 </ion-view>

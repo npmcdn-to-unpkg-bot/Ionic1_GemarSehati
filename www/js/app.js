@@ -340,7 +340,8 @@ return function(val) {
       url: '/credit',
       views: {
         'menuContent': {
-          templateUrl: 'templates/credit.html'
+          templateUrl: 'templates/credit.html',
+          controller:'CreditCtrl'
         }
       }
     })

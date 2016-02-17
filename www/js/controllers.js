@@ -1,7 +1,7 @@
 var user;
 var id;
 
-var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ionicLazyLoad','flexcalendar','pascalprecht.translate'])
+var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ionicLazyLoad','flexcalendar','pascalprecht.translate','ngCordova'])
 
 
 
@@ -72,6 +72,24 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
 
 
 }])=============
+
+/*======================================
+=            Footer Factory            =
+======================================*/
+
+.factory('Footer', function() {
+  var currentTime = new Date();
+  var currentYear = currentTime.getFullYear();
+  var footerTitle = "gemarsehati.com"
+  return{
+    getFooter: function(){
+      var footerText=currentYear+". "+footerTitle;
+      return footerText;
+    }
+  }
+})
+
+/*=====  End of Footer Factory  ======*/
 
 
 /*=============================================
@@ -210,6 +228,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
         //Load the markers
         //console.log("fungsi initmap");
         //console.log(loadMarkers());
+        loadMarkers();
         loadCurrentPosMarkers(currentLatLng);
       });
 
@@ -225,7 +244,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
 
   function loadCurrentPosMarkers(){
     currentLatLng = getCurrentCoordinate();
-    var image = 'img/marker_now.png';
+    var image = 'img/marker_now-small.png';
         var marker = new google.maps.Marker({
             map: map,
             animation: google.maps.Animation.DROP,
@@ -253,7 +272,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
         var closestMarker = -1;
         var closestDistance = Number.MAX_VALUE;
         var iki={};
-        var image = 'img/marker.png';
+        var image = 'img/marker-small.png';
         var count=0;
         for (var i = 0; i < lengthMarkers; i++) {
           var marker = markers.data;
@@ -301,7 +320,14 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
             iki[count]=dataMarker[i];
             count++;
             //set information to marker
-            var infoWindowContent = "<h4>" + dataMarker[i].nama + "</h4>";
+            if(dataMarker[i].nohp=="") dataMarker[i].nohp="-";
+            if(dataMarker[i].email=="") dataMarker[i].email="-";
+            if(dataMarker[i].alamat=="") dataMarker[i].alamat="-";
+            var infoWindowContent = 
+              "Nama : "+dataMarker[i].nama + "<br/>" + 
+              "No hp : "+dataMarker[i].nohp + "<br/>" + 
+              "Email : "+dataMarker[i].email + "<br/>" + 
+              "Alamat : "+dataMarker[i].alamat;
             addInfoWindow(marker, infoWindowContent, dataMarker[i]);
           }
         }
@@ -366,7 +392,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   function addInfoWindow(marker, message, record) {
 
       var infoWindow = new google.maps.InfoWindow({
-          content: message
+          content: '<div style="width:200px; height:auto">'+message+'</div>'
       });
 
       google.maps.event.addListener(marker, 'click', function () {
@@ -378,7 +404,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   return {
     init: function(){
       initMap();
-      console.log(loadMarkers());
+      var anu = loadMarkers();
+
     },
     getDetailMitra: function(){
       temp = loadMarkers();
@@ -507,12 +534,12 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   ];
 })
 
-.controller('LoginCtrl', function($rootScope,$ionicHistory,$scope, $state, $http, $state,$ionicLoading,$localstorage, $window,$ionicModal) {
+.controller('LoginCtrl', function($rootScope,$ionicHistory,$scope, $state, $http, $state,$ionicLoading,$localstorage, $window,$ionicModal, Footer) {
   $scope.data = {};
   $scope.result;
   $rootScope.nama;
   this.nama;
-
+  $scope.footerText=Footer.getFooter();
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login-modal.html', {
     scope: $scope
@@ -558,7 +585,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   
 
   $scope.Login = function(data) {
-    alert(data.email + " " + data.password);
+    //alert(data.email + " " + data.password);
     $ionicLoading.show({
       template: 'Loading'
     })
@@ -577,10 +604,13 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
         timeout: 10000
       })
       .success(function(data){  
+        console.log(data);
+        //console.log(data.email);
+        //console.log(data.password);
         alert("login success");
         //console.log(data);
         //alert("oi " + data.data);
-        $ionicLoading.hide()
+        $ionicLoading.hide();
         //alert("selamat datang "+email);
         if(data.message=="loginSuccess") {
           $ionicHistory.nextViewOptions({
@@ -594,7 +624,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
         }
       })
       .error(function(data) {
-        $ionicLoading.hide()
+        $ionicLoading.hide();
+        alert(data);
         if(data == null){
           alert("Email atau password tidak boleh kosong");
         }
@@ -651,55 +682,56 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   }
 })
 
-.controller('PDFCtrl', function($scope, $http, $state,$sce,$ionicLoading,$localstorage) {
+.controller('PDFCtrl', function($timeout,$scope, $http, $state,$sce,$ionicLoading,$localstorage, Footer,$cordovaFileTransfer,$cordovaFile) {
+  
+  $scope.download = function (index) {
+ 
+    // File for download
+    var url = $scope.pdfs[index].link_pdf;
+    
+    // File name only
+    var filename = url.split("/").pop();
+     
+    // Save location
+    var targetPath = cordova.file.externalRootDirectory + filename;
+    alert('Sedang mendownload file');
+    $cordovaFileTransfer.download(url, targetPath, {}, true).then(function (result) {
+      alert('Download file '+filename+' telah berhasil.');
+    }, function (error) {
+      alert('Download file '+filename+' gagal.');
+    }, function (progress) {
+      // PROGRESS HANDLING GOES HERE
+    });
+  }
   $ionicLoading.show({
     template: 'Loading'
   })
-  $scope.doRefresh = function(){
-    window.location.reload();
-  };
-  if(username!==undefined){
-    $scope.login=false;
-    $scope.logout=true;
-  }
-  else 
-  {
-    $scope.login=true;
-    $scope.logout=false;
-  }
+  $scope.footerText=Footer.getFooter();
 
   if($localstorage.get('username')){
     //var url = 'http://www.gemarsehati.com/enagic/api/getpdfuser';
     var url = 'http://www.gemarsehati.com/api/getpdfuser';
   }
-    else{
-      //var url = 'http://www.gemarsehati.com/enagic/api/getpdfumum';
-      var url = 'http://www.gemarsehati.com/api/getpdfumum';
-    }
-  /*if($scope.logout){
-    var url = 'http://www.gemarsehati.com/enagic/api/getpdfuser';
+  else{
+    //var url = 'http://www.gemarsehati.com/enagic/api/getpdfumum';
+    var url = 'http://www.gemarsehati.com/api/getpdfumum';
   }
-  else if ($scope.login){
-    var url = 'http://www.gemarsehati.com/enagic/api/getpdfumum';
-  }*/
-
-    $http({
-      method: 'get', 
-      url: url, 
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
-      $scope.pdfs = data;
-      $ionicLoading.hide();
-      console.log(data);
-      
-    });
+  $http({
+    method: 'get', 
+    url: url, 
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+  })
+  .success(function(data){
+    $scope.pdfs = data;
+    $ionicLoading.hide(); 
+  });
 })
 
-.controller('HomeCtrl', function($localstorage,$ionicHistory,$scope, $stateParams,$ionicLoading,$localstorage,$state,$window,$reload,$timeout) {
+.controller('HomeCtrl', function($localstorage,$ionicHistory,$scope, $stateParams,$ionicLoading,$localstorage,$state,$window,$reload,$timeout, Footer) {
   $timeout(function() {
      $ionicLoading.hide();
   }, 3000);
+  $scope.footerText=Footer.getFooter();
   
   //$state.go($state.current, {}, {reload: true});
   //for(i=0;i<1;i++) $window.location.reload(true);
@@ -746,11 +778,12 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   //alert($localstorage.isLoggedIn());
 })
 
-.controller('PhotoCtrl', function($ionicLoading,$scope, $http, $state,$sce,$ionicModal, $ionicBackdrop, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
+.controller('PhotoCtrl', function($ionicLoading,$scope, $http, $state,$sce,$ionicModal, $ionicBackdrop, $ionicSlideBoxDelegate, $ionicScrollDelegate, Footer) {
 /*  $scope.singers = ['img/shakira.jpg','img/justin.jpg','img/selena.jpg','img/adam.jpg'];*/
   $ionicLoading.show({
     template: 'Loading'
   })
+  $scope.footerText=Footer.getFooter();
   $http({
       method: 'get', 
       //url: 'http://www.gemarsehati.com/enagic/api/getphoto',
@@ -758,10 +791,13 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
       headers: { 'Content-Type': 'application/x-www-form-urlencoded'}
     })
     .success(function(data){
+      var length = Object.keys(data).length;
+      $scope.halfLength = length/2;
       $scope.photos = data;
       $ionicLoading.hide();
     });
   $scope.showImages = function(index) {
+    console.log(index);
     $scope.activeSlide = index;
     /*$scope.showModal('templates/image-popover.html');*/
     $scope.showModal('templates/image-zoom.html');
@@ -792,10 +828,11 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
 };
 })
 
-.controller('VideoCtrl', function($scope, $http, $state,$sce,$ionicLoading) {
+.controller('VideoCtrl', function($scope, $http, $state,$sce,$ionicLoading, Footer) {
   $ionicLoading.show({
     template: 'Loading'
   })
+  $scope.footerText=Footer.getFooter();
   $scope.trustSrc = function(src) {
     return $sce.trustAsResourceUrl(src);
   }
@@ -848,7 +885,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 })
 
-.controller('RegisterCtrl', function($scope, $stateParams, $http, $state) {
+.controller('RegisterCtrl', function($scope, $stateParams, $http, $state, Footer) {
+  $scope.footerText=Footer.getFooter();
   //get gender
   $http({
     method: 'get',
@@ -994,11 +1032,11 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
 })
 
 
-.controller('TestimoniCtrl', function($http,$scope, $stateParams,$ionicLoading,$state) {
+.controller('TestimoniCtrl', function($http,$scope, $stateParams,$ionicLoading,$state, Footer) {
   $ionicLoading.show({
     template: 'Loading'
   })
-
+  $scope.footerText=Footer.getFooter();
   $scope.bisnisTestimoni = function() {
     $ionicLoading.show({
       template: 'Loading'
@@ -1033,10 +1071,11 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   }
 })
 
-.controller('ArticlesCtrl', function($http,$scope, $stateParams,$state,$ionicLoading) {
+.controller('ArticlesCtrl', function($http,$scope, $stateParams,$state,$ionicLoading, Footer) {
   $ionicLoading.show({
     template: 'Loading'
   })
+  $scope.footerText=Footer.getFooter();
   $http({
       method: 'get', 
       //url: 'http://www.gemarsehati.com/enagic/api/getarticles', 
@@ -1061,10 +1100,11 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   });
 })
 
-.controller('TechnologyCtrl', function($http,$scope, $stateParams,$state,$ionicLoading) {
+.controller('TechnologyCtrl', function($http,$scope, $stateParams,$state,$ionicLoading, Footer) {
   $ionicLoading.show({
     template: 'Loading'
   })
+  $scope.footerText=Footer.getFooter();
   $http({
       method: 'get', 
       //url: 'http://www.gemarsehati.com/enagic/api/gettechnology', 
@@ -1078,10 +1118,11 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   });
 })
 
-.controller('EventCtrl',function($rootScope,$http,$scope, Events,$ionicLoading) {
+.controller('EventCtrl',function($rootScope,$http,$scope, Events,$ionicLoading, Footer) {
   $ionicLoading.show({
     template: 'Loading'
   })
+  $scope.footerText=Footer.getFooter();
   $scope.events=[];
   $scope.archivedEvents=[];
   $scope.latestEvents=[];
@@ -1228,12 +1269,22 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   //console.log($scope.events);
 })*/
 
-.controller('MitraFinderCtrl', function($scope, $state, $cordovaGeolocation, GoogleMaps,$ionicLoading ) {
+.controller('MitraFinderCtrl', function($scope, $state, $cordovaGeolocation, GoogleMaps,$ionicLoading , Footer) {
+  $ionicLoading.show({
+    template: 'Loading'
+  })
+  $scope.footerText=Footer.getFooter();
+
   GoogleMaps.init();
+
     temp=GoogleMaps.getDetailMitra();
     console.log(temp);
+
     temp.then(function(data){
       $scope.mitras = data;
+      $ionicLoading.hide();
+      console.log(data);
+      if(!data) window.location.reload(true);
       //console.log(data.nama);
     })
     /*$scope.groups = [];
@@ -1264,11 +1315,13 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   })
 
 
-.controller('ContactCtrl', function($scope, $stateParams, $http, $state,$ionicLoading) {
+.controller('ContactCtrl', function($scope, $stateParams, $http, $state,$ionicLoading, Footer) {
   /*$ionicLoading.show({
     template: 'Loading'
   })*/
   $ionicLoading.hide();
+  $scope.footerText=Footer.getFooter();
+
   $scope.SendContact = function(data) {
 
     //alert(data.nama + data.email + data.nohp + data.title + data.message);
@@ -1300,7 +1353,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   };
 })
 
-.controller('ForgotCtrl', function($scope, $stateParams, $http, $state) {
+.controller('ForgotCtrl', function($scope, $stateParams, $http, $state, Footer) {
+  $scope.footerText=Footer.getFooter();
   $scope.SendResetPass = function(data) {
     //alert(data.email);
     
@@ -1404,8 +1458,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     }, false);
 */
 
-.controller('InputCtrl', function($scope) {
-        
+.controller('InputCtrl', function($scope, Footer) {
+      $scope.footerText=Footer.getFooter();
        $scope.fileName='nothing';
         
         $scope.openFileDialog=function() {
@@ -1424,10 +1478,11 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
    
     })  
 
-.controller('AboutCtrl', function($scope, $http, $stateParams, $state,$ionicLoading){
+.controller('AboutCtrl', function($scope, $http, $stateParams, $state,$ionicLoading, Footer){
   $ionicLoading.show({
     template: 'Loading'
   })
+  $scope.footerText=Footer.getFooter();
   $http({
       method: 'get', 
       //url: 'http://www.gemarsehati.com/enagic/api/aboutus'
@@ -1440,17 +1495,19 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     });
   })
   
-.controller('SocialMediaCtrl',function($ionicLoading){
+.controller('SocialMediaCtrl',function($ionicLoading, Footer, $scope){
   $ionicLoading.show({
     template: 'Loading'
   })
   $ionicLoading.hide();
+  $scope.footerText=Footer.getFooter();
 })
 
-.controller('MitraCityCtrl', function($ionicLoading,$http,$scope,$state){
+.controller('MitraCityCtrl', function($ionicLoading,$http,$scope,$state, Footer){
   $ionicLoading.show({
     template: 'Loading'
   })
+  $scope.footerText=Footer.getFooter();
   $http({
       method: 'get', 
       //url: 'http://www.gemarsehati.com/enagic/api/getcity'
@@ -1473,11 +1530,11 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     });
   })
 
-.controller('ProfilCtrl',function($ionicLoading,$http,$state,$localstorage,$scope){
+.controller('ProfilCtrl',function($ionicLoading,$http,$state,$localstorage,$scope, Footer){
   $ionicLoading.show({
     template: 'Loading'
   })
-
+  $scope.footerText=Footer.getFooter();
   var id=$localstorage.get('id');
   if(id){
     $scope.isLogin = true;
@@ -1503,10 +1560,11 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
       });
 })
 
-.controller('ProductCtrl', function($scope, $http, $stateParams, $state,$ionicLoading){
+.controller('ProductCtrl', function($scope, $http, $stateParams, $state,$ionicLoading, Footer){
   $ionicLoading.show({
     template: 'Loading'
   })
+  $scope.footerText=Footer.getFooter();
   $http({
       method: 'get', 
       //url: 'http://www.gemarsehati.com/enagic/api/getleveluk'
@@ -1519,4 +1577,21 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     });
   })
 
+
+.controller('CreditCtrl', function($scope, $http, $stateParams, $state,$ionicLoading, Footer){
+  $ionicLoading.show({
+    template: 'Loading'
+  })
+  $scope.footerText=Footer.getFooter();
+  $http({
+      method: 'get', 
+      //url: 'http://www.gemarsehati.com/enagic/api/getleveluk'
+      url: 'http://www.gemarsehati.com/api/getcredit'
+    })
+    .success(function(data){
+      $ionicLoading.hide();
+      $scope.credits = data;
+      //console.log(Footer.getFooter());
+    });
+  })
 ;
