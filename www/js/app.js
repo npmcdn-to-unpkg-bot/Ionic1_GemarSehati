@@ -4,6 +4,14 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
+
+// push notification
+function handleOpenURL(url) {
+  //console.log(url);
+  //var path = url.slice(8) // strips away myapp://
+  window.localStorage.setItem("externalUrl", url);
+}
+
 angular.module(
   'starter', 
   [
@@ -16,30 +24,57 @@ angular.module(
   'pascalprecht.translate',
   'ionicLazyLoad']) 
 
-.run(function($ionicPlatform, $ionicLoading, $state,$localstorage) {
-  $ionicPlatform.ready(function() {
-    /*$ionicLoading.show({
-      template: 'Loading'
-    })*/
-    //$state.go('app.home', {}, {reload: true});
-    if($localstorage.get('username')){
-      username=$localstorage.get('username');
-    }
-    else username = "non user";
-    
-    //alert("selamat datang "+username);
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    
-    /*if (window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-      cordova.plugins.Keyboard.disableScroll(true);
+.run(function($ionicPlatform, $ionicLoading, $state,$localstorage,$cordovaSplashscreen, $timeout, $cordovaPush, $rootScope) {
+  $rootScope.flag=true;
+  $rootScope.message="";
+  $ionicPlatform.ready(function($scope) {
+    //devkey = DEV56CBFB6BBE3411F544B30608A28
+    //livekey = 56CBFB6BBCCA59D945DA7C9E85298A
+    batch.setConfig({"androidAPIKey":"56CBFB6BBCCA59D945DA7C9E85298A",
+            "iOSAPIKey":"<YOUR IOS APIKEY>"});
+    batch.push.setGCMSenderID("1071866914808").setup();
+    batch.start();
+    batch.push.registerForRemoteNotifications();
 
+
+    
+    
+    //handleOpenURL();
+    //console.log(window.localStorage.getItem("external_load"));
+
+    //open and redirect push notification
+    /*if(typeof window.localStorage.getItem("external_load") !== "undefined"){
+      $state.go('app.notif', {}, {reload: true});
+      console.log("sini");
     }*/
-    if (window.StatusBar) {
-      // org.apache.cordova.statusbar required
-      StatusBar.styleDefault();
+
+    // Monitor Settings Toggle for changes.
+    /*$scope.$watch('pushNotification.checked', function(checked){
+
+      console.log('PushNotification: Change value to ' + checked);
+
+      // Enable/Disable on server according to value.
+      checked ? PushNotification.enablePush() : PushNotification.disablePush();
+
+    });*/
+  /*console.log("awal");
+  document.addEventListener("urbanairship.registration", function (event) {
+    console.log("sini");
+    if (event.error) {
+        console.log('There was an error registering for push notifications')
+    } else {
+        console.log("Registered with ID: " + event.channelID)
     }
+  })
+  // Enable user notifications (will prompt the user to accept push notifications)
+  UAirship.setUserNotificationsEnabled(true, function (enabled) {
+      console.log("User notifications are enabled! Fire away!")
+  })
+  document.addEventListener("urbanairship.push", function (event) {
+    console.log("Incoming push: " + event.message)
+  })*/
+  
+
   });
 })
 
@@ -71,9 +106,9 @@ return function(val) {
   })
 
 
-/*  .state('login', {
-    url: '/login',
-    templateUrl: 'templates/login.html'
+/*  .state('splash', {
+    url: '/splash',
+    templateUrl: 'templates/splash.html'
   })*/
 
   .state('app.login', {
@@ -346,6 +381,26 @@ return function(val) {
       }
     })
 
+    .state('app.splash', {
+      url: '/splash',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/splash.html',
+          controller:'SplashCtrl'
+        }
+      }
+    })
+
+    .state('app.notif', {
+      url: '/notif',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/notif.html',
+          controller:'NotifCtrl'
+        }
+      }
+    })
+
   .state('app.search', {
     url: '/search',
     views: {
@@ -383,5 +438,5 @@ return function(val) {
     }
   });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/home');
+  $urlRouterProvider.otherwise('/app/splash');
 });

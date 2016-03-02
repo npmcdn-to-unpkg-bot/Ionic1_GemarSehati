@@ -534,7 +534,12 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   ];
 })
 
-.controller('LoginCtrl', function($rootScope,$ionicHistory,$scope, $state, $http, $state,$ionicLoading,$localstorage, $window,$ionicModal, Footer) {
+.controller('LoginCtrl', function($rootScope,$ionicHistory,$scope, $state, $http, $state,$ionicLoading,$localstorage, $window,$ionicModal, Footer,$ionicPopup) {
+  $ionicHistory.nextViewOptions({
+    disableBack: true
+  });
+
+
   $scope.data = {};
   $scope.result;
   $rootScope.nama;
@@ -625,9 +630,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
       })
       .error(function(data) {
         $ionicLoading.hide();
-        alert(data);
         if(data == null){
-          alert("Email atau password tidak boleh kosong");
+          alert("Email atau password tidak boleh kosong / cek koneksi anda");
         }
       });
   };
@@ -638,7 +642,11 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   }
 
   $scope.Logout = function() {
+    $ionicHistory.nextViewOptions({
+      disableBack: true
+    });
     $state.go('app.home', {}, {reload: true});
+
      window.localStorage.removeItem("id");
      window.localStorage.removeItem("username");
      window.localStorage.removeItem("photo");
@@ -682,7 +690,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   }
 })
 
-.controller('PDFCtrl', function($timeout,$scope, $http, $state,$sce,$ionicLoading,$localstorage, Footer,$cordovaFileTransfer,$cordovaFile) {
+.controller('PDFCtrl', function($timeout,$scope, $http, $state,$sce,$ionicLoading,$localstorage, Footer,$cordovaFileTransfer,$cordovaFile,$ionicPopup) {
   
   $scope.download = function (index) {
  
@@ -724,13 +732,24 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   .success(function(data){
     $scope.pdfs = data;
     $ionicLoading.hide(); 
+  })
+  .error(function(data) {
+    $ionicLoading.hide()
+    //alert("Cek koneksi internet anda");    
+    $ionicPopup.alert({
+      title: 'Connection Error',
+      template: 'Check your connection'
+    });
   });
 })
 
-.controller('HomeCtrl', function($localstorage,$ionicHistory,$scope, $stateParams,$ionicLoading,$localstorage,$state,$window,$reload,$timeout, Footer) {
-  $timeout(function() {
-     $ionicLoading.hide();
-  }, 3000);
+.controller('HomeCtrl', function($cordovaSplashscreen,$localstorage,$ionicHistory,$scope, $stateParams,$ionicLoading,$localstorage,$state,$window,$reload,$timeout, Footer,$ionicPopup) {
+  /*$scope.$on('$ionicView.afterEnter', function(){
+    setTimeout(function(){
+      document.getElementById("custom-overlay").style.display = "none";      
+    }, 3000);
+  }); */ 
+  $ionicLoading.hide();
   $scope.footerText=Footer.getFooter();
   
   //$state.go($state.current, {}, {reload: true});
@@ -778,8 +797,25 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   //alert($localstorage.isLoggedIn());
 })
 
-.controller('PhotoCtrl', function($ionicLoading,$scope, $http, $state,$sce,$ionicModal, $ionicBackdrop, $ionicSlideBoxDelegate, $ionicScrollDelegate, Footer) {
+.controller('PhotoCtrl', function($ionicLoading,$ionicPopup,$scope, $http, $state,$sce,$ionicModal, $ionicBackdrop, $ionicSlideBoxDelegate, $ionicScrollDelegate, Footer) {
 /*  $scope.singers = ['img/shakira.jpg','img/justin.jpg','img/selena.jpg','img/adam.jpg'];*/
+  var album = [
+   {id: 1, name: "album ke 1"},
+   {id: 2, name: "album ke 2"},
+   {id: 3, name: "album ke 3"}
+  ];
+
+  //get photo album
+  $http({
+    method : 'get',
+    url: 'http://www.gemarsehati.com/api/getphotoalbum',
+    headers: { 'Content-Type':'application/x-www-form-urlencoded'}
+  })
+  .success(function(data){
+    $scope.photoalbums=data;
+  })
+  $scope.albums = album;
+
   $ionicLoading.show({
     template: 'Loading'
   })
@@ -791,10 +827,18 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
       headers: { 'Content-Type': 'application/x-www-form-urlencoded'}
     })
     .success(function(data){
-      var length = Object.keys(data).length;
+      $scope.length = Object.keys(data).length;
       $scope.halfLength = length/2;
       $scope.photos = data;
       $ionicLoading.hide();
+    })
+    .error(function(data) {
+      $ionicLoading.hide()
+      //alert("Cek koneksi internet anda");    
+      $ionicPopup.alert({
+        title: 'Connection Error',
+        template: 'Check your connection'
+      });
     });
   $scope.showImages = function(index) {
     console.log(index);
@@ -819,16 +863,30 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     $scope.modal.remove()
   };
   $scope.updateSlideStatus = function(slide) {
-  var zoomFactor = $ionicScrollDelegate.$getByHandle('scrollHandle' + slide).getScrollPosition().zoom;
-  if (zoomFactor == $scope.zoomMin) {
-    $ionicSlideBoxDelegate.enableSlide(true);
-  } else {
-    $ionicSlideBoxDelegate.enableSlide(false);
+    var zoomFactor = $ionicScrollDelegate.$getByHandle('scrollHandle' + slide).getScrollPosition().zoom;
+    if (zoomFactor == $scope.zoomMin) {
+      $ionicSlideBoxDelegate.enableSlide(true);
+    } else {
+      $ionicSlideBoxDelegate.enableSlide(false);
+    }
+  };
+  $scope.getPhotoAlbum = function() {
+    $ionicLoading.show({
+      template: 'Loading'
+    })
+    $scope.selectedPhotos=[];
+    var id = $scope.selectedAlbum.id;
+    var length = $scope.length;
+    for(i = 0; i<length;i++){
+      if($scope.photos[i].id_album==id){
+        $scope.selectedPhotos.push($scope.photos[i]);
+      }
+    }
+    $ionicLoading.hide();
   }
-};
 })
-
-.controller('VideoCtrl', function($scope, $http, $state,$sce,$ionicLoading, Footer) {
+  
+.controller('VideoCtrl', function($scope,$ionicPopup,$http, $state,$sce,$ionicLoading, Footer) {
   $ionicLoading.show({
     template: 'Loading'
   })
@@ -850,7 +908,15 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
       var myCode = "http://www.youtube.com/embed/"+ myId;
       alert(myCode);*/
       //$scope.videos.link=myCode;
-
+    
+    })
+    .error(function(data) {
+      $ionicLoading.hide()
+      //alert("Cek koneksi internet anda");    
+      $ionicPopup.alert({
+        title: 'Connection Error',
+        template: 'Check your connection'
+      });
       $scope.doRefresh = function(){
         $http({
           method: 'get', 
@@ -869,23 +935,10 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     //$('#video-link').html('<iframe width="560" height="315" src="//www.youtube.com/embed/' + myId + '" frameborder="0" allowfullscreen></iframe>');
 })
 
-/*.controller('VideoCtrl',['$scope', '$http','$state',
-  function($scope, $http){
-    $http.get('js/video.json').success(function(resp) {
-      //console.log('Success', resp);
-      $scope.videos = resp.video;  
-    // For JSON responses, resp.data contains the result
-  }, 
-  function(err) {
-    console.error('ERR', err);
-    // err.status will contain the status code
-  })
-}])*/
-
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 })
 
-.controller('RegisterCtrl', function($scope, $stateParams, $http, $state, Footer) {
+.controller('RegisterCtrl', function($scope,$ionicPopup, $stateParams, $http, $state, Footer) {
   $scope.footerText=Footer.getFooter();
   //get gender
   $http({
@@ -1004,7 +1057,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
 
 
 
-.controller('CityCtrl', function($http, $scope,$state) {
+.controller('CityCtrl', function($http,$ionicPopup, $scope,$state) {
   $http({
     method: 'get',
     //url: 'http://www.gemarsehati.com/enagic/api/getcity'
@@ -1032,7 +1085,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
 })
 
 
-.controller('TestimoniCtrl', function($http,$scope, $stateParams,$ionicLoading,$state, Footer) {
+.controller('TestimoniCtrl', function($http,$ionicPopup,$scope, $stateParams,$ionicLoading,$state, Footer) {
   $ionicLoading.show({
     template: 'Loading'
   })
@@ -1051,6 +1104,14 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
       $ionicLoading.hide();
       $scope.testimonis = data;
       $scope.whichtestimoni = $state.params.aId;
+    })
+    .error(function(data) {
+      $ionicLoading.hide()
+      //alert("Cek koneksi internet anda");    
+      $ionicPopup.alert({
+        title: 'Connection Error',
+        template: 'Check your connection'
+      });
     });
   }
   $scope.kesehatanTestimoni = function() {
@@ -1071,7 +1132,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   }
 })
 
-.controller('ArticlesCtrl', function($http,$scope, $stateParams,$state,$ionicLoading, Footer) {
+.controller('ArticlesCtrl', function($http,$ionicPopup,$scope, $stateParams,$state,$ionicLoading, Footer) {
   $ionicLoading.show({
     template: 'Loading'
   })
@@ -1086,7 +1147,15 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
       $scope.articles = data;
       $scope.whicharticle = $state.params.aId;
       $ionicLoading.hide();
-
+    
+    })
+    .error(function(data) {
+      $ionicLoading.hide()
+      //alert("Cek koneksi internet anda");    
+      $ionicPopup.alert({
+        title: 'Connection Error',
+        template: 'Check your connection'
+      });
       $scope.doRefresh = function(){
         $http({
           method: 'get', 
@@ -1100,7 +1169,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   });
 })
 
-.controller('TechnologyCtrl', function($http,$scope, $stateParams,$state,$ionicLoading, Footer) {
+.controller('TechnologyCtrl', function($http,$ionicPopup,$scope, $stateParams,$state,$ionicLoading, Footer) {
   $ionicLoading.show({
     template: 'Loading'
   })
@@ -1115,10 +1184,18 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
       $scope.technologies = data;
       $scope.whichtechnology = $state.params.aId;
       $ionicLoading.hide();
-  });
+    })
+    .error(function(data) {
+      $ionicLoading.hide()
+      //alert("Cek koneksi internet anda");    
+      $ionicPopup.alert({
+        title: 'Connection Error',
+        template: 'Check your connection'
+      });
+    });
 })
 
-.controller('EventCtrl',function($rootScope,$http,$scope, Events,$ionicLoading, Footer) {
+.controller('EventCtrl',function($rootScope,$ionicPopup,$http,$scope, Events,$ionicLoading, Footer) {
   $ionicLoading.show({
     template: 'Loading'
   })
@@ -1164,6 +1241,14 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
         }
       }
       $scope.events=$scope.archivedEvents;
+    })
+    .error(function(data) {
+      $ionicLoading.hide()
+      //alert("Cek koneksi internet anda");    
+      $ionicPopup.alert({
+        title: 'Connection Error',
+        template: 'Check your connection'
+      });
     });
   }
   $scope.latestEvent = function(){
@@ -1208,7 +1293,15 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
         }        
       }
       $scope.events=$scope.latestEvents;
-    });
+    })
+    .error(function(data) {
+        $ionicLoading.hide()
+        //alert("Cek koneksi internet anda");    
+        $ionicPopup.alert({
+          title: 'Connection Error',
+          template: 'Check your connection'
+        });
+      });
   }
 })
   //calender wannabe
@@ -1269,11 +1362,12 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   //console.log($scope.events);
 })*/
 
-.controller('MitraFinderCtrl', function($scope, $state, $cordovaGeolocation, GoogleMaps,$ionicLoading , Footer) {
-  $ionicLoading.show({
-    template: 'Loading'
-  })
+.controller('MitraFinderCtrl', function($scope,$ionicPopup, $state, $cordovaGeolocation, GoogleMaps,$ionicLoading , Footer,$timeout) {
+  
+  $ionicLoading.show();
   $scope.footerText=Footer.getFooter();
+
+  $scope.reloadPage = function(){window.location.reload();}
 
   GoogleMaps.init();
 
@@ -1282,7 +1376,10 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
 
     temp.then(function(data){
       $scope.mitras = data;
-      $ionicLoading.hide();
+      $timeout(function() {
+        $ionicLoading.hide();
+      },5000);
+
       console.log(data);
       if(!data) window.location.reload(true);
       //console.log(data.nama);
@@ -1315,7 +1412,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   })
 
 
-.controller('ContactCtrl', function($scope, $stateParams, $http, $state,$ionicLoading, Footer) {
+.controller('ContactCtrl', function($scope,$ionicPopup, $stateParams, $http, $state,$ionicLoading, Footer) {
   /*$ionicLoading.show({
     template: 'Loading'
   })*/
@@ -1353,7 +1450,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   };
 })
 
-.controller('ForgotCtrl', function($scope, $stateParams, $http, $state, Footer) {
+.controller('ForgotCtrl', function($scope,$ionicPopup, $stateParams, $http, $state, Footer) {
   $scope.footerText=Footer.getFooter();
   $scope.SendResetPass = function(data) {
     //alert(data.email);
@@ -1458,7 +1555,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     }, false);
 */
 
-.controller('InputCtrl', function($scope, Footer) {
+.controller('InputCtrl', function($scope,$ionicPopup, Footer) {
       $scope.footerText=Footer.getFooter();
        $scope.fileName='nothing';
         
@@ -1478,7 +1575,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
    
     })  
 
-.controller('AboutCtrl', function($scope, $http, $stateParams, $state,$ionicLoading, Footer){
+.controller('AboutCtrl', function($scope,$ionicPopup, $http, $stateParams, $state,$ionicLoading, Footer){
   $ionicLoading.show({
     template: 'Loading'
   })
@@ -1492,10 +1589,18 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
       $ionicLoading.hide();
       $scope.aboutus = data;
       $scope.whichabout = $state.params.aId;
+    })
+    .error(function(data) {
+      $ionicLoading.hide()
+      //alert("Cek koneksi internet anda");    
+      $ionicPopup.alert({
+        title: 'Connection Error',
+        template: 'Check your connection'
+      });
     });
   })
   
-.controller('SocialMediaCtrl',function($ionicLoading, Footer, $scope){
+.controller('SocialMediaCtrl',function($ionicLoading,$ionicPopup, Footer, $scope){
   $ionicLoading.show({
     template: 'Loading'
   })
@@ -1503,7 +1608,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   $scope.footerText=Footer.getFooter();
 })
 
-.controller('MitraCityCtrl', function($ionicLoading,$http,$scope,$state, Footer){
+.controller('MitraCityCtrl', function($ionicLoading,$ionicPopup,$http,$scope,$state, Footer){
   $ionicLoading.show({
     template: 'Loading'
   })
@@ -1530,7 +1635,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     });
   })
 
-.controller('ProfilCtrl',function($ionicLoading,$http,$state,$localstorage,$scope, Footer){
+.controller('ProfilCtrl',function($ionicLoading,$ionicPopup,$http,$state,$localstorage,$scope, Footer,$ionicPopup){
   $ionicLoading.show({
     template: 'Loading'
   })
@@ -1544,23 +1649,26 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     $state.go('app.home', {}, {reload: true});
   }
   $http({
-        method: 'GET',
-        //url: 'http://gemarsehati.com/enagic/api/getmitraid/'+id,
-        url: 'http://gemarsehati.com/api/getmitraid/'+id,
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-      })
-      .success(function(data){  
-        $ionicLoading.hide();
-        $scope.profil=data;
-      })
-      .error(function(data) {
-        $ionicLoading.hide()
-        //alert("Cek koneksi internet anda");
-        
-      });
+    method: 'GET',
+    //url: 'http://gemarsehati.com/enagic/api/getmitraid/'+id,
+    url: 'http://gemarsehati.com/api/getmitraid/'+id,
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+  })
+  .success(function(data){  
+    $ionicLoading.hide();
+    $scope.profil=data;
+  })
+  .error(function(data) {
+    $ionicLoading.hide()
+    //alert("Cek koneksi internet anda");    
+    $ionicPopup.alert({
+      title: 'Connection Error',
+      template: 'Check your connection'
+    });
+  });
 })
 
-.controller('ProductCtrl', function($scope, $http, $stateParams, $state,$ionicLoading, Footer){
+.controller('ProductCtrl', function($scope,$ionicPopup, $http, $stateParams, $state,$ionicLoading, Footer){
   $ionicLoading.show({
     template: 'Loading'
   })
@@ -1574,11 +1682,19 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
       $ionicLoading.hide();
       $scope.products = data;
       $scope.whichproduct = $state.params.aId;
+    })
+    .error(function(data) {
+      $ionicLoading.hide()
+      //alert("Cek koneksi internet anda");    
+      $ionicPopup.alert({
+        title: 'Connection Error',
+        template: 'Check your connection'
+      });
     });
   })
 
 
-.controller('CreditCtrl', function($scope, $http, $stateParams, $state,$ionicLoading, Footer){
+.controller('CreditCtrl', function($scope,$ionicPopup, $http, $stateParams, $state,$ionicLoading, Footer){
   $ionicLoading.show({
     template: 'Loading'
   })
@@ -1592,6 +1708,69 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
       $ionicLoading.hide();
       $scope.credits = data;
       //console.log(Footer.getFooter());
+    })
+    .error(function(data) {
+      $ionicLoading.hide()
+      //alert("Cek koneksi internet anda");    
+      $ionicPopup.alert({
+        title: 'Connection Error',
+        template: 'Check your connection'
+      });
     });
   })
+
+.controller('SplashCtrl', function($scope,$ionicPopup, $ionicLoading,$timeout, $state,$ionicHistory, $rootScope){
+  $timeout(function() {
+      $ionicLoading.show();
+    }, 3000);
+  
+  console.log("awal "+$rootScope.flag);
+
+  if($rootScope.flag==false){
+    console.log("1 - ke notif");
+    console.log($rootScope.flag);
+    $timeout(function() {
+      $ionicLoading.hide();
+      $state.go('app.notif');
+    },3000);
+    $ionicLoading.hide();
+    $ionicHistory.nextViewOptions({
+      disableBack: true
+    });
+  }
+  else if($rootScope.flag==true){
+    console.log("2 - ke home");
+    console.log($rootScope.flag);
+    $timeout(function() {
+      $ionicLoading.hide();
+      $state.go('app.home');
+    },5000);
+    $ionicLoading.hide();
+    $rootScope.flag = false;
+    $ionicHistory.nextViewOptions({
+      disableBack: true
+    });
+  }
+  document.addEventListener('batchPushReceived', function(e) {
+    $rootScope.flag = false;
+    var pushPayload = e.payload;
+    $rootScope.message = pushPayload.msg;
+    console.log("1 - ke notif");
+    console.log($rootScope.flag);
+    $timeout(function() {
+      $ionicLoading.hide();
+      $state.go('app.notif');
+    },3000);
+    $ionicLoading.hide();
+  })
+})
+    
+.controller('NotifCtrl',function(Footer,$scope, $ionicLoading, $rootScope){
+  $ionicLoading.show({
+    template: 'Loading'
+  })
+  $scope.message = $rootScope.message;
+  $scope.footerText=Footer.getFooter();
+  $ionicLoading.hide();
+})
 ;

@@ -16,10 +16,9 @@
 		    	<span class="input-label input-label-login ">Panggilan*</span>
 		    	<input type="text" placeholder="Panggilan*" class="input-login" ng-model='data.nickname'>
 		  	</label>
-		  	<label class="item item-input item-select">
-			    <div class="input-label">
-			        Jenis Kelamin*
-			    </div>
+		  	<div class="select-title">Jenis Kelamin*</div>
+		  	<label class="item item-input item-select item-floating-label  login-form select-form">
+		  		<span class="input-label input-label-login ">Kota* </span>
 			    <select  ng-init="selectedGender=genders[0]" ng-model="data.selectedGender"  ng-options="g as g.name for g in genders" class="dropdown">
 			    </select>
 			</label>
@@ -29,7 +28,7 @@
 		  	</label>
 		  	<label class="item item-input item-floating-label login-form">
 			    <span class="input-label input-label-login ">Password*</span>
-			    <input type="password" placeholder="Password*" class="input-login" ng-model='data.password'>
+			    <input type="text" placeholder="Password*" class="input-login" ng-model='data.password'>
 		  	</label>
         	<label class="item item-input item-floating-label login-form">
 		    	<span class="input-label input-label-login ">Address</span>
@@ -47,10 +46,9 @@
 		    	<span class="input-label input-label-login ">Postal Code</span>
 		    	<input type="text" placeholder="Postal Code" class="input-login" ng-model='data.postal'>
 		  	</label>
-			<label class="item item-input item-select">
-			    <div class="input-label">
-			        Kota*
-			    </div>
+		  	<div class="select-title">Kota*</div>
+			<label class="item item-input item-select item-floating-label login-form select-form">
+			    <span class="input-label input-label-login ">Kota* </span>
 			    <select  ng-init="selectedCity=cities[0]" ng-model="data.selectedCity"  ng-options="c as c.name for c in cities" class="dropdown">
 			    </select>
 			</label>

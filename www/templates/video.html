@@ -1,17 +1,5 @@
 <ion-view view-title="Video" align-title="center" class="blue">
     <ion-content class=" background">
-    <div class="row padding-left-right">
-        <div class="col col-50 video-button">
-            <a href="#" class="button button-outline button-video">
-                Latest
-            </a>
-        </div>
-        <div class="col col-50">
-            <a href="#" class="button button-outline button-video ">
-                Popular
-            </a>
-        </div>
-    </div>
         <!-- <ion-refresher on-refresh="doRefresh()"></ion-refresher> -->
         <ion-list>
             <ion-item class="item-content video-item"ng-repeat='video in videos'>
@@ -22,7 +10,7 @@
                 </div>
                 <div class="row">
                     <div class="video-tanggal flaticon-calendar52">
-                        {{video.tanggal}}
+                        {{video.date}}
                     </div>
                 </div>
                 <div class="video-container">

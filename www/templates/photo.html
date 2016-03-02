@@ -2,6 +2,15 @@
 <ion-view view-title="Photo" >
     <ion-content ng-controller="PhotoCtrl" class="content-padding background padding-top" lazy-scroll>
 
+    <div class="list form-content">
+    <div class="select-title">Kategori Album</div>
+    	<label class="item item-input item-select item-floating-label  login-form select-form">
+		  		<span class="input-label input-label-login ">Album </span>
+			    <select  ng-init="Pilih" ng-model="selectedAlbum"  ng-options="a as a.nama for a in photoalbums" class="dropdown" ng-change="getPhotoAlbum()">
+			    </select>
+			</label>
+    </div>
+
     <!-- <div class="list list-content">
     	<a ng-repeat="photo in photos" href="#" class="col col-50">
     		<img href="{{photo.link}}" image-lazy-src="{{ photo.link }}" image-lazy-loader="android" width="100%" ng-click="showImages($index)">
@@ -16,13 +25,13 @@
     		    		</div>
     		    	</div>
     	</div> -->
-		<div ng-repeat="photo in photos" ng-switch on="$index % 2" class="row">
+		<div ng-repeat="photo in selectedPhotos" ng-switch on="$index % 2" class="row">
     		<div class="col col-50"  ng-switch-when="0">
-				<img href="{{photos[$index].link}}" image-lazy-src="{{ photos[$index].link}}" image-lazy-loader="android" width="100%" ng-click="showImages($index)">
+				<img href="{{selectedPhotos[$index].link}}" image-lazy-src="{{ selectedPhotos[$index].link}}" image-lazy-loader="android" width="100%" ng-click="showImages($index)">
 			</div>
 			<span ng-show="photos[$index+1]">
 		    	<div class="col " ng-switch-when="0">
-					<img href="{{photos[$index+1].link}}" image-lazy-src="{{ photos[$index+1].link}}" image-lazy-loader="android" width="100%" ng-click="showImages($index+1)">
+					<img href="{{selectedPhotos[$index+1].link}}" image-lazy-src="{{ selectedPhotos[$index+1].link}}" image-lazy-loader="android" width="100%" ng-click="showImages($index+1)">
 				</div>
 			</span>
     	</div>

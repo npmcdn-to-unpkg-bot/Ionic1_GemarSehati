@@ -1,7 +1,7 @@
-/* Empty. Add your own CSS if you like */
 /**
  *
  * Created by : Ikrom Aulia Fahdi;
+ * ichrome.fahdi@gmail.com
  * ikromaf
  *
  */
@@ -509,7 +509,7 @@ select.dropdown{
 }
 
 /*article*/
-.article-img{
+.article-img img{
 	width: 100%;
 	height: 237px;
 	-webkit-background-size: cover;
@@ -542,10 +542,13 @@ select.dropdown{
 .article-posted{
 	font-family: "Roboto-LightItalic";
 }
+.content-padding .row.article-desc{
+	margin-top: 10px;
+}
 .article-desc{
-	text-align: left;
+	text-align: justify;
 	color: white;
-	padding: 10px;
+	
 }
 .home-container {
 	display: -webkit-flex;
@@ -683,13 +686,15 @@ select.dropdown{
 ======================================*/
 
 .item-select select.dropdown{
-	width: 100%;
+	min-width: 100%;
 	background: transparent;
 	color: #fafafa;
-	max-width: 100%;
 	padding: 0 16px;
 	font-family: 'Roboto-LightItalic';
 	font-size: 16px;
+	text-align: center;
+	margin: 0 auto;
+	
 }
 
 .form-content{
@@ -699,6 +704,18 @@ select.dropdown{
 .form-note{
 	color: #fafafa;
 	margin-top: 30px;
+}
+
+.select-title{
+	text-align: center;
+	color: #fafafa;
+	font-family: 'Roboto-LightItalic';
+	font-size: 16px;
+	margin-top: 30px;
+}
+
+label.item.item-input.item-select.select-form{
+	margin-top: 5px;
 }
 
 /*=====  End of Register Style  ======*/
@@ -757,7 +774,7 @@ select.dropdown{
 ========================================*/
 
 .popover.right-menu{
-	height: 115px;
+	height: 65px;
 }
 
 /*=====  End of Right Menu Style  ======*/
@@ -788,3 +805,114 @@ select.dropdown{
     max-height: 700px !important;
     width: 400px !important;
 }
+
+/*==========================================
+=            Splashscreen Style            =
+==========================================*/
+
+#custom-overlay {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  background-color:  #28166f ;
+}
+#custom-overlay img.logo{
+	display: block;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  max-width: 80%;
+  max-height: 100%;
+  z-index: 101;
+}
+
+/* 240 x 320 */
+/* portrait */
+@media screen and (min-width: 240px) and (min-height: 320px) and (orientation: portrait) {
+    #custom-overlay img.logo{
+		max-width: 80%;
+    }
+}
+/* landscape */
+@media screen and (min-width: 320px) and (min-height: 240px) and (orientation: landscape) {
+    #custom-overlay img.logo{
+		max-width: 50%;
+    }
+}
+
+/* 320 x 480 */
+/* portrait */
+@media screen and (min-width: 320px) and (min-height: 480px) and (orientation: portrait) {
+    #custom-overlay img.logo{
+		max-width: 80%;
+    }
+}
+/* landscape */
+@media screen and (min-width: 480px) and (min-height: 320px) and (orientation: landscape){
+    #custom-overlay img.logo{
+		max-width: 40%;
+    }
+}
+
+/* 480 x 800 */
+/* portrait */
+@media screen and (min-width: 480px) and (min-height: 800px) and (orientation: portrait) {
+    #custom-overlay img.logo{
+		max-width: 80%;
+    }
+}
+/* landscape */
+@media screen and (min-width: 800px) and (min-height: 480px) and (orientation: landscape){
+    #custom-overlay img.logo{
+		max-width: 35%;
+    }
+}
+
+/* 720 x 1280 */
+/* portrait */
+@media screen and (min-width: 720px) and (min-height: 1280px) and (orientation: portrait) {
+    #custom-overlay img.logo{
+		max-width: 80%;
+    }
+}
+/* landscape */
+@media screen and (min-width: 1280px) and (min-height: 720px) and (orientation: landscape){
+    #custom-overlay img.logo{
+		max-width: 35%;
+    }
+}
+
+/* 960 x 1600 */
+/* portrait */
+@media screen and (min-width: 960px) and (min-height: 1600px) and (orientation: portrait) {
+    #custom-overlay img.logo{
+		max-width: 80%;
+    }
+}
+/* landscape */
+@media screen and (min-width: 1600px) and (min-height: 960px) and (orientation: landscape){
+    #custom-overlay img.logo{
+		max-width: 35%;
+    }
+}
+
+/*=====  End of Splashscreen Style  ======*/
+
+/*==========================================
+=            Notification Style            =
+==========================================*/
+
+.notif-message{
+	color: white;
+	font-family: 'Roboto-Regular';
+	font-size: 14px;
+	text-align: justify;
+}
+
+/*=====  End of Notification Style  ======*/
