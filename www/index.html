@@ -15,11 +15,21 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <!-- compiled css output -->
     <link href="css/ionic.app.css" rel="stylesheet">
+    <link href="css/calender.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/flex-calender.css">
+
     <link rel="stylesheet" type="text/css" href="css/flaticon.css">
     <link href="css/drawer.css" rel="stylesheet">
 
     <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
     <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <!-- <script src="lib/ionic-platform-web-client/dist/ionic.io.bundle.min.js"></script> -->
+
+    <!-- push notification -->
+    
+    <!-- <script src="lib/angular-websocket/angular-websocket.js"></script>
+    <script src="lib/ionic-service-core/ionic-core.js"></script>
+    <script src="lib/ionic-service-push/ionic-push.js"></script> -->
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="lib/ngCordova/dist/ng-cordova.js"></script>
@@ -34,8 +44,10 @@
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
     <script src="js/drawer.js"></script>
-
-    <!-- Google maps js -->
+    <script src="js/calender.js"></script>
+    <!-- <script src="js/angular-route.min.js"></script> -->
+    <!-- <script src="js/PushNotification.js"></script>
+    <script src="js/PushCustom.js"></script> -->
     <script language="javascript" src="https://maps.googleapis.com/maps/api/js?v=3&libraries=geometry&KEY=AIzaSyAyRmR8sCC5j3V-MZA8y866HTkyxTB92S4"></script>
     
     <!-- flex-calendar -->
@@ -48,11 +60,18 @@
         <script src="js/imagesloaded.pkgd.min.js"></script>
         <script src="js/masonry.pkgd.min.js"></script>
         <script src="js/angular-masonry.js" type="text/javascript"></script>
+
         <script src="js/angular-masonry-directive.min.js"></script>
+
         <script src="js/ionic-image-lazy-load.js"></script>
+    
+    
+    
+    
   </head>
 
   <body ng-app="starter">
+  <!-- <div id="custom-overlay"><img class="logo" ng-src="img/logo-splash.png"><img class="loading"ng-src="img/box.png"></div>  -->
   <ion-nav-bar align-title="center" class="blue">
     <ion-nav-back-button class="button-clear">
       <i class="ion-arrow-left-c"></i>
