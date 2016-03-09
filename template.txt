@@ -1,8 +1,0 @@
-<ion-view view-title="Login" cache-view="false">
-    <ion-content scroll="false" class="content-padding background">
-  
-		<div class="bar bar-footer footer-style">
-  			<div class="title">2016. gemarsehati.com</div>
-		</div>
-    </ion-content>
-</ion-view>
