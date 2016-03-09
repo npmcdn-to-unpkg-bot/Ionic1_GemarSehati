@@ -3,28 +3,13 @@
     <ion-content ng-controller="PhotoCtrl" class="content-padding background padding-top" lazy-scroll>
 
     <div class="list form-content">
-    <div class="select-title">Kategori Album</div>
+    	<div class="select-title">Kategori Album</div>
     	<label class="item item-input item-select item-floating-label  login-form select-form">
 		  		<span class="input-label input-label-login ">Album </span>
 			    <select  ng-init="Pilih" ng-model="selectedAlbum"  ng-options="a as a.nama for a in photoalbums" class="dropdown" ng-change="getPhotoAlbum()">
 			    </select>
 			</label>
     </div>
-
-    <!-- <div class="list list-content">
-    	<a ng-repeat="photo in photos" href="#" class="col col-50">
-    		<img href="{{photo.link}}" image-lazy-src="{{ photo.link }}" image-lazy-loader="android" width="100%" ng-click="showImages($index)">
-    	</a>
-    </div> -->
-
-    	<!-- <div ng-repeat="photo in photos"  >
-    		<div ng-if="$index%2==0" class="row">
-    			<div class="col">
-    		    		<img href="{{photo[$index].link}}" image-lazy-src="{{ photo[$index].link}}" image-lazy-loader="android" width="50%" ng-click="showImages($index)">
-    		    		<img href="{{photo[$index+1].link}}" image-lazy-src="{{ photo[$index+1].link}}" image-lazy-loader="android" width="50%" ng-click="showImages($index+1)">
-    		    		</div>
-    		    	</div>
-    	</div> -->
 		<div ng-repeat="photo in selectedPhotos" ng-switch on="$index % 2" class="row">
     		<div class="col col-50"  ng-switch-when="0">
 				<img href="{{selectedPhotos[$index].link}}" image-lazy-src="{{ selectedPhotos[$index].link}}" image-lazy-loader="android" width="100%" ng-click="showImages($index)">
@@ -35,74 +20,6 @@
 				</div>
 			</span>
     	</div>
-
-		<!-- <div ng-controller="MyCtrl">
-			<table>
-				<tr ng-repeat="item in items" ng-switch on="$index % 2">
-					<td ng-switch-when="0">
-						{{items[$index].id}} {{items[$index].name}}
-					</td>
-			        <span ng-show="items[$index+1]">
-			            <td ng-switch-when="0">
-			                {{items[$index+1].id}} {{items[$index+1].name}}
-			            </td>
-			        </span>  
-				</tr>
-			</table>
-		</div> -->
-
-    <!-- <div class="list list-content">
-    	<div  class="row" ng-repeat="row in photos | inSlicesOf:2"> 
-    	        <div class="col col-50 photo-item " ng-repeat="photo in row">
-    			<img href="{{photo.link}}" image-lazy-src="{{ photo.link }}" image-lazy-loader="android" width="50%" ng-click="showImages($index)">
-    		</div>
-    	</div>
-    </div> -->
-    <!-- <ion-content ng-controller="PhotoCtrl" ng-init="loadImages()" class="content-padding background"> -->
-	    <!-- <div class="row" ng-repeat="image in images" ng-if="$index % 2 === 0">
-	        <div class="col col-50" ng-if="$index < images.length">
-	            <img ng-src="{{images[$index].src}}" width="100%" />
-	        </div>
-	        <div class="col col-50" ng-if="$index + 1 < images.length">
-	            <img ng-src="{{images[$index + 1].src}}" width="100%" />
-	        </div>
-	    </div> -->
-
-	    <!-- <div class="row" ng-repeat="category in data">
-		    <div ng-repeat="image in category" id="container" class="col col-33">
-		        <img class="image image-list-thumb" id="image" ng-src="{{image.image}}" />
-		    </div>
-		</div> -->
-		<!-- <div id="masonry">
-		 	<div  class="row" ng-repeat="row in photos | inSlicesOf:2"> 
-		 	          <div class="col col-50 photo-item " ng-repeat="photo in row">
-		 	            <img ng-src="{{photo.link}} " class="photo-img" width="100%" height="100%">
-		 	            <hr/>
-		 	          </div>
-		 	        </div>
-		 </div> --> 
-		
-		<!-- <div id="masonry">
-			<div  ng-repeat="photo in photos "> 
-	            <img ng-src="{{photo.link}} " class="photo-img" width="100%" height="100%">
-	        </div>
-		</div> -->
-
-		<!-- <div class="pad-sides" masonry="{columnWidth: 50, gutter: 10, transitionDuration: '.9s', hiddenStyle: {opacity: .001, transform: 'scale(0.01)', transform: 'rotate(200deg)'}, visibleStyle: {opacity: 1, transform: 'rotate(200deg)'}}">
-		     <div class="masonry-brick " ng-repeat="singer in singers"> 
-		    <div class="masonry-brick " ng-repeat="photo in photos">
-		       <img ng-src="{{ photo.link }}"  class="photo-img"width="100%">
-		    </div>
-		</div> -->
-
-		<!-- <div class="pad-sides" masonry="{columnWidth: 100, gutter: 5, transitionDuration: '.9s', hiddenStyle: {opacity: .001, transform: 'scale(0.01)', transform: 'rotate(200deg)'}, visibleStyle: {opacity: 1, transform: 'rotate(200deg)'}}">
-		    <div class="masonry-brick" ng-repeat="photo in photos">
-		       <img ng-src="{{ photo.link }}" alt="a singer" class="photo-img">
-		    </div>
-		</div> -->
-
-
-
 		<div class="footer-style non-bar-footer">
   			<div class="title">{{footerText}}</div>
 		</div>

@@ -1,6 +1,5 @@
 <ion-view view-title="Video" align-title="center" class="blue">
     <ion-content class=" background">
-        <!-- <ion-refresher on-refresh="doRefresh()"></ion-refresher> -->
         <ion-list>
             <ion-item class="item-content video-item"ng-repeat='video in videos'>
                 <div class="row">
@@ -14,12 +13,6 @@
                     </div>
                 </div>
                 <div class="video-container">
-                    <!-- <object width="100%" height="150">
-                        <param name="movie" value="{{trustSrc(video.link)}}"></param>
-                        <param name="allowFullScreen" value="true"></param>
-                        <param name="allowscriptaccess" value="always"></param>
-                        <embed src="{{video.link | trustAsResourceUrl}}" type="application/x-shockwave-flash" width="100%" height="150" allowscriptaccess="always" allowfullscreen="true"></embed>
-                    </object> -->
                     <iframe width="385" height="217" src="{{video.link | trustAsResourceUrl}}" frameborder="0" allowfullscreen></iframe>
                 </div>
                 <div class="line-padding">
@@ -27,8 +20,8 @@
                 </div>
             </ion-item>
         </ion-list>
-    <div class=" footer-style non-bar-footer">
-               <div class="title">{{footerText}}</div>
-            </div>
+        <div class=" footer-style non-bar-footer">
+            <div class="title">{{footerText}}</div>
+        </div>
     </ion-content>
 </ion-view>

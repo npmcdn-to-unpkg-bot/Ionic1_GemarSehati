@@ -5,24 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 
-// push notification
-function handleOpenURL(url) {
-  //console.log(url);
-  //var path = url.slice(8) // strips away myapp://
-  window.localStorage.setItem("externalUrl", url);
-}
-
-angular.module(
-  'starter', 
-  [
-  'ionic',
-  'ngCordova', 
-/*  'ionic.service.core',
-  'ionic.service.push',*/
-  'starter.controllers',
-  'flexcalendar', 
-  'pascalprecht.translate',
-  'ionicLazyLoad']) 
+angular.module('starter', ['ionic','ngCordova','starter.controllers', 'ionicLazyLoad']) 
 
 .run(function($ionicPlatform, $ionicLoading, $state,$localstorage,$cordovaSplashscreen, $timeout, $cordovaPush, $rootScope) {
   $rootScope.flag=true;
@@ -35,81 +18,27 @@ angular.module(
     batch.push.setGCMSenderID("1071866914808").setup();
     batch.start();
     batch.push.registerForRemoteNotifications();
-
-
-    
-    
-    //handleOpenURL();
-    //console.log(window.localStorage.getItem("external_load"));
-
-    //open and redirect push notification
-    /*if(typeof window.localStorage.getItem("external_load") !== "undefined"){
-      $state.go('app.notif', {}, {reload: true});
-      console.log("sini");
-    }*/
-
-    // Monitor Settings Toggle for changes.
-    /*$scope.$watch('pushNotification.checked', function(checked){
-
-      console.log('PushNotification: Change value to ' + checked);
-
-      // Enable/Disable on server according to value.
-      checked ? PushNotification.enablePush() : PushNotification.disablePush();
-
-    });*/
-  /*console.log("awal");
-  document.addEventListener("urbanairship.registration", function (event) {
-    console.log("sini");
-    if (event.error) {
-        console.log('There was an error registering for push notifications')
-    } else {
-        console.log("Registered with ID: " + event.channelID)
-    }
-  })
-  // Enable user notifications (will prompt the user to accept push notifications)
-  UAirship.setUserNotificationsEnabled(true, function (enabled) {
-      console.log("User notifications are enabled! Fire away!")
-  })
-  document.addEventListener("urbanairship.push", function (event) {
-    console.log("Incoming push: " + event.message)
-  })*/
-  
-
   });
 })
 
-.config(function($ionicConfigProvider/*,$ionicAppProvider*/){
+.config(function($ionicConfigProvider){
   $ionicConfigProvider.navBar.alignTitle('center');
-  /*$ionicAppProvider.identify({
-    app_id:'0b54bf40',
-    api_key:'5fbb872afcd7c687bd5a0ec004492b9adde4c7ac56270c62',
-    dev_push:true
-  });*/
 })
 
 .filter('trustAsResourceUrl', ['$sce', function($sce) {
-return function(val) {
-    return $sce.trustAsResourceUrl(val);
-};
+  return function(val) {
+      return $sce.trustAsResourceUrl(val);
+  };
 }])
-
-
-
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
-    .state('app', {
+  .state('app', {
     url: '/app',
     abstract: true,
     templateUrl: 'templates/menu.html',
     controller: 'AppCtrl'
   })
-
-
-/*  .state('splash', {
-    url: '/splash',
-    templateUrl: 'templates/splash.html'
-  })*/
 
   .state('app.login', {
     url: '/login',
@@ -122,24 +51,24 @@ return function(val) {
   })
 
   .state('app.register', {
-      url: '/register',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/register.html',
-          controller: 'RegisterCtrl'
-        }
+    url: '/register',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/register.html',
+        controller: 'RegisterCtrl'
       }
-    })
+    }
+  })
 
- .state('app.forgot', {
-      url: '/forgot',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/forgot.html',
-          controller: 'ForgotCtrl'
-        }
+  .state('app.forgot', {
+    url: '/forgot',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/forgot.html',
+        controller: 'ForgotCtrl'
       }
-    })
+    }
+  })
 
   .state('app.home', {
     url: "/home",
@@ -152,14 +81,14 @@ return function(val) {
   })
 
   .state('app.event', {
-      url: '/event',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/event.html',
-          controller: 'EventCtrl'
-        }
+    url: '/event',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/event.html',
+        controller: 'EventCtrl'
       }
-    })
+    }
+  })
 
   .state('app.about', {
     url: "/about",
@@ -172,14 +101,14 @@ return function(val) {
   })
 
   .state('app.detailabout', {
-      url: '/about/:aId',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/detailabout.html',
-          controller: 'AboutCtrl'
-        }
+    url: '/about/:aId',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/detailabout.html',
+        controller: 'AboutCtrl'
       }
-    })
+    }
+  })
 
   .state('app.socialmedia', {
     url: "/socialmedia",
@@ -191,29 +120,27 @@ return function(val) {
     }
   })
 
-    
-
-    .state('app.video', {
-      url: '/video',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/video.html',
-          controller: 'VideoCtrl'
-        }
+  .state('app.video', {
+    url: '/video',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/video.html',
+        controller: 'VideoCtrl'
       }
-    })
+    }
+  })
 
-.state('app.photo', {
-      url: '/photo',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/photo.html',
-          controller: 'PhotoCtrl'
-        }
+  .state('app.photo', {
+    url: '/photo',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/photo.html',
+        controller: 'PhotoCtrl'
       }
-    })
+    }
+  })
 
-.state('app.pdf', {
+  .state('app.pdf', {
     url: "/pdf",
     views: {
       'menuContent': {
@@ -222,65 +149,68 @@ return function(val) {
       }
     }
   })
-.state('app.articles', {
-      url: '/articles',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/articles.html',
-          controller: 'ArticlesCtrl'
-        }
-      }
-    })
-.state('app.article', {
-      url: '/articles/:aId',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/article.html',
-          controller: 'ArticlesCtrl'
-        }
-      }
-    })
-.state('app.technologies', {
-      url: '/technology',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/technology.html',
-          controller: 'TechnologyCtrl'
-        }
-      }
-    })
-.state('app.technology', {
-      url: '/technology/:aId',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/detailtechnology.html',
-          controller: 'TechnologyCtrl'
-        }
-      }
-    })
 
-
-.state('app.mitrafinder', {
-      url: '/mitrafinder',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/mitrafinder.html',
-          controller : 'MitraFinderCtrl'
-        }
+  .state('app.articles', {
+    url: '/articles',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/articles.html',
+        controller: 'ArticlesCtrl'
       }
-    })
+    }
+  })
 
-    .state('app.contactus', {
-      url: '/contactus',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/contactus.html',
-          controller: 'ContactCtrl'
-        }
+  .state('app.article', {
+    url: '/articles/:aId',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/detailarticle.html',
+        controller: 'ArticlesCtrl'
       }
-    })
+    }
+  })
 
-    .state('app.mitracity', {
+  .state('app.technologies', {
+    url: '/technology',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/technology.html',
+        controller: 'TechnologyCtrl'
+      }
+    }
+  })
+
+  .state('app.technology', {
+    url: '/technology/:aId',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/detailtechnology.html',
+        controller: 'TechnologyCtrl'
+      }
+    }
+  })
+
+  .state('app.mitrafinder', {
+    url: '/mitrafinder',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/mitrafinder.html',
+        controller : 'MitraFinderCtrl'
+      }
+    }
+  })
+
+  .state('app.contactus', {
+    url: '/contactus',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/contactus.html',
+        controller: 'ContactCtrl'
+      }
+    }
+  })
+
+  .state('app.mitracity', {
     url: '/mitracity',
     views: {
       'menuContent': {
@@ -290,7 +220,7 @@ return function(val) {
     }
   })
 
-    .state('app.detailmitracity', {
+  .state('app.detailmitracity', {
     url: '/mitracity/:aId',
     views: {
       'menuContent': {
@@ -300,143 +230,86 @@ return function(val) {
     }
   })
 
-    .state('app.input', {
-      url: '/input',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/input.html',
-          controller: 'InputCtrl'
-        }
-      }
-    })
-
-    .state('app.push', {
-      url: '/push',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/push.html'/*,
-          controller: 'PushCtrl'*/
-        }
-      }
-    })
-
-    .state('app.profil', {
-      url: '/profil',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/profil.html',
-          controller:'ProfilCtrl'
-        }
-      }
-    })
-
-
-    .state('app.products', {
-      url: '/product',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/product.html',
-          controller:'ProductCtrl'
-        }
-      }
-    })
-
-    .state('app.product', {
-      url: '/product/:aId',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/detailproduct.html',
-          controller:'ProductCtrl'
-        }
-      }
-    })
-
-    .state('app.testimoni', {
-      url: '/testimoni',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/testimoni.html',
-          controller : 'TestimoniCtrl'
-        }
-      }
-    })
-
-    .state('app.detailtestimoni', {
-      url: '/testimoni/:aId',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/detailtestimoni.html',
-          controller : 'TestimoniCtrl'
-        }
-      }
-    })
-
-    .state('app.credit', {
-      url: '/credit',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/credit.html',
-          controller:'CreditCtrl'
-        }
-      }
-    })
-
-    .state('app.splash', {
-      url: '/splash',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/splash.html',
-          controller:'SplashCtrl'
-        }
-      }
-    })
-
-    .state('app.notif', {
-      url: '/notif',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/notif.html',
-          controller:'NotifCtrl'
-        }
-      }
-    })
-
-  .state('app.search', {
-    url: '/search',
+  .state('app.input', {
+    url: '/input',
     views: {
       'menuContent': {
-        templateUrl: 'templates/search.html'
+        templateUrl: 'templates/input.html',
+        controller: 'InputCtrl'
       }
     }
   })
 
-  .state('app.browse', {
-      url: '/browse',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/browse.html'
-        }
-      }
-    })
-    .state('app.playlists', {
-      url: '/playlists',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/playlists.html',
-          controller: 'PlaylistsCtrl'
-        }
-      }
-    })
-
-  .state('app.single', {
-    url: '/playlists/:playlistId',
+  .state('app.profil', {
+    url: '/profil',
     views: {
       'menuContent': {
-        templateUrl: 'templates/playlist.html',
-        controller: 'PlaylistCtrl'
+        templateUrl: 'templates/profil.html',
+        controller:'ProfilCtrl'
       }
     }
-  });
+  })
+
+  .state('app.products', {
+    url: '/product',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/product.html',
+        controller:'ProductCtrl'
+      }
+    }
+  })
+
+  .state('app.product', {
+    url: '/product/:aId',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/detailproduct.html',
+        controller:'ProductCtrl'
+      }
+    }
+  })
+
+  .state('app.testimoni', {
+    url: '/testimoni',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/testimoni.html',
+        controller : 'TestimoniCtrl'
+      }
+    }
+  })
+
+  .state('app.credit', {
+    url: '/credit',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/credit.html',
+        controller:'CreditCtrl'
+      }
+    }
+  })
+
+  .state('app.splash', {
+    url: '/splash',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/splash.html',
+        controller:'SplashCtrl'
+      }
+    }
+  })
+
+  .state('app.notif', {
+    url: '/notif',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/notif.html',
+        controller:'NotifCtrl'
+      }
+    }
+  })
+  ;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/splash');
 });

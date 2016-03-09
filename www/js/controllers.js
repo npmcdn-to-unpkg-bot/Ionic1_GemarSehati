@@ -1,7 +1,7 @@
 var user;
 var id;
 
-var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ionicLazyLoad','flexcalendar','pascalprecht.translate','ngCordova'])
+var app = angular.module('starter.controllers', ['ngSanitize','ionicLazyLoad','ngCordova'])
 
 
 
@@ -117,9 +117,9 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
       return true;
     } else {
        return false;
-    };
-  }
-}}
+      };
+    }   
+  }}
 ])
 
 /*=====  End of Local Storage Factory  ======*/
@@ -161,13 +161,10 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
 
   return {
     getMarkers: function(){
-
-      //return $http.get("http://www.gemarsehati.com/enagic/api/getmitra").then(function(response){
       return $http.get("http://www.gemarsehati.com/api/getmitra").then(function(response){
           markers = response;
           return markers;
       });
-
     }
   }
 })
@@ -178,20 +175,16 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
 
   return {
     getEvents: function(){
-
-      //return $http.get("http://www.gemarsehati.com/enagic/api/getevent").then(function(response){
       return $http.get("http://www.gemarsehati.com/api/getevent").then(function(response){
-          events = response;
-          //console.log(events.data[0].date);
-          return events.data;
+        events = response;
+        return events.data;
       });
     },
     getDateEvents: function(id){
-      //return $http.get("http://www.gemarsehati.com/enagic/api/getevent").then(function(response){
       return $http.get("http://www.gemarsehati.com/api/getevent").then(function(response){
-          events = response;
-          result = events.data[id].date;
-          return result;
+        events = response;
+        result = events.data[id].date;
+        return result;
       }); 
     }
   }
@@ -209,39 +202,27 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     var options = {timeout: 10000, enableHighAccuracy: true};
 
     temp = $cordovaGeolocation.getCurrentPosition(options).then(function(position){
-      
       var currentLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-      //alert("current posisi pas initmap : "+currentLatLng);
       setCurrentCoordinate(currentLatLng);
-
       var mapOptions = {
         center: currentLatLng,
         zoom: 15,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
-
       map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
       //Wait until the map is loaded
       temp = google.maps.event.addListenerOnce(map, 'idle', function(){
-
         //Load the markers
-        //console.log("fungsi initmap");
-        //console.log(loadMarkers());
         loadMarkers();
         loadCurrentPosMarkers(currentLatLng);
       });
-
     }, function(error){
       console.log("Could not get location");
-
         //Load the markers
         loadMarkers();
     });
-    //console.log(temp);
-
   }
-
+  //load marker posisi sekarang
   function loadCurrentPosMarkers(){
     currentLatLng = getCurrentCoordinate();
     var image = 'img/marker_now-small.png';
@@ -254,151 +235,117 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     var infoWindowContent = "<h4>Posisi anda sekarang</h4>";
     addInfoWindow(marker, infoWindowContent, 0);
   }
-
+  //load semua marker
   function loadMarkers(){
-
     currentLatLng = getCurrentCoordinate();
-    //alert("current pos pas load marker : "+currentLatLng);
-    //console.log(temp);
-
-      //Get all of the markers from our Markers factory
-      temp = Markers.getMarkers().then(function(markers){
-        //get length markers
-        
-        //console.log(currentLatLng);
-        var lengthMarkers = Object.keys(markers.data).length ;
-
-        //variable for find nearest distance
-        var closestMarker = -1;
-        var closestDistance = Number.MAX_VALUE;
-        var iki={};
-        var image = 'img/marker-small.png';
-        var count=0;
-        for (var i = 0; i < lengthMarkers; i++) {
-          var marker = markers.data;
-          var dataMarker = markers.data;
-
-
-          //alert(marker[0].koordinat);
-          //variable for coordinate
-          var koordinatFix = marker[i].koordinat.split(",");
-          var koordinatLat = koordinatFix[0];
-          var koordinatLng = koordinatFix[1];
-
-          //set coordinate to markerPos
-          var markerPos = new google.maps.LatLng(koordinatLat, koordinatLng);
-          //alert("marker pos "+i+" : "+markerPos);
-          //var currentPos = new google.maps.LatLng(currentLatLn)
-
-          //find nearest distance
-          //alert("posisi saiki "+i+" : "+currentLatLng +" dan "+markerPos);
-          if(currentLatLng!= undefined){
-            var distance = google.maps.geometry.spherical.computeDistanceBetween(currentLatLng,markerPos);
-          }
-          //find nearest marker
-          /*if(distance < closestDistance){
-            closestMarker=i;
-            closestDistance=distance;
-            closestPos=markerPos;
-            //
-          }*/
-
-          //find marker in radius 20km
-          
-
-          // Add the all marker to the map
-          // 
-          if(distance<=20000){
-            //alert("dist " + distance);
-            //console.log(dataMarker[i]);
-            var marker = new google.maps.Marker({
-                map: map,
-                animation: google.maps.Animation.DROP,
-                position: markerPos,
-                icon: image
-            });
-            iki[count]=dataMarker[i];
-            count++;
-            //set information to marker
-            if(dataMarker[i].nohp=="") dataMarker[i].nohp="-";
-            if(dataMarker[i].email=="") dataMarker[i].email="-";
-            if(dataMarker[i].alamat=="") dataMarker[i].alamat="-";
-            var infoWindowContent = 
-              "Nama : "+dataMarker[i].nama + "<br/>" + 
-              "No hp : "+dataMarker[i].nohp + "<br/>" + 
-              "Email : "+dataMarker[i].email + "<br/>" + 
-              "Alamat : "+dataMarker[i].alamat;
-            addInfoWindow(marker, infoWindowContent, dataMarker[i]);
-          }
+    //Get all of the markers from our Markers factory
+    temp = Markers.getMarkers().then(function(markers){
+      var lengthMarkers = Object.keys(markers.data).length ;
+      //variable for find nearest distance
+      var closestMarker = -1;
+      var closestDistance = Number.MAX_VALUE;
+      var iki={};
+      var image = 'img/marker-small.png';
+      var count=0;
+      for (var i = 0; i < lengthMarkers; i++) {
+        var marker = markers.data;
+        var dataMarker = markers.data;
+        //variable for coordinate
+        var koordinatFix = marker[i].koordinat.split(",");
+        var koordinatLat = koordinatFix[0];
+        var koordinatLng = koordinatFix[1];
+        //set coordinate to markerPos
+        var markerPos = new google.maps.LatLng(koordinatLat, koordinatLng);
+        //var currentPos = new google.maps.LatLng(currentLatLn)
+        //find nearest distance
+        if(currentLatLng!= undefined){
+          var distance = google.maps.geometry.spherical.computeDistanceBetween(currentLatLng,markerPos);
         }
-
-        // Add the nearest marker to the map
-        
-        /*var marker = new google.maps.Marker({
-            map: map,
-            animation: google.maps.Animation.DROP,
-            position: closestPos, 
-            icon: image
-        });
-
-        //set information to marker
-        var infoWindowContent = "<h4>" + dataMarker[closestMarker].nama + "</h4>";
-        addInfoWindow(marker, infoWindowContent, dataMarker[closestMarker]);
-        //console.log("jarak terdekat:",closestDistance,"marker ke: ",dataMarker[closestMarker].koordinat);
-        //
-        var iki = dataMarker[closestMarker];
-        //console.log(iki);
-        setDataNearestMitra(iki);
-        //console.log(getDataNearestMitra());
-        //$scope.temp=closestMarker;*/
-
-        //console.log(iki);
-        var circle = new google.maps.Circle({
+        //find nearest marker
+        /*if(distance < closestDistance){
+          closestMarker=i;
+          closestDistance=distance;
+          closestPos=markerPos;
+          //
+        }*/
+        //find marker in radius 20km
+        // Add the all marker to the map
+        if(distance<=20000){
+          var marker = new google.maps.Marker({
+              map: map,
+              animation: google.maps.Animation.DROP,
+              position: markerPos,
+              icon: image
+          });
+          iki[count]=dataMarker[i];
+          count++;
+          //set information to marker
+          if(dataMarker[i].nohp=="") dataMarker[i].nohp="-";
+          if(dataMarker[i].email=="") dataMarker[i].email="-";
+          if(dataMarker[i].alamat=="") dataMarker[i].alamat="-";
+          var infoWindowContent = 
+            "Nama : "+dataMarker[i].nama + "<br/>" + 
+            "No hp : "+dataMarker[i].nohp + "<br/>" + 
+            "Email : "+dataMarker[i].email + "<br/>" + 
+            "Alamat : "+dataMarker[i].alamat;
+          addInfoWindow(marker, infoWindowContent, dataMarker[i]);
+        }
+      }
+      // Add the nearest marker to the map
+      /*var marker = new google.maps.Marker({
           map: map,
-          radius: 20000,    // metres
-          fillColor: '#AA0000'
-        });
-        circle.bindTo('center', marker, 'position');
+          animation: google.maps.Animation.DROP,
+          position: closestPos, 
+          icon: image
+      });
 
-        return iki;
-      }); 
+      //set information to marker
+      var infoWindowContent = "<h4>" + dataMarker[closestMarker].nama + "</h4>";
+      addInfoWindow(marker, infoWindowContent, dataMarker[closestMarker]);
+      //console.log("jarak terdekat:",closestDistance,"marker ke: ",dataMarker[closestMarker].koordinat);
+      //
+      var iki = dataMarker[closestMarker];
+      //console.log(iki);
+      setDataNearestMitra(iki);
+      //console.log(getDataNearestMitra());
+      //$scope.temp=closestMarker;*/
+      var circle = new google.maps.Circle({
+        map: map,
+        radius: 20000,    // metres
+        fillColor: '#AA0000'
+      });
+      circle.bindTo('center', marker, 'position');
+      return iki;
+    }); 
     return temp;
   }
 
   function setDataNearestMitra(dataDetailMitra){
     this.dataDetailMitra=dataDetailMitra;
-    //console.log(this.dataDetailMitra)
-    //return dataDetailMitra;
   }
 
   function getDataNearestMitra(){
     dataDetailMitra=this.dataDetailMitra;
-    //console.log(dataDetailMitra);
     return dataDetailMitra;
   }
 
   function setCurrentCoordinate(currentCoordinate){
-    //  console.log(currentCoordinate);
     this.currentCoordinate=currentCoordinate;
     return currentCoordinate;
   }
 
   function getCurrentCoordinate(){
     currentCoordinate=this.currentCoordinate;
-    //console.log(currentCoordinate);
     return currentCoordinate;
   }
 
   function addInfoWindow(marker, message, record) {
-
-      var infoWindow = new google.maps.InfoWindow({
-          content: '<div style="width:200px; height:auto">'+message+'</div>'
-      });
-
-      google.maps.event.addListener(marker, 'click', function () {
-          infoWindow.open(map, marker);
-      });
-      
+    var infoWindow = new google.maps.InfoWindow({
+        content: '<div style="width:200px; height:auto">'+message+'</div>'
+    });
+    google.maps.event.addListener(marker, 'click', function () {
+        infoWindow.open(map, marker);
+    });
   }
 
   return {
@@ -409,8 +356,6 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     },
     getDetailMitra: function(){
       temp = loadMarkers();
-
-      //console.log(temp);
       return temp;
     },
     getMitra: function(){
@@ -419,7 +364,6 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
       return temp;
     }
   }
-
 })
 
 /*=====  End of Maps Factory  ======*/
@@ -491,181 +435,70 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     'name': username,
     'photo': photo
   };
-  //alert(window.localStorage.getItem("username"));
-
-  // Create the login modal that we will use later
-  $ionicModal.fromTemplateUrl('templates/login-modal.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-
-  // Triggered in the login modal to close it
-  $scope.closeLogin = function() {
-    $scope.modal.hide();
-
-  };
-
-  // Open the login modal
-  $scope.login = function() {
-    $scope.modal.show();
-  };
-
-  // Perform the login action when the user submits the login form
-  $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
-
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
-  };
 })
 
-.controller('PlaylistsCtrl', function($scope) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];
-})
 
-.controller('LoginCtrl', function($rootScope,$ionicHistory,$scope, $state, $http, $state,$ionicLoading,$localstorage, $window,$ionicModal, Footer,$ionicPopup) {
+.controller('LoginCtrl', function($rootScope,$ionicHistory,$scope, $state, $http,$ionicLoading,$localstorage, $window, Footer) {
   $ionicHistory.nextViewOptions({
     disableBack: true
   });
-
-
-  $scope.data = {};
-  $scope.result;
-  $rootScope.nama;
-  this.nama;
+  //fungsi menampilkan footer
   $scope.footerText=Footer.getFooter();
-  // Create the login modal that we will use later
-  $ionicModal.fromTemplateUrl('templates/login-modal.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-
-  // Triggered in the login modal to close it
-  $scope.closeLogin = function() {
-    $scope.modal.hide();
-    $scope.modal.remove();
-  };
-
-  // Open the login modal
-  $scope.loginModal = function() {
-    $scope.modal.show();
-  };
-
-  // Perform the login action when the user submits the login form
-  $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
-
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
-  };
-  
-  $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
-    if ($scope.modal.isShown()) {
-      event.preventDefault();
-      $scope.modal.remove();
-    }
-  });
-  
-
+  //load data di localstorage
   $scope.loadData = function(){
     alert("Username "+ ($localstorage.get('username')) +"\n" + 
           "photo " + ($localstorage.get('photo')) +"\n" + 
           "id "+ ($localstorage.get('id')));
   }
-  
-
+  //fungsi login
   $scope.Login = function(data) {
-    //alert(data.email + " " + data.password);
     $ionicLoading.show({
       template: 'Loading'
     })
     if(data.email == null || data.password == null){
-        $ionicLoading.hide()
-        alert("Email atau Password Anda kosong, mohon dicek kembali");
-        $state.go('app.login', {}, {reload: true});
+      $ionicLoading.hide()
+      alert("Email atau Password Anda kosong, mohon dicek kembali");
+      $state.go('app.login', {}, {reload: true});
     }
     var email = data.email;
     var password = data.password;
-      $http({
-        method: 'POST',
-        url: 'http://gemarsehati.com/api/login',
-        data: {'email': email, 'password': password},
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        timeout: 10000
-      })
-      .success(function(data){  
-        console.log(data);
-        //console.log(data.email);
-        //console.log(data.password);
-        alert("login success");
-        //console.log(data);
-        //alert("oi " + data.data);
-        $ionicLoading.hide();
-        //alert("selamat datang "+email);
-        if(data.message=="loginSuccess") {
-          $ionicHistory.nextViewOptions({
-              disableBack: true
-          });
-          SetDataUser(data.id);
-          //MovetoHome();
-          //$scope.modal.show();
-          //window.location.reload(true);
-          $state.go('app.profil', {}, {reload: true});  
-        }
-      })
-      .error(function(data) {
-        $ionicLoading.hide();
-        if(data == null){
-          alert("Email atau password tidak boleh kosong / cek koneksi anda");
-        }
-      });
+    $http({
+      method: 'POST',
+      url: 'http://gemarsehati.com/api/login',
+      data: {'email': email, 'password': password},
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){  
+      alert("login success");
+      $ionicLoading.hide();
+      if(data.message=="loginSuccess") {
+        $ionicHistory.nextViewOptions({
+            disableBack: true
+        });
+        SetDataUser(data.id);
+        $state.go('app.home', {}, {reload: true});  
+      }
+    })
+    .error(function(data) {
+      $ionicLoading.hide();
+      if(data == null){
+        alert("Email atau password tidak boleh kosong / cek koneksi anda");
+      }
+    });
   };
-
-  $scope.MovetoHome = function(){
-    //alert("move");
-    $state.go('app.home', {}, {reload: replace});
-  }
 
   $scope.Logout = function() {
     $ionicHistory.nextViewOptions({
       disableBack: true
     });
     $state.go('app.home', {}, {reload: true});
-
-     window.localStorage.removeItem("id");
-     window.localStorage.removeItem("username");
-     window.localStorage.removeItem("photo");
-    
+    window.localStorage.removeItem("id");
+    window.localStorage.removeItem("username");
+    window.localStorage.removeItem("photo");    
     alert("Anda berhasil Logout");
     window.location.reload();
-    
   };
-
-  /*$scope.isLoggedIn = function() {
-    if( window.localStorage.getItem("id") !== undefined && 
-        window.localStorage.getItem("username") !== undefined &&
-        window.localStorage.getItem("photo") !== undefined) {
-      return true;
-    } else {
-       return false;
-    }
-  };*/
-
+  //set data user yang login ke dalam local storage
   function SetDataUser(id){
     var url = 'http://gemarsehati.com/api/getmitraid/'+id;
     $http({
@@ -674,33 +507,25 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
     .success(function(data){ 
-      //alert(data.id + data.nama + data.foto);
-      //alert("set data user");
       $localstorage.set("id",data.id);
       $localstorage.set('username',data.nama);
-      //alert("in SetDataUser " + data.nama);
       $localstorage.set('photo',data.foto);
       $localstorage.set('cek','true');
-      //alert($localstorage.get('cek'));
       window.location.reload();
-      $state.go('app.profil', {}, {reload: true});
+      $state.go('app.home', {}, {reload: true});
     })
-    //alert($rootScope.nama);
     return ;
   }
 })
 
-.controller('PDFCtrl', function($timeout,$scope, $http, $state,$sce,$ionicLoading,$localstorage, Footer,$cordovaFileTransfer,$cordovaFile,$ionicPopup) {
-  
+.controller('PDFCtrl', function($scope, $http, $state,$ionicLoading,$localstorage,Footer,$cordovaFileTransfer,$cordovaFile,$ionicPopup) {
+  //fungsi download
   $scope.download = function (index) {
- 
-    // File for download
+    // link download
     var url = $scope.pdfs[index].link_pdf;
-    
-    // File name only
+    // get nama file
     var filename = url.split("/").pop();
-     
-    // Save location
+    // lokasi menyimpan file
     var targetPath = cordova.file.externalRootDirectory + filename;
     alert('Sedang mendownload file');
     $cordovaFileTransfer.download(url, targetPath, {}, true).then(function (result) {
@@ -714,14 +539,15 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   $ionicLoading.show({
     template: 'Loading'
   })
+  //fungsi menampilkan footer
   $scope.footerText=Footer.getFooter();
 
   if($localstorage.get('username')){
-    //var url = 'http://www.gemarsehati.com/enagic/api/getpdfuser';
+    //url yang digunakan jika sudah login
     var url = 'http://www.gemarsehati.com/api/getpdfuser';
   }
   else{
-    //var url = 'http://www.gemarsehati.com/enagic/api/getpdfumum';
+    //url yang digunakan jika belum login
     var url = 'http://www.gemarsehati.com/api/getpdfumum';
   }
   $http({
@@ -734,8 +560,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     $ionicLoading.hide(); 
   })
   .error(function(data) {
-    $ionicLoading.hide()
-    //alert("Cek koneksi internet anda");    
+    $ionicLoading.hide()   
     $ionicPopup.alert({
       title: 'Connection Error',
       template: 'Check your connection'
@@ -798,14 +623,12 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
 })
 
 .controller('PhotoCtrl', function($ionicLoading,$ionicPopup,$scope, $http, $state,$sce,$ionicModal, $ionicBackdrop, $ionicSlideBoxDelegate, $ionicScrollDelegate, Footer) {
-/*  $scope.singers = ['img/shakira.jpg','img/justin.jpg','img/selena.jpg','img/adam.jpg'];*/
-  var album = [
-   {id: 1, name: "album ke 1"},
-   {id: 2, name: "album ke 2"},
-   {id: 3, name: "album ke 3"}
-  ];
-
-  //get photo album
+  $ionicLoading.show({
+    template: 'Loading'
+  })
+  //fungsi menampilkan footer
+  $scope.footerText=Footer.getFooter();
+  //get json album foto
   $http({
     method : 'get',
     url: 'http://www.gemarsehati.com/api/getphotoalbum',
@@ -814,39 +637,38 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   .success(function(data){
     $scope.photoalbums=data;
   })
-  $scope.albums = album;
-
-  $ionicLoading.show({
-    template: 'Loading'
-  })
-  $scope.footerText=Footer.getFooter();
-  $http({
-      method: 'get', 
-      //url: 'http://www.gemarsehati.com/enagic/api/getphoto',
-      url: 'http://www.gemarsehati.com/api/getphoto',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded'}
-    })
-    .success(function(data){
-      $scope.length = Object.keys(data).length;
-      $scope.halfLength = length/2;
-      $scope.photos = data;
-      $ionicLoading.hide();
-    })
-    .error(function(data) {
-      $ionicLoading.hide()
-      //alert("Cek koneksi internet anda");    
-      $ionicPopup.alert({
-        title: 'Connection Error',
-        template: 'Check your connection'
-      });
+  .error(function(data) {
+    $ionicLoading.hide() 
+    $ionicPopup.alert({
+      title: 'Connection Error',
+      template: 'Check your connection'
     });
+  });
+  //get json foto
+  $http({
+    method: 'get', 
+    url: 'http://www.gemarsehati.com/api/getphoto',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded'}
+  })
+  .success(function(data){
+    $scope.length = Object.keys(data).length;
+    $scope.halfLength = length/2;
+    $scope.photos = data;
+    $ionicLoading.hide();
+  })
+  .error(function(data) {
+    $ionicLoading.hide()
+    $ionicPopup.alert({
+      title: 'Connection Error',
+      template: 'Check your connection'
+    });
+  });
+  //fungsi pop up foto
   $scope.showImages = function(index) {
-    console.log(index);
     $scope.activeSlide = index;
-    /*$scope.showModal('templates/image-popover.html');*/
-    $scope.showModal('templates/image-zoom.html');
+    $scope.showModal('templates/detailphoto.html');
   }
- 
+  //fungsi menampilkan modal
   $scope.showModal = function(templateUrl) {
     $ionicModal.fromTemplateUrl(templateUrl, {
       scope: $scope,
@@ -856,12 +678,12 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
       $scope.modal.show();
     });
   }
- 
-  // Close the modal
+  // fungsi menutup modal
   $scope.closeModal = function() {
     $scope.modal.hide();
     $scope.modal.remove()
   };
+  //fungsi slide
   $scope.updateSlideStatus = function(slide) {
     var zoomFactor = $ionicScrollDelegate.$getByHandle('scrollHandle' + slide).getScrollPosition().zoom;
     if (zoomFactor == $scope.zoomMin) {
@@ -870,10 +692,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
       $ionicSlideBoxDelegate.enableSlide(false);
     }
   };
+  //fungsi menampilkan foto berdasarkan album yang dipilih
   $scope.getPhotoAlbum = function() {
-    $ionicLoading.show({
-      template: 'Loading'
-    })
     $scope.selectedPhotos=[];
     var id = $scope.selectedAlbum.id;
     var length = $scope.length;
@@ -890,89 +710,59 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   $ionicLoading.show({
     template: 'Loading'
   })
+  //fungsi menampilkan footer
   $scope.footerText=Footer.getFooter();
+  //fungsi memperbolehkan url eksternal
   $scope.trustSrc = function(src) {
     return $sce.trustAsResourceUrl(src);
   }
-    $http({
-      method: 'get', 
-      //url: 'http://www.gemarsehati.com/enagic/api/getvideo', 
-      url: 'http://www.gemarsehati.com/api/getvideo', 
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
-      $scope.videos = data;
-      $ionicLoading.hide();
-      /*var myId = getId($scope.videos.link);
-      console();
-      var myCode = "http://www.youtube.com/embed/"+ myId;
-      alert(myCode);*/
-      //$scope.videos.link=myCode;
-    
-    })
-    .error(function(data) {
-      $ionicLoading.hide()
-      //alert("Cek koneksi internet anda");    
-      $ionicPopup.alert({
-        title: 'Connection Error',
-        template: 'Check your connection'
-      });
-      $scope.doRefresh = function(){
-        $http({
-          method: 'get', 
-          //url: 'http://www.gemarsehati.com/enagic/api/getvideo'
-          url: 'http://www.gemarsehati.com/api/getvideo'
-        })
-        .success(function(data){
-          $scope.videos=data;
-
-          //$scope.$broadcast('scroll.refreshComplete');
-        })
-      }
+  $http({
+    method: 'get',
+    url: 'http://www.gemarsehati.com/api/getvideo', 
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+  })
+  .success(function(data){
+    $scope.videos = data;
+    $ionicLoading.hide();
+  })
+  .error(function(data) {
+    $ionicLoading.hide()  
+    $ionicPopup.alert({
+      title: 'Connection Error',
+      template: 'Check your connection'
     });
-    var myUrl = $('#video-link').val();
-    //myId = getId(myUrl);
-    //$('#video-link').html('<iframe width="560" height="315" src="//www.youtube.com/embed/' + myId + '" frameborder="0" allowfullscreen></iframe>');
+  });
 })
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
-})
-
-.controller('RegisterCtrl', function($scope,$ionicPopup, $stateParams, $http, $state, Footer) {
+.controller('RegisterCtrl', function($scope,$ionicPopup, $http, $state, Footer) {
   $scope.footerText=Footer.getFooter();
   //get gender
   $http({
     method: 'get',
-    //url: 'http://www.gemarsehati.com/enagic/api/getgender'
     url: 'http://www.gemarsehati.com/api/getgender'
   })
   .success(function(data){
     $scope.genders = data;
-    //console.log('berhasil');
   })
 
   //getcity
   $http({
     method: 'get',
-    //url: 'http://www.gemarsehati.com/enagic/api/getcity'
     url: 'http://www.gemarsehati.com/api/getcity'
   })
   .success(function(data){
     $scope.cities = data;
   })
   $scope.showSelectValue = function(mySelect) {
-    //console.log(mySelect.name);
     return mySelect.name;}
-  
+  //fungsi register
   $scope.SendRegister = function(data) {
     if(data.selectedGender){
       var genderId = data.selectedGender.id;
       if(data.selectedCity){
         var cityId = data.selectedCity.id;
-        //console.log(cityId +" "+genderId);
       }
     }
-
     if(!data.address) data.address="";
     if(!data.nophone) data.nophone="";
     if(!data.postal) data.postal="";
@@ -1015,7 +805,6 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
       alert(data.foto);
       $http({
         method: 'POST',
-        //url: 'http://gemarsehati.com/enagic/api/register',
         url: 'http://gemarsehati.com/api/register',
         data: {
           'name': data.fullname, 
@@ -1038,7 +827,6 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
         },
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       })
-
       .success(function(data){  
           alert("Data Berhasil Dimasukkan");            
           console.log(data);
@@ -1085,49 +873,47 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
 })
 
 
-.controller('TestimoniCtrl', function($http,$ionicPopup,$scope, $stateParams,$ionicLoading,$state, Footer) {
+.controller('TestimoniCtrl', function($http,$ionicPopup,$scope,$ionicLoading, Footer) {
   $ionicLoading.show({
     template: 'Loading'
   })
+  //fungsi menampilkan footer
   $scope.footerText=Footer.getFooter();
+  //get testimoni bisnis
   $scope.bisnisTestimoni = function() {
     $ionicLoading.show({
       template: 'Loading'
     })
     $http({
       method: 'get', 
-      //url: 'http://www.gemarsehati.com/enagic/api/gettestimonibisnis', 
       url: 'http://www.gemarsehati.com/api/gettestimonibisnis', 
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
     .success(function(data){
       $ionicLoading.hide();
       $scope.testimonis = data;
-      $scope.whichtestimoni = $state.params.aId;
     })
     .error(function(data) {
-      $ionicLoading.hide()
-      //alert("Cek koneksi internet anda");    
+      $ionicLoading.hide()  
       $ionicPopup.alert({
         title: 'Connection Error',
         template: 'Check your connection'
       });
     });
   }
+  //get testimoni kesehatan
   $scope.kesehatanTestimoni = function() {
     $ionicLoading.show({
       template: 'Loading'
     })
     $http({
       method: 'get', 
-      //url: 'http://www.gemarsehati.com/enagic/api/gettestimonikesehatan', 
       url: 'http://www.gemarsehati.com/api/gettestimonikesehatan', 
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
     .success(function(data){
       $ionicLoading.hide();
-      $scope.testimonis = data;
-      $scope.whichtestimoni = $state.params.aId;
+      $scope.testimonis = data;   
     });
   }
 })
@@ -1136,36 +922,25 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   $ionicLoading.show({
     template: 'Loading'
   })
+  //fungsi menampilkan footer
   $scope.footerText=Footer.getFooter();
   $http({
-      method: 'get', 
-      //url: 'http://www.gemarsehati.com/enagic/api/getarticles', 
-      url: 'http://www.gemarsehati.com/api/getarticles', 
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .success(function(data){
-      $scope.articles = data;
-      $scope.whicharticle = $state.params.aId;
-      $ionicLoading.hide();
-    
-    })
-    .error(function(data) {
-      $ionicLoading.hide()
-      //alert("Cek koneksi internet anda");    
-      $ionicPopup.alert({
-        title: 'Connection Error',
-        template: 'Check your connection'
-      });
-      $scope.doRefresh = function(){
-        $http({
-          method: 'get', 
-          //url: 'http://www.gemarsehati.com/enagic/api/getarticles'
-          url: 'http://www.gemarsehati.com/api/getarticles'
-        })
-        .success(function(data){
-          $scope.articles=data;}
-        );
-      }
+    method: 'get', 
+    url: 'http://www.gemarsehati.com/api/getarticles', 
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+  })
+  .success(function(data){
+    $scope.articles = data;
+    //parsing data ke detailarticle
+    $scope.whicharticle = $state.params.aId;
+    $ionicLoading.hide();
+  })
+  .error(function(data) {
+    $ionicLoading.hide()  
+    $ionicPopup.alert({
+      title: 'Connection Error',
+      template: 'Check your connection'
+    });
   });
 })
 
@@ -1203,6 +978,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   $scope.events=[];
   $scope.archivedEvents=[];
   $scope.latestEvents=[];
+  //get event yang telah selesai
   $scope.showArchived = function() {
     $ionicLoading.show({
     template: 'Loading'
@@ -1210,14 +986,13 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     $scope.archivedEvents=[];
     $http({
       method: 'get', 
-      //url: 'http://www.gemarsehati.com/enagic/api/getevent', 
       url: 'http://www.gemarsehati.com/api/getevent', 
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
     .success(function(data){
       $ionicLoading.hide();
       var currentTime = new Date();
-      var currentMonth = currentTime.getMonth();
+      var currentMonth = currentTime.getMonth()+1;
       var currentDate = currentTime.getDate();
       var currentYear = currentTime.getFullYear();
 
@@ -1226,16 +1001,12 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
         var year = dateArr[0]
         var month = dateArr[1].replace(/(^)0+/g, "$1");
         var date = dateArr[2].replace(/(^)0+/g, "$1");
-        //console.log(dateArr);
         if(year>currentYear){
-          //console.log(year+"-"+currentYear+" : not archived");
         }
         else{
           if(month>currentMonth){
-            //console.log(month+"-"+currentMonth+" : not archived");
           }
           else if(month<=currentMonth){
-            //console.log(month+"-"+currentMonth+" : archived");
             $scope.archivedEvents.push(data[i]);
           }
         }
@@ -1244,13 +1015,13 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     })
     .error(function(data) {
       $ionicLoading.hide()
-      //alert("Cek koneksi internet anda");    
       $ionicPopup.alert({
         title: 'Connection Error',
         template: 'Check your connection'
       });
     });
   }
+  //get event yang terbaru
   $scope.latestEvent = function(){
     $ionicLoading.show({
     template: 'Loading'
@@ -1258,14 +1029,13 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     $scope.latestEvents=[];
     $http({
       method: 'get', 
-      //url: 'http://www.gemarsehati.com/enagic/api/getevent', 
       url: 'http://www.gemarsehati.com/api/getevent',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
     .success(function(data){
       $ionicLoading.hide();
       var currentTime = new Date();
-      var currentMonth = currentTime.getMonth();
+      var currentMonth = currentTime.getMonth()+1;
       var currentDate = currentTime.getDate();
       var currentYear = currentTime.getFullYear();
 
@@ -1275,285 +1045,121 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
         var month = dateArr[1].replace(/(^)0+/g, "$1");
         var date = dateArr[2].replace(/(^)0+/g, "$1");
         if(year>currentYear){
-          //console.log(year+"-"+currentYear+" : not archived");
           $scope.latestEvents.push(data[i]);
         }
         else{
           if(month>currentMonth){
-            //console.log(month+"-"+currentMonth+" : not archived");
             $scope.latestEvents.push(data[i]);
           }
           else {
-            if(date>currentDate){
-              //console.log(date+"-"+currentMonth+" : not archived");
+            if(date>currentDate && month>=currentMonth){
               $scope.latestEvents.push(data[i]);
             }
-            
           }
         }        
       }
       $scope.events=$scope.latestEvents;
     })
     .error(function(data) {
-        $ionicLoading.hide()
-        //alert("Cek koneksi internet anda");    
-        $ionicPopup.alert({
-          title: 'Connection Error',
-          template: 'Check your connection'
-        });
+      $ionicLoading.hide()
+      $ionicPopup.alert({
+        title: 'Connection Error',
+        template: 'Check your connection'
       });
+    });
   }
 })
-  //calender wannabe
-  /*
-  //$scope.events = Events.getEvents();
-  //console.log($scope.events);
-
-  $rootScope.temp;
-  Events.getEvents().then(function(data){
-
-      //$scope.events= data.date;
-      $rootScope.temp=data[0].date;
-      $rootScope.temp="2012-02-02";
-      //console.log($scope.events);
-      //console.log(temp);
-      //bismillah();      //return $scope.events;
-      //panggil fungsi scope events
-    })
-
-  //console.log($rootScope.temp);
-  var hadu = Events.getDateEvents(0).then(function(data){
-    temp = data;
-    return temp;
-  });
-
-  //console.log(hadu);
-  var temp2 = Events.getEvents();
-  //console.log(temp2);
-  $scope.options = {
-    defaultDate: "2016-02-01",
-    minDate: "2016-01-01",
-    maxDate: "2016-12-31",
-    disabledDates: [],
-    dayNamesLength: 1, // 1 for "M", 2 for "Mo", 3 for "Mon"; 9 will show full day names. Default is 1.
-    mondayIsFirstDay: true,//set monday as first day of week. Default is false
-    eventClick: function(date) {
-      console.log(date);
-    },
-    dateClick: function(date) {
-      console.log(date);
-    },
-    changeMonth: function(month, year) {
-      console.log(month, year);
-    },
-  };
-
-  //console.log($scope.date);
-  function bismillah(){
-    //console.log(temp);
-    return temp;
-  }
-  var tanggal=["2016-02-20","2016-02-21"];
-  //bikin fungsi buat v
-  $scope.events = [
-    {foo: 'bar', date: tanggal[0]},
-    {foo: 'bar', date: tanggal[1]}
-  ];
-  //console.log($scope.events);
-})*/
 
 .controller('MitraFinderCtrl', function($scope,$ionicPopup, $state, $cordovaGeolocation, GoogleMaps,$ionicLoading , Footer,$timeout) {
-  
   $ionicLoading.show();
+  //fungsi menampilkan footer
   $scope.footerText=Footer.getFooter();
-
+  //fungsi reload halaman
   $scope.reloadPage = function(){window.location.reload();}
-
+  //memanggil fungsi google map
   GoogleMaps.init();
+  //ngambil data mitra
+  temp=GoogleMaps.getDetailMitra();
 
-    temp=GoogleMaps.getDetailMitra();
-    console.log(temp);
-
-    temp.then(function(data){
-      $scope.mitras = data;
-      $timeout(function() {
-        $ionicLoading.hide();
-      },5000);
-
-      console.log(data);
-      if(!data) window.location.reload(true);
-      //console.log(data.nama);
-    })
-    /*$scope.groups = [];
-      for (var i=0; i<10; i++) {
-        $scope.groups[i] = {
-          name: i,
-          items: []
-        };
-        for (var j=0; j<3; j++) {
-          $scope.groups[i].items.push(i + '-' + j);
-        }
-      }
-      
-      
-       * if given group is the selected group, deselect it
-       * else, select the given group
-    */ 
-      $scope.toggleGroup = function(group) {
-        if ($scope.isGroupShown(group)) {
-          $scope.shownGroup = null;
-        } else {
-          $scope.shownGroup = group;
-        }
-      };
-      $scope.isGroupShown = function(group) {
-        return $scope.shownGroup === group;
-      };
+  temp.then(function(data){
+    $scope.mitras = data;
+    $timeout(function() {
+      $ionicLoading.hide();
+    },5000);
+    if(!data) window.location.reload(true);
   })
+  $scope.toggleGroup = function(group) {
+    if ($scope.isGroupShown(group)) {
+      $scope.shownGroup = null;
+    } else {
+      $scope.shownGroup = group;
+    }
+  };
+  $scope.isGroupShown = function(group) {
+    return $scope.shownGroup === group;
+  };
+})
 
 
-.controller('ContactCtrl', function($scope,$ionicPopup, $stateParams, $http, $state,$ionicLoading, Footer) {
+.controller('ContactCtrl', function($scope,$http,$state,$ionicLoading, Footer) {
   /*$ionicLoading.show({
     template: 'Loading'
   })*/
   $ionicLoading.hide();
+  //fungsi menampilkan footer
   $scope.footerText=Footer.getFooter();
-
+  //kirim kontak
   $scope.SendContact = function(data) {
-
-    //alert(data.nama + data.email + data.nohp + data.title + data.message);
-      $http({
-        method: 'POST',
-        //url: 'http://gemarsehati.com/enagic/api/contactus',
-        url: 'http://gemarsehati.com/api/contactus',
-        data: {
-          'name': data.nama,
-          'email': data.email, 
-          'nohp': data.nohp, 
-          'title': data.title, 
-          'message': data.message},
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-      })
-      .success(function(data){  
-
-        console.log(data);
-        if(data.message=="contactusSuccess") $state.go('app.home');
-      })
-      .error(function(data) {
-        if(data == null){
-          alert("Cek kembali inputan anda");
-        }
-        else{
-          alert("Periksa sambungan Internet Anda.");
-        }
-      });
-  };
-})
-
-.controller('ForgotCtrl', function($scope,$ionicPopup, $stateParams, $http, $state, Footer) {
-  $scope.footerText=Footer.getFooter();
-  $scope.SendResetPass = function(data) {
-    //alert(data.email);
-    
-      $http({
-        method: 'POST',
-        //url: 'http://gemarsehati.com/enagic/api/resetpass',
-        url: 'http://gemarsehati.com/api/resetpass',
-        data: {'email': data.email},
-        headers: {  'Content-Type': 'application/x-www-form-urlencoded' }
-      })
-      .success(function(data, status, headers, config){  
-        alert(data.data);
-        if(data.message=="resetPassSuccess") $state.go('app.login');
-      })
-      .error(function(data) {
-        if(data == null){
-          alert("Masukkan alamat email anda");
-        }
-        else{
-          alert("Periksa sambungan Internet Anda.");
-        }
-      });
-  };
-})
-
-/*
-.controller('PushCtrl', function($scope, $rootScope, $ionicUser, $ionicPush) {
-
-  $rootScope.$on('$cordovaPush:tokenReceived', function(event, data){
-    alert('Success: '+ data.token);
-    console.log('Got token: ', data.token, data.platform);
-    $scope.token = data.token;
-  })
-
-  $scope.identifyUser = function(){
-    var user = $ionicUser.get();
-    console.log(user);
-    if(!user.user_id){
-      user.user_id = $ionicUser.generateGUID();
-    }
-
-    angular.extend(user,{
-      name:"simon",
-      bio: "author of Devdatic"
-    });
-
-    $ionicUser.identify(user).then(function(){
-      $scope.identified = true;
-      console.log('name: '+user.name+"--- id: "+user.user_id);
-    });
-  };
-
-  $scope.pushRegister = function(){
-    $ionicPush.register({
-      canShowAlert: true,
-      canSetBadge: true,
-      canPlaySound: true,
-      canRunActionsOnWake: true,
-      onNotification: function(notification){
-        //handle your stuff 
-        return true;
+    $http({
+      method: 'POST',
+      url: 'http://gemarsehati.com/api/contactus',
+      data: {
+        'name': data.nama,
+        'email': data.email, 
+        'nohp': data.nohp, 
+        'title': data.title, 
+        'message': data.message},
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data){ 
+      if(data.message=="contactusSuccess") $state.go('app.home');
+    })
+    .error(function(data) {
+      if(data == null){
+        alert("Cek kembali inputan anda");
+      }
+      else{
+        alert("Periksa sambungan Internet Anda.");
       }
     });
   };
-
 })
 
-/*.controller('TestCtrl', function($rootScope, $scope, $cordovaPush, $cordovaDevice) {
-    var androidConfig = {
-        "senderID": "33552110024",
-    };
-    document.addEventListener("deviceready", function() {
-        $cordovaPush.register(androidConfig).then(function(result) {
-            console.log(result);
-            // Success
-        }, function(err) {
-            console.log(err);
-            // Error
-        })
-        $rootScope.$on('$cordovaPush:notificationReceived', function(event, notification) {
-            console.log(event);
-            console.log(notification);
-            switch (notification.event) {
-                case 'registered':
-                    if (notification.regid.length > 0) {
-                        alert('registration ID = ' + notification.regid);
-                    }
-                    break;
-                case 'message':
-                    // this is the actual push notification. its format depends on the data model from the push server
-                    alert('message = ' + notification.message + ' msgCount = ' + notification.msgcnt);
-                    break;
-                case 'error':
-                    alert('GCM error = ' + notification.msg);
-                    break;
-                default:
-                    alert('An unknown GCM event has occurred');
-                    break;
-            }
-        });
-    }, false);
-*/
+.controller('ForgotCtrl', function($scope,$ionicPopup, $http, $state, Footer) {
+  //fungsi menampilkan footer
+  $scope.footerText=Footer.getFooter();
+  //fungsi reset pass
+  $scope.SendResetPass = function(data) {
+    $http({
+      method: 'POST',
+      url: 'http://gemarsehati.com/api/resetpass',
+      data: {'email': data.email},
+      headers: {  'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .success(function(data, status, headers, config){  
+      alert(data.data);
+      if(data.message=="resetPassSuccess") $state.go('app.login');
+    })
+    .error(function(data) {
+      if(data == null){
+        alert("Masukkan alamat email anda");
+      }
+      else{
+        alert("Periksa sambungan Internet Anda.");
+      }
+    });
+  };
+})
 
 .controller('InputCtrl', function($scope,$ionicPopup, Footer) {
       $scope.footerText=Footer.getFooter();
@@ -1579,32 +1185,33 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   $ionicLoading.show({
     template: 'Loading'
   })
+  //fungsi menampilkan footer
   $scope.footerText=Footer.getFooter();
   $http({
-      method: 'get', 
-      //url: 'http://www.gemarsehati.com/enagic/api/aboutus'
-      url: 'http://www.gemarsehati.com/api/aboutus'
-    })
-    .success(function(data){
-      $ionicLoading.hide();
-      $scope.aboutus = data;
-      $scope.whichabout = $state.params.aId;
-    })
-    .error(function(data) {
-      $ionicLoading.hide()
-      //alert("Cek koneksi internet anda");    
-      $ionicPopup.alert({
-        title: 'Connection Error',
-        template: 'Check your connection'
-      });
-    });
+    method: 'get', 
+    url: 'http://www.gemarsehati.com/api/aboutus'
   })
+  .success(function(data){
+    $ionicLoading.hide();
+    $scope.aboutus = data;
+    //parsing data ke detail about us
+    $scope.whichabout = $state.params.aId;
+  })
+  .error(function(data) {
+    $ionicLoading.hide() 
+    $ionicPopup.alert({
+      title: 'Connection Error',
+      template: 'Check your connection'
+    });
+  });
+})
   
 .controller('SocialMediaCtrl',function($ionicLoading,$ionicPopup, Footer, $scope){
   $ionicLoading.show({
     template: 'Loading'
   })
   $ionicLoading.hide();
+  //fungsi menampilkan footer
   $scope.footerText=Footer.getFooter();
 })
 
@@ -1639,6 +1246,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   $ionicLoading.show({
     template: 'Loading'
   })
+  //fungsi menampilkan footer
   $scope.footerText=Footer.getFooter();
   var id=$localstorage.get('id');
   if(id){
@@ -1650,7 +1258,6 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   }
   $http({
     method: 'GET',
-    //url: 'http://gemarsehati.com/enagic/api/getmitraid/'+id,
     url: 'http://gemarsehati.com/api/getmitraid/'+id,
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
   })
@@ -1659,8 +1266,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
     $scope.profil=data;
   })
   .error(function(data) {
-    $ionicLoading.hide()
-    //alert("Cek koneksi internet anda");    
+    $ionicLoading.hide()    
     $ionicPopup.alert({
       title: 'Connection Error',
       template: 'Check your connection'
@@ -1672,52 +1278,49 @@ var app = angular.module('starter.controllers', ['ngSanitize','wu.masonry','ioni
   $ionicLoading.show({
     template: 'Loading'
   })
+  //fungsi menampilkan footer
   $scope.footerText=Footer.getFooter();
   $http({
-      method: 'get', 
-      //url: 'http://www.gemarsehati.com/enagic/api/getleveluk'
-      url: 'http://www.gemarsehati.com/api/getleveluk'
-    })
-    .success(function(data){
-      $ionicLoading.hide();
-      $scope.products = data;
-      $scope.whichproduct = $state.params.aId;
-    })
-    .error(function(data) {
-      $ionicLoading.hide()
-      //alert("Cek koneksi internet anda");    
-      $ionicPopup.alert({
-        title: 'Connection Error',
-        template: 'Check your connection'
-      });
-    });
+    method: 'get', 
+    url: 'http://www.gemarsehati.com/api/getleveluk'
   })
+  .success(function(data){
+    $ionicLoading.hide();
+    $scope.products = data;
+    //parsing data ke detailabout.html
+    $scope.whichproduct = $state.params.aId;
+  })
+  .error(function(data) {
+    $ionicLoading.hide() 
+    $ionicPopup.alert({
+      title: 'Connection Error',
+      template: 'Check your connection'
+    });
+  });
+})
 
-
-.controller('CreditCtrl', function($scope,$ionicPopup, $http, $stateParams, $state,$ionicLoading, Footer){
+.controller('CreditCtrl', function($scope,$ionicPopup, $http,$state,$ionicLoading, Footer){
   $ionicLoading.show({
     template: 'Loading'
   })
+  //fungsi menampilkan footer
   $scope.footerText=Footer.getFooter();
   $http({
-      method: 'get', 
-      //url: 'http://www.gemarsehati.com/enagic/api/getleveluk'
-      url: 'http://www.gemarsehati.com/api/getcredit'
-    })
-    .success(function(data){
-      $ionicLoading.hide();
-      $scope.credits = data;
-      //console.log(Footer.getFooter());
-    })
-    .error(function(data) {
-      $ionicLoading.hide()
-      //alert("Cek koneksi internet anda");    
-      $ionicPopup.alert({
-        title: 'Connection Error',
-        template: 'Check your connection'
-      });
-    });
+    method: 'get', 
+    url: 'http://www.gemarsehati.com/api/getcredit'
   })
+  .success(function(data){
+    $ionicLoading.hide();
+    $scope.credits = data;
+  })
+  .error(function(data) {
+    $ionicLoading.hide()
+    $ionicPopup.alert({
+      title: 'Connection Error',
+      template: 'Check your connection'
+    });
+  });
+})
 
 .controller('SplashCtrl', function($scope,$ionicPopup, $ionicLoading,$timeout, $state,$ionicHistory, $rootScope){
   $timeout(function() {
