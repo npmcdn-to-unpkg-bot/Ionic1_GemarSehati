@@ -622,28 +622,41 @@ var app = angular.module('starter.controllers', ['ngSanitize','ionicLazyLoad','n
   //alert($localstorage.isLoggedIn());
 })
 
-.controller('PhotoCtrl', function($ionicLoading,$ionicPopup,$scope, $http, $state,$sce,$ionicModal, $ionicBackdrop, $ionicSlideBoxDelegate, $ionicScrollDelegate, Footer) {
+.controller('AlbumCtrl', function($ionicLoading,$ionicPopup,$scope,$http,$state,$stateParams,Footer){
   $ionicLoading.show({
     template: 'Loading'
   })
-  //fungsi menampilkan footer
   $scope.footerText=Footer.getFooter();
-  //get json album foto
+  //getalbum
   $http({
-    method : 'get',
-    url: 'http://www.gemarsehati.com/api/getphotoalbum',
-    headers: { 'Content-Type':'application/x-www-form-urlencoded'}
+    method: 'get',
+    url: 'http://www.gemarsehati.com/api/getphotoalbum'
   })
   .success(function(data){
-    $scope.photoalbums=data;
+    $scope.albums=data;
+    $ionicLoading.hide()
   })
-  .error(function(data) {
-    $ionicLoading.hide() 
+  .error(function(data){
+    $ionicLoading.hide()
     $ionicPopup.alert({
       title: 'Connection Error',
       template: 'Check your connection'
     });
   });
+
+  $scope.getPhotoAlbum=function(index){
+    $state.go('app.photo', {idAlbum:index});
+
+  }
+})
+
+.controller('PhotoCtrl', function($ionicLoading,$ionicPopup,$scope, $http, $state,$sce,$ionicModal, $ionicBackdrop, $ionicSlideBoxDelegate, $ionicScrollDelegate, Footer, $stateParams) {
+  $ionicLoading.show({
+    template: 'Loading'
+  })
+  //fungsi menampilkan footer
+  $scope.footerText=Footer.getFooter();
+  $scope.idAlbum = $stateParams.idAlbum;
   //get json foto
   $http({
     method: 'get', 
@@ -652,8 +665,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','ionicLazyLoad','n
   })
   .success(function(data){
     $scope.length = Object.keys(data).length;
-    $scope.halfLength = length/2;
     $scope.photos = data;
+    $scope.getPhotoAlbum($scope.idAlbum);
     $ionicLoading.hide();
   })
   .error(function(data) {
@@ -693,9 +706,9 @@ var app = angular.module('starter.controllers', ['ngSanitize','ionicLazyLoad','n
     }
   };
   //fungsi menampilkan foto berdasarkan album yang dipilih
-  $scope.getPhotoAlbum = function() {
+  $scope.getPhotoAlbum = function(id) {
     $scope.selectedPhotos=[];
-    var id = $scope.selectedAlbum.id;
+    //var id = $scope.selectedAlbum.id
     var length = $scope.length;
     for(i = 0; i<length;i++){
       if($scope.photos[i].id_album==id){

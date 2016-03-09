@@ -620,6 +620,18 @@ select.dropdown{
 }
 
 /*===================================
+=            Album Style            =
+===================================*/
+
+p.album-detail{
+	color:#fafafa;
+	text-align: center;
+}
+
+/*=====  End of Album Style  ======*/
+
+
+/*===================================
 =            Photo Style            =
 ===================================*/
 .image-modal {

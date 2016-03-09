@@ -130,8 +130,18 @@ angular.module('starter', ['ionic','ngCordova','starter.controllers', 'ionicLazy
     }
   })
 
+  .state('app.album', {
+    url: '/album',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/album.html',
+        controller: 'AlbumCtrl'
+      }
+    }
+  })
+
   .state('app.photo', {
-    url: '/photo',
+    url: '/photo/:idAlbum',
     views: {
       'menuContent': {
         templateUrl: 'templates/photo.html',

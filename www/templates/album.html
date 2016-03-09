@@ -1,0 +1,19 @@
+<ion-view view-title="Photo Gallery" >
+    <ion-content class="content-padding background padding-top" lazy-scroll>
+		<div ng-repeat="album in albums" ng-switch on="$index % 2" class="row">
+    		<div class="col col-50"  ng-switch-when="0">
+				<img image-lazy-src="img/album.jpg" image-lazy-loader="android" width="100%" ng-click="getPhotoAlbum(albums[$index].id)">
+				<p class="album-detail">{{albums[$index].nama}}</p>
+			</div>
+			<span ng-show="albums[$index+1]">
+		    	<div class="col " ng-switch-when="0">
+					<img image-lazy-src="img/album.jpg" image-lazy-loader="android" width="100%" ng-click="getPhotoAlbum(albums[$index+1].id)">
+					<p class="album-detail">{{albums[$index+1].nama}}</p>
+				</div>
+			</span>
+    	</div>
+		<div class="footer-style non-bar-footer">
+  			<div class="title">{{footerText}}</div>
+		</div>
+    </ion-content>
+</ion-view>
