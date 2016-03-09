@@ -360,7 +360,6 @@ var app = angular.module('starter.controllers', ['ngSanitize','ionicLazyLoad','n
     },
     getMitra: function(){
       temp = getDataNearestMitra();
-      console.log(temp);
       return temp;
     }
   }
@@ -569,23 +568,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','ionicLazyLoad','n
 })
 
 .controller('HomeCtrl', function($cordovaSplashscreen,$localstorage,$ionicHistory,$scope, $stateParams,$ionicLoading,$localstorage,$state,$window,$reload,$timeout, Footer,$ionicPopup) {
-  /*$scope.$on('$ionicView.afterEnter', function(){
-    setTimeout(function(){
-      document.getElementById("custom-overlay").style.display = "none";      
-    }, 3000);
-  }); */ 
   $ionicLoading.hide();
   $scope.footerText=Footer.getFooter();
-  
-  //$state.go($state.current, {}, {reload: true});
-  //for(i=0;i<1;i++) $window.location.reload(true);
-  
-  /*window.onload = function () {
-    if (! localStorage.justOnce) {
-        localStorage.setItem("justOnce", "true");
-        window.location.reload();
-    }
-  }*/
 
   if($localstorage.get('username')){
     username=$localstorage.get('username');
@@ -595,31 +579,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','ionicLazyLoad','n
     username = "non user";
     $scope.isLogin=false;
   }
-  
-  //alert("selamat datang "+username);
-  /*$scope.doRefresh = function(){
-    window.location.reload();
-  };*/
-
-  //else alert("anda belum login");
-  /*window.onload = function () {
-    if (! localStorage.username) {
-        window.location.reload();
-    }
-}*/
-  
-  //if(localstorage.get('username')!==undefined) window.location.reload();
-
-  /*$scope.reloadPage = function(){window.location.reload();}*/
-  /*$scope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams){ 
-  });
-  $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-    $timeout(function(){
-      //window.location.reload()
-    },2000);
-  });*/
   $ionicHistory.clearHistory();
-  //alert($localstorage.isLoggedIn());
 })
 
 .controller('AlbumCtrl', function($ionicLoading,$ionicPopup,$scope,$http,$state,$stateParams,Footer){
@@ -880,7 +840,6 @@ var app = angular.module('starter.controllers', ['ngSanitize','ionicLazyLoad','n
     $scope.genders = data;
   })
   $scope.showSelectValue = function(mySelect) {
-    //console.log(mySelect);
     return mySelect.name;
 }
 })
@@ -1339,12 +1298,8 @@ var app = angular.module('starter.controllers', ['ngSanitize','ionicLazyLoad','n
   $timeout(function() {
       $ionicLoading.show();
     }, 3000);
-  
-  console.log("awal "+$rootScope.flag);
 
   if($rootScope.flag==false){
-    console.log("1 - ke notif");
-    console.log($rootScope.flag);
     $timeout(function() {
       $ionicLoading.hide();
       $state.go('app.notif');
@@ -1355,8 +1310,6 @@ var app = angular.module('starter.controllers', ['ngSanitize','ionicLazyLoad','n
     });
   }
   else if($rootScope.flag==true){
-    console.log("2 - ke home");
-    console.log($rootScope.flag);
     $timeout(function() {
       $ionicLoading.hide();
       $state.go('app.home');
@@ -1371,8 +1324,6 @@ var app = angular.module('starter.controllers', ['ngSanitize','ionicLazyLoad','n
     $rootScope.flag = false;
     var pushPayload = e.payload;
     $rootScope.message = pushPayload.msg;
-    console.log("1 - ke notif");
-    console.log($rootScope.flag);
     $timeout(function() {
       $ionicLoading.hide();
       $state.go('app.notif');
