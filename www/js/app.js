@@ -11,13 +11,26 @@ angular.module('starter', ['ionic','ngCordova','starter.controllers', 'ionicLazy
   $rootScope.flag=true;
   $rootScope.message="";
   $ionicPlatform.ready(function($scope) {
+    if (window.cordova && window.cordova.plugins.Keyboard) {
+      console.log("keyboard");
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+      cordova.plugins.Keyboard.disableScroll(false);
+    }
+    
+    //batch
     //devkey = DEV56CBFB6BBE3411F544B30608A28
     //livekey = 56CBFB6BBCCA59D945DA7C9E85298A
-    batch.setConfig({"androidAPIKey":"56CBFB6BBCCA59D945DA7C9E85298A",
+    /*batch.setConfig({"androidAPIKey":"56CBFB6BBCCA59D945DA7C9E85298A",
             "iOSAPIKey":"<YOUR IOS APIKEY>"});
     batch.push.setGCMSenderID("1071866914808").setup();
     batch.start();
-    batch.push.registerForRemoteNotifications();
+    batch.push.registerForRemoteNotifications();*/
+
+    //airpush
+    UAirship.setUserNotificationsEnabled(true);
+    UAirship.getChannelID(function (channelID) {
+      console.log("Channel: " + channelID)
+    })
   });
 })
 

@@ -1320,7 +1320,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','ionicLazyLoad','n
       disableBack: true
     });
   }
-  document.addEventListener('batchPushReceived', function(e) {
+  /*document.addEventListener('batchPushReceived', function(e) {
     $rootScope.flag = false;
     var pushPayload = e.payload;
     $rootScope.message = pushPayload.msg;
@@ -1329,7 +1329,22 @@ var app = angular.module('starter.controllers', ['ngSanitize','ionicLazyLoad','n
       $state.go('app.notif');
     },3000);
     $ionicLoading.hide();
-  })
+  })*/
+
+  // Incoming message callback
+  var onLaunchedFromPush = function(event) {
+    if (event.message) {
+      console.log("Launched from push: " + event.message)
+      $rootScope.message=event.message;
+      $timeout(function() {
+        $ionicLoading.hide();
+        $state.go('app.notif');
+      },3000);
+    } else {
+      console.log("No incoming message")
+    }
+  }
+  UAirship.getLaunchNotification(true, onLaunchedFromPush)
 })
     
 .controller('NotifCtrl',function(Footer,$scope, $ionicLoading, $rootScope){

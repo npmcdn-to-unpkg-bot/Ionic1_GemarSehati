@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="kangen.gemarsehati.enagic" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="kangen.gemarsehati.enagic" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Kangen Gemarsehati</name>
     <description>
         An Ionic Framework and Cordova project.
@@ -10,6 +10,20 @@
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="signsrestaurantandbar:" />
+    <!-- Urban Airship app credentials -->
+    <preference name="com.urbanairship.production_app_key" value="xxJt1ca5RUeuztS406klWQ" />
+    <preference name="com.urbanairship.production_app_secret" value="yXhprvAhT1m65QRGgfaHmw" />
+
+    <!-- Required for Android. -->
+    <preference name="com.urbanairship.gcm_sender" value="1071866914808" />
+
+    <!-- If the app is in production or not -->
+    <preference name="com.urbanairship.in_production" value="true" />
+
+    <!-- Enable Analytics when the application launches -->
+    <!-- Warning: Features that depend on analytics being enabled may not work properly if analytics is disabled (reports, location segmentation, region triggers, push to local time). -->
+    <preference name="com.urbanairship.enable_analytics" value="true" />
+
     <preference name="webviewbounce" value="false" />
     <preference name="UIWebViewBounce" value="false" />
     <preference name="DisallowOverscroll" value="true" />
