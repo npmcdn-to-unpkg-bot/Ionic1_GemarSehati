@@ -20,7 +20,7 @@
 		    </div>
             <div class="row testimoni-date italic-white">On {{testimoni.date}}</div>
 		    <div class="row testimoni-content">
-		    	{{testimoni.content}}
+		    	{{testimoni.content}} {{testimoni.content.length > 150 ? '&hellip;' : ''}}
 		    </div>
 		    <div class="line-seperator testimoni-seperator"></div>
 	    </div>

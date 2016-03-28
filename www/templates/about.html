@@ -8,7 +8,7 @@
 			    </div>
 		    	<div class="col col-67">
 		    		<div class=" articles-judul">{{about.judul}} <br> on {{about.date}}</div>
-		    		<div class="articles-desc">{{about.content | limitTo : 150}}</div>
+		    		<div class="articles-desc">{{about.content | limitTo : 150}} {{about.content.length > 150 ? '&hellip;' : ''}}</div>
 		    	</div>
 	    	</a>
 	    	<div class="row articles-line ">

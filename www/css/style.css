@@ -504,6 +504,7 @@ select.dropdown{
 	margin-left: 29.56667px;
 	width: 100%;
 	max-width: 293.43333px; 
+	text-align: justify;
 }
 .testimoni-seperator{
 	margin: 10px 0 10px 25px;
@@ -521,7 +522,7 @@ select.dropdown{
 .articles-desc{
 	font-family: "Roboto-LightItalic";
 	color: #fafafa;
-	text-align: left;
+	text-align: justify;
 }
 .row + .row.articles-line{
 	color: white;

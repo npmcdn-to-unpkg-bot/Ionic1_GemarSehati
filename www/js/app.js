@@ -332,6 +332,26 @@ angular.module('starter', ['ionic','ngCordova','starter.controllers', 'ionicLazy
       }
     }
   })
+
+  .state('app.listnotif', {
+    url: '/listnotif',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/listnotif.html',
+        controller:'ListNotifCtrl'
+      }
+    }
+  })
+
+  .state('app.detailnotif',{
+    url: '/listnotif/:aId',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/detailnotif.html',
+        controller: 'ListNotifCtrl'
+      }
+    }
+  })
   ;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/splash');

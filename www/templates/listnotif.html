@@ -1,0 +1,22 @@
+
+<ion-view view-title="Notification" align-title="center" class="blue">
+    <ion-content class=" background testimoni">
+    <div class="padding-left-right list-content">
+        <div ng-repeat="notification in notifications">
+	    <a href="#/app/listnotif/{{notification.id}}" class="testimoni articles-link list-content" >
+	    	<div class="row flaticon-comment33 testimoni-header">
+		    	{{notification.title}} 
+		    </div>
+            <div class="row testimoni-date italic-white">On {{notification.date.date}}, at {{notification.time}}</div>
+		    <div class="row testimoni-content item-text-wrap ">
+		    	{{notification.description | limitTo : 150}} {{notification.description.length > 150 ? '&hellip;' : ''}}
+		    </div>
+		    <div class="line-seperator testimoni-seperator"></div>
+	    </div>
+	</a>	
+    </div>
+		<div class="footer-style non-bar-footer">
+  			<div class="title">{{footerText}}</div>
+		</div>
+    </ion-content>
+</ion-view>

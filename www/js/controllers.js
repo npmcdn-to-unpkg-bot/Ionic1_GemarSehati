@@ -1344,6 +1344,7 @@ var app = angular.module('starter.controllers', ['ngSanitize','ionicLazyLoad','n
       console.log("No incoming message")
     }
   }
+  //penting
   UAirship.getLaunchNotification(true, onLaunchedFromPush)
 })
     
@@ -1354,5 +1355,37 @@ var app = angular.module('starter.controllers', ['ngSanitize','ionicLazyLoad','n
   $scope.message = $rootScope.message;
   $scope.footerText=Footer.getFooter();
   $ionicLoading.hide();
+})
+
+.controller('ListNotifCtrl',function($http,Footer,$scope, $ionicLoading, $rootScope, $state, $stateParams){
+  $ionicLoading.show({
+    template: 'Loading'
+  })
+  $scope.footerText=Footer.getFooter();
+  $http({
+    method: 'get', 
+    url: 'http://gemarsehati.com/api/getnotification'
+  })
+  .success(function(data){
+    $ionicLoading.hide();
+    $scope.notifications = data;
+    for(i=0;i<data.length;i++){
+      var dateAll=data[i].date.date;
+      var temp=dateAll.split(" ");
+      data[i].date.date=temp[0];
+      var timeBug=temp[1];
+      var tempTime=timeBug.split(".");
+      data[i].time=tempTime[0];
+    }
+    $scope.whichnotif = $state.params.aId;
+  })
+  .error(function(data) {
+    $ionicLoading.hide()
+    $ionicPopup.alert({
+      title: 'Connection Error',
+      template: 'Check your connection'
+    });
+  });
+  
 })
 ;

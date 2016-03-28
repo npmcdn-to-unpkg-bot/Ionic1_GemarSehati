@@ -1,0 +1,20 @@
+
+<ion-view view-title="Notification" align-title="center" class="blue">
+    <ion-content class=" background">
+      <section class = "home-container" ng-repeat="notification in notifications | filter: {id: whichnotif}"> 
+          <div class="content-padding">
+            <div class="row flaticon-comment33 testimoni-header">
+            {{notification.title}} 
+          </div>
+              <div class="row testimoni-date italic-white">On {{notification.date.date}}, at {{notification.time}}</div>
+          <div class="row testimoni-content item-text-wrap">
+            {{notification.description}}
+          </div>
+          <div class="line-seperator testimoni-seperator"></div>
+          <div class="row non-bar-footer footer-style ">
+            <div class="title">{{footerText}}</div>
+          </div>
+        </div>
+      </section>
+    </ion-content>
+</ion-view>
